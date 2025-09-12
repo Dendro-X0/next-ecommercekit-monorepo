@@ -57,7 +57,7 @@ export function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <AppLink href="/" className="inline-block mb-6">
-              <span className="text-2xl font-black text-black dark:text-white">SHOP.CO</span>
+              <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
             </AppLink>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
               We have clothes that suits your style and which you&apos;re proud to wear. From women to

@@ -18,7 +18,7 @@ This template focuses on completeness and maintainability over vanity numbers. I
 - [Testing](./docs/testing.md)
 - [Deployment](./docs/deployment.md)
 - [Payments Setup](./docs/payments.md)
-- [Media Storage (Plan)](./docs/media-storage.md)
+- [Media Storage](./docs/media-storage.md)
 - [Env Setup](./ENV_SETUP.md)
 - [Troubleshooting](./docs/troubleshooting.md)
 - [Development Mode Limitations](./docs/dev-mode-limitations.md)
@@ -40,6 +40,7 @@ This template focuses on completeness and maintainability over vanity numbers. I
 - Data: TanStack Query (queries/mutations, optimistic updates)
 - State/URL: Zustand, nuqs
 - Email: `@repo/mail` (SMTP in dev, Resend in prod)
+- Media Storage: S3-backed uploads via `/api/uploads` (local disk fallback in dev)
 
 ---
 

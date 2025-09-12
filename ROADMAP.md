@@ -4,6 +4,19 @@ The project is feature‑complete for v1.0. This document intentionally removes 
 
 Track active work in GitHub issues and milestones. This file is a high‑level guide only.
 
+## Recently Completed
+
+- Internationalization & SEO improvements
+  - Locale‑aware currency/date formatting utilities and usage across homepage/shop.
+  - Language alternates in metadata and localized sitemap including real category URLs.
+  - JSON‑LD structured data on Product (PDP) and Category pages.
+  - Minimal language switcher header (env‑gated) on homepage.
+- Accessibility & Tooling
+  - Enabled `eslint-plugin-jsx-a11y` and addressed blocking a11y issues in admin.
+- Storage & Media
+  - Implemented S3‑backed uploads via `/api/uploads` with local disk fallback for dev.
+  - Admin Dashboard uploader now persists real image/video URLs and previews.
+
 ## Near‑Term
 
 - Internationalization (i18n)
@@ -53,15 +66,12 @@ Track active work in GitHub issues and milestones. This file is a high‑level g
     - XML sitemap(s) (including localized variants) and robots.txt; image sitemaps for product media.
     - Open Graph/Twitter cards for PDP and key marketing pages.
 
-- Storage & Media (Next Update)
-  - Admin product media uploads currently fall back to placeholders. Integrate a storage service to persist images/videos.
-  - Provider options to evaluate: S3-compatible (Amazon S3, Cloudflare R2), Supabase Storage, UploadThing.
-  - Server-side: signed upload endpoints and validation (size/type/virus scan hook), presigned URL lifecycle, secure public URLs.
-  - Client: update admin `media-uploader` and product form to upload directly to storage using signed URLs; show real previews and persisted media.
-  - Derivatives: image resizing/optimization pipeline (via on-demand image loader, CDN, or webhook-based transforms).
-  - Schema: store media records (URL, kind, width/height, bytes, alt) in DB and reference from Products/Categories.
-  - Permissions: restrict uploads to authenticated admins; enforce max limits and quotas; audit logs for media changes.
-  - Migration: script to move existing placeholder references to real storage paths when available.
+- Storage & Media — Implemented (S3) + Follow‑ups
+  - Implemented: S3 uploads in `/api/uploads` with public URLs; local fallback in dev.
+  - Implemented: Admin uploader integrates with route and shows persisted previews.
+  - Follow‑ups: signed upload URL flow (optional), validation/virus scanning hook, image derivatives via CDN/loader.
+  - Follow‑ups: media DB schema (URL, kind, dimensions, bytes, alt) and relations to products/categories.
+  - Follow‑ups: quotas/limits and admin audit logs; migration to convert old placeholders.
 
 ## Medium‑Term
 

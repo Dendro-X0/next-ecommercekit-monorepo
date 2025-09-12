@@ -1,8 +1,8 @@
-# Media Storage Integration (Plan)
+# Media Storage Integration
 
-This document outlines the plan to integrate persistent storage for product/category media.
-The current admin uploader renders previews but persists placeholder URLs. We will add a
-first‑class storage integration to enable reliable image/video uploads in production.
+S3-backed storage is implemented for product/category media. Admin uploads now persist
+real image/video URLs using a Next.js Route Handler at `/api/uploads`. When S3 is not
+configured, the route falls back to saving in `public/uploads/` for local dev.
 
 ## Goals
 
@@ -18,21 +18,20 @@ first‑class storage integration to enable reliable image/video uploads in prod
 - As an admin, I can set a primary image, remove gallery items, and re‑order media.
 - As a customer, I always see real media for products and category tiles.
 
-## Providers (to evaluate)
+## Providers
 
 - S3 compatible (Amazon S3, Cloudflare R2, MinIO)
 - Supabase Storage (Postgres‑backed with signed URLs; good DX)
 - UploadThing (DX‑focused wrapper for Next; simple setup)
 
-We will start with an S3‑compatible baseline for portability, and keep the API abstracted so
-we can later swap providers (e.g., an adapter architecture in `@repo/storage`).
+The project ships with an S3‑compatible baseline for portability. We can later add
+other providers (e.g., Supabase Storage or UploadThing) via a storage adapter.
 
-## Architecture
+## Architecture (Current)
 
-- Direct upload from the browser using signed PUT URLs or a multipart upload for large files.
-- Next.js Route Handlers for signing and post‑processing hooks:
-  - `POST /api/v1/storage/sign` — returns a signed URL and the canonical public URL.
-  - `POST /api/v1/storage/complete` — optional post‑upload hook to verify and persist metadata.
+- Direct upload through the server via `POST /api/uploads`.
+- If S3 envs are present, the server stores objects in S3 with `public-read` and returns a public URL.
+- If S3 envs are missing (dev), files are streamed to `public/uploads/` and served statically.
 - Media metadata table in DB (Drizzle, Postgres) e.g. `media`:
   - `id`, `kind` (image|video), `provider` (s3|r2|supabase|uploadthing), `bucket`, `key`, `url`,
     `bytes`, `width`, `height`, `contentType`, `checksum`, `createdAt`, `createdBy`.
@@ -47,14 +46,11 @@ we can later swap providers (e.g., an adapter architecture in `@repo/storage`).
 - Limit gallery size and file count per request; enforce quotas.
 - Generate unique object keys (`{env}/{yyyymm}/{uuid}.{ext}`) to avoid conflicts.
 
-## Client Integration
+## Client Integration (Admin)
 
-- Update `apps/web/src/app/dashboard/admin/_components/media-uploader.tsx`:
-  - On select, call `POST /api/v1/storage/sign` per file to obtain a signed URL.
-  - Upload file directly to storage with `fetch`/`XHR` progress.
-  - On success, call `/complete` to persist metadata and receive a stable public URL and `mediaId`.
-  - Replace preview placeholders with the returned canonical public URL.
-- Update product form to use `mediaId` references and set `imageUrl`/primary from selected media.
+- `apps/web/src/app/dashboard/admin/_components/media-uploader.tsx` posts directly to `/api/uploads`.
+- On success, the route returns `{ url, kind }` and the product form receives and displays real previews immediately.
+- Product form allows selecting a primary image from the uploaded gallery.
 
 ## Delivery & Optimization
 
@@ -65,18 +61,21 @@ we can later swap providers (e.g., an adapter architecture in `@repo/storage`).
 ## Local Development
 
 - Default to a local S3 emulator (e.g., MinIO or LocalStack) with `.env` overrides.
-- Provide a `DEV_STORAGE=memory` mode that writes to `apps/web/.uploads/**` for zero‑setup.
+- The local fallback avoids cloud setup: files are written to `apps/web/public/uploads/`.
 
-## Environment Variables (initial)
+## Environment Variables
 
 ```
-STORAGE_PROVIDER=s3 | r2 | supabase | uploadthing
-STORAGE_ENDPOINT= # optional for R2/MinIO
-STORAGE_REGION=
-STORAGE_BUCKET=shop-media
-STORAGE_PUBLIC_BASE_URL=https://cdn.example.com
-STORAGE_ACCESS_KEY_ID=
-STORAGE_SECRET_ACCESS_KEY=
+# S3 (required for cloud uploads; if omitted, route falls back to local disk)
+S3_REGION=
+S3_BUCKET=
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+# Optional for S3-compatible services (e.g., R2/MinIO)
+S3_ENDPOINT=
+S3_PUBLIC_BASE_URL=
+S3_FORCE_PATH_STYLE=false
+# Upload limits
 MAX_UPLOAD_MB=25
 ```
 
@@ -92,13 +91,12 @@ MAX_UPLOAD_MB=25
 - Placeholders are no longer used after save; a real public URL is stored.
 - Uploads are access‑controlled and size/type‑validated; large files show progress.
 
-## Milestones
+## Follow-ups
 
-1) S3 adapter + signing endpoints + DB schema
-2) Admin uploader wired to signed uploads with progress UI
-3) PDP/Category render from stored URLs; remove placeholders in save flow
-4) Optional: CDN domain and image transforms; video preview transcoding
-5) Optional: Supabase/UploadThing adapters
+1) Optional: presigned URL flow (browser direct-to-storage) and antivirus hook
+2) Image derivatives via CDN/loader and video preview transcoding
+3) Media DB schema (URL, kind, dimensions, bytes, alt) and relations to products/categories
+4) Quotas/limits and admin audit log entries
 
 ## References
 
