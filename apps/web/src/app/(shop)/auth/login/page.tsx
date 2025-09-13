@@ -1,9 +1,11 @@
 import { LoginForm } from "@/components/auth/login-form"
+import { ResendVerificationForm } from "@/components/auth/resend-verification-form"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
+    <div className="mx-auto w-full max-w-md space-y-6">
       <LoginForm />
+      <ResendVerificationForm />
     </div>
   )
 }

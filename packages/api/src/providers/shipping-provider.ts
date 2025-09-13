@@ -24,7 +24,9 @@ export type ShippingQuoteInput = Readonly<{
   destination?: ShippingDestination
 }>
 
-export type ShippingQuote = Readonly<{ amountCents: number; currency: "USD" }>
+import type { Currency } from "@repo/i18n"
+
+export type ShippingQuote = Readonly<{ amountCents: number; currency: Currency }>
 
 export interface ShippingProvider {
   /** Compute shipping amount in cents for given items/destination. */
@@ -45,10 +47,10 @@ export class FlatRateShippingProvider implements ShippingProvider {
     const requiresShipping: boolean = input.items.some(
       (it) => it.shippingRequired !== false && it.kind !== "digital",
     )
-    if (!requiresShipping) return { amountCents: 0, currency: "USD" } as const
+    if (!requiresShipping) return { amountCents: 0, currency: "USD" as Currency } as const
     if (input.subtotalCents >= this.thresholdCents)
-      return { amountCents: 0, currency: "USD" } as const
-    return { amountCents: this.flatFeeCents, currency: "USD" } as const
+      return { amountCents: 0, currency: "USD" as Currency } as const
+    return { amountCents: this.flatFeeCents, currency: "USD" as Currency } as const
   }
 }
 

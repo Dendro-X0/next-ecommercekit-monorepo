@@ -136,7 +136,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account to continue</CardDescription>

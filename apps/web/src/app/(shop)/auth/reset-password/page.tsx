@@ -14,19 +14,13 @@ export default async function resetPasswordPage(props: {
   const error: string = sp?.error ?? ""
   if (!token || error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Invalid Reset Link</h1>
-          <p className="text-muted-foreground">
-            This password reset link is invalid or has expired.
-          </p>
-        </div>
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-2">Invalid Reset Link</h1>
+        <p className="text-muted-foreground">
+          This password reset link is invalid or has expired.
+        </p>
       </div>
     )
   }
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
-      <ResetPasswordForm token={token} />
-    </div>
-  )
+  return <ResetPasswordForm token={token} />
 }

@@ -38,7 +38,7 @@ export function AuthMenu(): JSX.Element {
   }
 
   const roles = user?.roles as readonly Role[] | undefined
-  const isAdmin: boolean = hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
+  const isAdmin: boolean = user?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
 
   return (
     <DropdownMenu>

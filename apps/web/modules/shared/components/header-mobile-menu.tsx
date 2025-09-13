@@ -36,7 +36,7 @@ export function HeaderMobileMenu({ navigationItems }: { readonly navigationItems
     user && Array.isArray((user as Record<string, unknown>).roles)
       ? ((user as { readonly roles?: readonly Role[] }).roles as readonly Role[] | undefined)
       : undefined
-  const isAdmin: boolean = hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
+  const isAdmin: boolean = (user as { readonly isAdmin?: boolean } | null)?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
   return (
     <div className="md:hidden">
       <Sheet>

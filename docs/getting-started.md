@@ -12,6 +12,11 @@ DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB
 WEB_ORIGIN=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 BETTER_AUTH_SECRET=your-long-random-secret
+# Local dev cookies (recommended)
+ENABLE_CROSS_SITE_COOKIES=false
+ENABLE_CROSS_SUBDOMAIN_COOKIES=false
+# Optional: server allowlist for admin access and the avatar menu "Admin" label
+ADMIN_EMAILS=admin@example.com
 ```
 
 3) Database

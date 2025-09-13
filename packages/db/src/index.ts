@@ -38,3 +38,9 @@ export { idempotencyKeys } from "./schema/idempotency"
 export { default as inventoryRepo } from "./repositories/inventory-repo"
 export { inventory } from "./schema/inventory"
 export { inventoryReservations } from "./schema/inventory-reservations"
+// Media exports
+export { media } from "./schema/media"
+export { productMedia } from "./schema/product-media"
+export { mediaEvents } from "./schema/media-events"
+// Re-export Drizzle helpers for consumers to avoid extra deps in app packages
+export { sql, and, eq, gt } from "drizzle-orm"

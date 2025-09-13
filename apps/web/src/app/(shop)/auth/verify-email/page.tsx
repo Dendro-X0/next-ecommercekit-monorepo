@@ -80,8 +80,7 @@ export default function VerifyEmailPage(): ReactElement {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
-      <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -142,6 +141,5 @@ export default function VerifyEmailPage(): ReactElement {
           </AppLink>
         </CardFooter>
       </Card>
-    </div>
   )
 }

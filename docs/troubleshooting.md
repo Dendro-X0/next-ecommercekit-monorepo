@@ -4,6 +4,7 @@
 - Auth/session not updating after login?
   - Ensure `NEXT_PUBLIC_FRONTEND_ONLY=false`
   - Session refetch is enabled on focus/reconnect via TanStack Query defaults
+  - The UI reads the trusted session from `/api/me`. If cookies were rejected, `/api/me` will return `{ user: null }`.
 - API 404/Invalid redirect?
   - Verify handlers exist under `apps/web/src/app/api/*`
   - Better Auth is mounted at `/api/auth/[...all]`
@@ -36,6 +37,11 @@
   - `NEXT_PUBLIC_FRONTEND_ONLY=false`
   - `BETTER_AUTH_SECRET=<long-random-secret>`
 - If testing cross-site or multiple subdomains, run HTTPS locally and enable cross-site cookies.
+
+## Admin label not showing in avatar menu
+- The avatar menu shows the "Admin" item when the server reports `user.isAdmin === true` via `/api/me`.
+- Ensure `ADMIN_EMAILS` includes your admin email, or that your user has the `admin` role.
+- `NEXT_PUBLIC_ADMIN_EMAILS` is optional (UI no longer depends on it).
 
 ## Additional Notes
 - Loading & Error UX for TanStack Query pages:

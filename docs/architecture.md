@@ -11,6 +11,8 @@
 - Data: TanStack Query (queries/mutations, optimistic updates)
 - State/URL: Zustand, nuqs
 - Email: `@repo/mail` (SMTP in dev, Resend in prod)
+- Storage: `@repo/storage` with S3 or Cloudinary providers; image loader/CDN integration
+- Media Worker: `packages/media-worker` for FFmpeg-based video preview generation
 
 ## Monorepo Layout (Overview)
 - `apps/web` — Next.js app (frontend + API Route Handlers)

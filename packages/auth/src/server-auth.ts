@@ -95,15 +95,21 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", schema: authSchema }),
   advanced: {
     ...(authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES ? { crossSubDomainCookies: { enabled: true } } : {}),
-    ...(!authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES && authEnv.ENABLE_CROSS_SITE_COOKIES
-      ? {
-          defaultCookieAttributes: {
-            sameSite: "none",
-            secure: true,
-            partitioned: true,
-          },
-        }
-      : {}),
+    ...(() => {
+      const useCrossSite = !authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES && authEnv.ENABLE_CROSS_SITE_COOKIES
+      if (!useCrossSite) return {}
+      const isHttps = appUrl?.startsWith("https://") ?? false
+      if (!isHttps && process.env.NODE_ENV !== "production") {
+        // In dev over http://localhost, Secure cookies are dropped by the browser.
+        // Fall back to lax, non-secure cookies so sign-in works locally.
+        // eslint-disable-next-line no-console
+        console.warn(
+          "[auth] ENABLE_CROSS_SITE_COOKIES=true but APP_URL is not https. Falling back to sameSite=lax, secure=false for dev.",
+        )
+        return { defaultCookieAttributes: { sameSite: "lax", secure: false } as const }
+      }
+      return { defaultCookieAttributes: { sameSite: "none", secure: true, partitioned: true } as const }
+    })(),
   },
   // Start with email/password; OAuth, magic link, passkeys can be added later.
   emailAndPassword: {
@@ -131,6 +137,10 @@ export const auth = betterAuth({
   },
   // Email verification
   emailVerification: {
+    // Improve resilience and UX: resend on sign-in if not verified,
+    // and automatically sign the user in after successful verification.
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }): Promise<void> => {
       if (mailer) {
         try {

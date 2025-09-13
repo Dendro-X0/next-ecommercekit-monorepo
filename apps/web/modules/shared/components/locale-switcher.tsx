@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
+import { LOCALES_CONFIG } from "@/modules/shared/config/locales"
 import type { JSX, ChangeEvent } from "react"
 
 /**
@@ -10,14 +11,18 @@ import type { JSX, ChangeEvent } from "react"
 export function LocaleSwitcher(): JSX.Element {
   const router = useRouter()
   const pathname = usePathname()
-  const locales = ["en", "es"] as const
+  // Only navigate to locales that are both enabled in config and supported by current routing (en/es).
+  const enabledCodes: readonly string[] = LOCALES_CONFIG.options.filter((o) => o.enabled).map((o) => o.code)
+  const navSupported: readonly ("en" | "es")[] = ["en", "es"] as const
 
   const currentLocale: "en" | "es" = getCurrentLocale(pathname)
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const nextLocale = e.target.value as "en" | "es"
-    const nextPath = buildPathWithLocale(pathname, nextLocale)
-    router.push(nextPath)
+    const code = e.target.value
+    if (enabledCodes.includes(code) && (navSupported as readonly string[]).includes(code)) {
+      const nextPath = buildPathWithLocale(pathname, code as "en" | "es")
+      router.push(nextPath)
+    }
   }
 
   return (
@@ -29,9 +34,9 @@ export function LocaleSwitcher(): JSX.Element {
         onChange={handleChange}
         aria-describedby="locale-switcher"
       >
-        {locales.map((loc) => (
-          <option key={loc} value={loc}>
-            {loc === "en" ? "English" : "Español"}
+        {LOCALES_CONFIG.options.map((opt) => (
+          <option key={opt.code} value={opt.code} disabled={!opt.enabled} aria-disabled={!opt.enabled}>
+            {opt.label}
           </option>
         ))}
       </select>

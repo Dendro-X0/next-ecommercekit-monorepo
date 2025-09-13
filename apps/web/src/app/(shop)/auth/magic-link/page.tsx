@@ -48,11 +48,10 @@ export default function MagicLinkPage(): ReactElement {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
-      <AuthCard
-        title="Sign in with magic link"
-        description="Enter your email to receive a secure sign-in link"
-      >
+    <AuthCard
+      title="Sign in with magic link"
+      description="Enter your email to receive a secure sign-in link"
+    >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {message && (
@@ -86,7 +85,6 @@ export default function MagicLinkPage(): ReactElement {
             Back to sign in
           </AppLink>
         </div>
-      </AuthCard>
-    </div>
+    </AuthCard>
   )
 }

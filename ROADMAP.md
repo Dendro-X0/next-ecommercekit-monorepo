@@ -11,6 +11,18 @@ Track active work in GitHub issues and milestones. This file is a high‑level g
   - Language alternates in metadata and localized sitemap including real category URLs.
   - JSON‑LD structured data on Product (PDP) and Category pages.
   - Minimal language switcher header (env‑gated) on homepage.
+- Auth UX alignment
+  - Shared root layout for all auth pages with consistent centering and spacing.
+  - Removed per‑page shaded wrappers and unified form card width (`max-w-md`).
+- Session & Admin labeling
+  - Added trusted endpoint `GET /api/me` that returns `user.isAdmin` (role or allowlist).
+  - Avatar menu and dashboard header now prefer server `isAdmin` over client envs.
+- Dev ergonomics for cookies
+  - Local HTTP: when `ENABLE_CROSS_SITE_COOKIES=true` without HTTPS, auth falls back to `sameSite=lax; secure=false` to avoid cookie rejection.
+  - `.env.local.example` defaults to `ENABLE_CROSS_SITE_COOKIES=false` for local.
+- i18n minimal config
+  - App‑level `LOCALES_CONFIG` with expanded languages in the dropdown; only `en/es` enabled by default.
+  - Documentation added for minimal, flexible i18n setup.
 - Accessibility & Tooling
   - Enabled `eslint-plugin-jsx-a11y` and addressed blocking a11y issues in admin.
 - Storage & Media
@@ -24,6 +36,7 @@ Track active work in GitHub issues and milestones. This file is a high‑level g
     - Next.js i18n routing (locale subpaths and/or domains) and locale negotiation via `Accept-Language` with cookie persistence.
     - Header locale switcher UI with accessible combobox and language names in native form (endonym).
     - Localized static content (marketing pages), dynamic content (catalog), and emails.
+    - Promote `LOCALES_CONFIG` to drive routing and navigation once more locales are enabled.
   - Data Model & CMS
     - Drizzle migrations for translatable fields (product/category name, description, SEO fields), with fallback strategy.
     - Optional integration with a translation workflow (e.g., Contentlayer/Sanity or external TMS); draft/publish lifecycle.

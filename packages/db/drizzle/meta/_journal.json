@@ -71,6 +71,13 @@
       "when": 1756996831839,
       "tag": "0009_hot_barracuda",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1757770834995,
+      "tag": "0010_slippery_rictor",
+      "breakpoints": true
     }
   ]
 }

@@ -3,6 +3,7 @@ import { z } from "zod"
 
 export const env = createEnv({
   server: {
+    STORAGE_PROVIDER: z.enum(["s3", "cloudinary"]).optional(),
     DATABASE_URL: z.string().url(),
     BETTER_AUTH_SECRET: z.string().min(1).optional(),
     EMAIL_FROM: z.string().email().optional(),
@@ -19,6 +20,11 @@ export const env = createEnv({
     S3_PUBLIC_BASE_URL: z.string().url().optional(),
     S3_FORCE_PATH_STYLE: z.enum(["true", "false"]).optional(),
     MAX_UPLOAD_MB: z.coerce.number().int().positive().max(200).optional(),
+    MEDIA_DAILY_LIMIT: z.coerce.number().int().positive().max(10000).optional(),
+    CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+    CLOUDINARY_API_KEY: z.string().min(1).optional(),
+    CLOUDINARY_API_SECRET: z.string().min(1).optional(),
+    CLOUDINARY_PUBLIC_BASE_URL: z.string().url().optional(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().url().optional(),
@@ -27,6 +33,7 @@ export const env = createEnv({
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    STORAGE_PROVIDER: process.env.STORAGE_PROVIDER,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     EMAIL_FROM: process.env.EMAIL_FROM,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -43,5 +50,10 @@ export const env = createEnv({
     S3_PUBLIC_BASE_URL: process.env.S3_PUBLIC_BASE_URL,
     S3_FORCE_PATH_STYLE: process.env.S3_FORCE_PATH_STYLE,
     MAX_UPLOAD_MB: process.env.MAX_UPLOAD_MB,
+    MEDIA_DAILY_LIMIT: process.env.MEDIA_DAILY_LIMIT,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+    CLOUDINARY_PUBLIC_BASE_URL: process.env.CLOUDINARY_PUBLIC_BASE_URL,
   },
 })

@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto"
 import { type SQL, and, asc, count, desc, eq, ilike } from "drizzle-orm"
 import { db } from "../db"
 import { products } from "../schema/products"
+import { productMedia } from "../schema/product-media"
+import { media as mediaTable } from "../schema/media"
 
 export type ListParams = Readonly<{
   query?: string
@@ -120,6 +122,18 @@ function mapRowToDto(row: typeof products.$inferSelect): ProductDTO {
   } as const
 }
 
+async function listMediaForProduct(productId: string): Promise<
+  ReadonlyArray<Readonly<{ url: string; kind: "image" | "video" }>>
+> {
+  const rows = await db
+    .select({ url: mediaTable.url, kind: mediaTable.kind, pos: productMedia.position })
+    .from(productMedia)
+    .innerJoin(mediaTable, eq(productMedia.mediaId, mediaTable.id))
+    .where(eq(productMedia.productId, productId))
+    .orderBy(asc(productMedia.position))
+  return rows.map((r) => ({ url: r.url, kind: (r.kind as "image" | "video") ?? "image" }))
+}
+
 async function list(params: ListParams): Promise<ListResponse> {
   const page: number = Math.max(1, params.page)
   const pageSize: number = Math.min(100, Math.max(1, params.pageSize))
@@ -152,13 +166,17 @@ async function list(params: ListParams): Promise<ListResponse> {
 async function bySlug(slug: string): Promise<ProductDTO | null> {
   const rows = await db.select().from(products).where(eq(products.slug, slug)).limit(1)
   if (!rows.length) return null
-  return mapRowToDto(rows[0])
+  const base = mapRowToDto(rows[0])
+  const relMedia = await listMediaForProduct(base.id)
+  return relMedia.length > 0 ? { ...base, media: relMedia } : base
 }
 
 async function byId(id: string): Promise<ProductDTO | null> {
   const rows = await db.select().from(products).where(eq(products.id, id)).limit(1)
   if (!rows.length) return null
-  return mapRowToDto(rows[0])
+  const base = mapRowToDto(rows[0])
+  const relMedia = await listMediaForProduct(base.id)
+  return relMedia.length > 0 ? { ...base, media: relMedia } : base
 }
 
 async function listFeatured(limit: number): Promise<readonly ProductDTO[]> {
@@ -224,6 +242,26 @@ async function create(input: CreateProductInput): Promise<ProductDTO> {
       })
       .returning()
   )[0]
+  // Adopt product_media relations (best-effort)
+  if (Array.isArray(input.media) && input.media.length > 0) {
+    let pos = 0
+    for (const m of input.media) {
+      // Try to find existing media row by URL, otherwise create a minimal one
+      const existing = (
+        await db.select({ id: mediaTable.id }).from(mediaTable).where(eq(mediaTable.url, m.url)).limit(1)
+      )[0]
+      const mediaId = existing?.id ?? randomUUID()
+      if (!existing) {
+        await db.insert(mediaTable).values({
+          id: mediaId,
+          provider: "external",
+          url: m.url,
+          kind: m.kind,
+        } as any)
+      }
+      await db.insert(productMedia).values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
+    }
+  }
   return mapRowToDto(row)
 }
 
@@ -247,14 +285,35 @@ async function update(id: string, patch: UpdateProductInput): Promise<ProductDTO
   if (Object.keys(fields).length === 0) {
     const current = await db.select().from(products).where(eq(products.id, id)).limit(1)
     if (!current.length) return null
-    return mapRowToDto(current[0])
+    const base = mapRowToDto(current[0])
+    const rel = await listMediaForProduct(id)
+    return rel.length > 0 ? { ...base, media: rel } : base
   }
   const row = (await db.update(products).set(fields).where(eq(products.id, id)).returning())[0]
   if (!row) return null
-  return mapRowToDto(row)
+  // If media patch was provided, replace relations
+  if (Array.isArray(patch.media)) {
+    await db.delete(productMedia).where(eq(productMedia.productId, id))
+    let pos = 0
+    for (const m of patch.media) {
+      const existing = (
+        await db.select({ id: mediaTable.id }).from(mediaTable).where(eq(mediaTable.url, m.url)).limit(1)
+      )[0]
+      const mediaId = existing?.id ?? randomUUID()
+      if (!existing) {
+        await db.insert(mediaTable).values({ id: mediaId, provider: "external", url: m.url, kind: m.kind } as any)
+      }
+      await db.insert(productMedia).values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
+    }
+  }
+  const base = mapRowToDto(row)
+  const rel = await listMediaForProduct(id)
+  return rel.length > 0 ? { ...base, media: rel } : base
 }
 
 async function remove(id: string): Promise<boolean> {
+  // Cascade cleanup: remove product_media relations first, then product
+  await db.delete(productMedia).where(eq(productMedia.productId, id))
   const res = await db.delete(products).where(eq(products.id, id)).returning({ id: products.id })
   return res.length > 0
 }

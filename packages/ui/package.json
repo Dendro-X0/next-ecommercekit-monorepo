@@ -8,6 +8,7 @@
   },
   "exports": {
     "./button": "./src/button.tsx",
+    "./i18n": "./src/i18n.ts",
     "./next/link": "./src/next/link.tsx",
     "./next/button-link": "./src/next/button-link.tsx",
     "./collapsible-root": "./src/collapsible-root.tsx",
@@ -39,6 +40,7 @@
     "next": ">=15.0.0 <16"
   },
   "dependencies": {
+    "@repo/i18n": "workspace:*",
     "@radix-ui/react-collapsible": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.6",

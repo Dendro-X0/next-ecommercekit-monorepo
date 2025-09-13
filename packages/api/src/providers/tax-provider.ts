@@ -10,11 +10,17 @@ export type TaxJurisdiction = Readonly<{
   zipCode?: string
 }>
 
+
+
+import type { Currency } from "@repo/i18n"
+
 export type TaxItem = Readonly<{
   quantity: number
   priceCents: number
   kind?: "digital" | "physical"
 }>
+
+
 
 export type TaxQuoteInput = Readonly<{
   items: readonly TaxItem[]
@@ -23,7 +29,9 @@ export type TaxQuoteInput = Readonly<{
   jurisdiction?: TaxJurisdiction
 }>
 
-export type TaxQuote = Readonly<{ amountCents: number; currency: "USD" }>
+
+
+export type TaxQuote = Readonly<{ amountCents: number; currency: Currency }>
 
 export interface TaxProvider {
   /** Compute tax amount in cents. */
@@ -41,7 +49,7 @@ export class RateTaxProvider implements TaxProvider {
   public async quote(input: TaxQuoteInput): Promise<TaxQuote> {
     const taxableBaseCents: number = input.subtotalCents
     const taxCents: number = Math.round(taxableBaseCents * this.rate)
-    return { amountCents: Math.max(0, taxCents), currency: "USD" } as const
+    return { amountCents: Math.max(0, taxCents), currency: "USD" as Currency } as const
   }
 }
 

@@ -14,6 +14,7 @@ export interface Session {
     readonly image?: string | null
     readonly roles?: readonly string[]
     readonly emailVerified?: boolean
+    readonly isAdmin?: boolean
   } | null
 }
 
@@ -35,34 +36,20 @@ export function SessionProvider({ children }: { readonly children: React.ReactNo
         // Frontend-only mode: skip backend and treat as signed-out
         return { user: null }
       }
-      const { data, error } = await authClient.getSession()
-      if (error) {
-        return { user: null }
+      const res = await fetch("/api/me", { credentials: "include" })
+      if (!res.ok) return { user: null }
+      const payload = (await res.json()) as {
+        readonly user: {
+          readonly id?: string
+          readonly email?: string
+          readonly name?: string | null
+          readonly image?: string | null
+          readonly roles?: readonly string[]
+          readonly emailVerified?: boolean
+          readonly isAdmin?: boolean
+        } | null
       }
-      const u = data?.user as
-        | {
-            readonly id?: string
-            readonly email?: string
-            readonly name?: unknown
-            readonly image?: unknown
-            readonly roles?: unknown
-            readonly emailVerified?: unknown
-          }
-        | undefined
-      if (!u) return { user: null }
-      const user = {
-        id: u.id,
-        email: u.email,
-        name: typeof u.name === "string" ? (u.name as string) : null,
-        image: typeof u.image === "string" ? (u.image as string) : null,
-        roles:
-          Array.isArray(u.roles) && (u.roles as unknown[]).every((x) => typeof x === "string")
-            ? (u.roles as readonly string[])
-            : undefined,
-        emailVerified:
-          typeof u.emailVerified === "boolean" ? (u.emailVerified as boolean) : undefined,
-      }
-      return { user }
+      return { user: payload.user }
     },
     staleTime: 5 * 60_000,
     retry: 1,

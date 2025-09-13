@@ -11,8 +11,8 @@ This project deploys well to Vercel (recommended). The API lives in Next.js Rout
 Set these in the Vercel Project (Environment Variables):
 
 - `DATABASE_URL` — Postgres connection
-- `WEB_ORIGIN` — e.g., `https://your-domain.com` (or Vercel preview URL)
-- `NEXT_PUBLIC_APP_URL` — same as `WEB_ORIGIN`
+- `APP_URL` — e.g., `https://your-domain.com` (or Vercel preview URL)
+- `NEXT_PUBLIC_APP_URL` — same as `APP_URL`
 - `BETTER_AUTH_SECRET` — long random string
 - `ADMIN_EMAILS` — comma-separated admin emails for the dashboard
 - `NEXT_PUBLIC_ADMIN_EMAILS` — optional; falls back to `ADMIN_EMAILS`
@@ -32,7 +32,8 @@ Frontend toggles (defaults are safe):
 
 Configure Better Auth cookies for your domain(s):
 
-- Cross‑site flows require `SameSite=None` and `Secure=true` (handled by configuration). On custom domains, ensure HTTPS is enabled.
+- Cross‑site flows require `SameSite=None` and `Secure=true` (handled by configuration). Ensure HTTPS is enabled on custom domains.
+- In local development over HTTP, set `ENABLE_CROSS_SITE_COOKIES=false` so cookies are accepted by the browser.
 
 ## 4) Deploy
 

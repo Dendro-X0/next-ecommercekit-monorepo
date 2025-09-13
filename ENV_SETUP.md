@@ -7,7 +7,7 @@ This document explains configuration keys and recommended values. For a ready‑
 Set at least the following to run locally:
 
 ```
-WEB_ORIGIN=http://localhost:3000
+APP_URL=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB
 BETTER_AUTH_SECRET=your-long-random-secret
@@ -30,7 +30,8 @@ DATABASE_URL=
 
 # Better Auth
 BETTER_AUTH_SECRET=
-ENABLE_CROSS_SITE_COOKIES=true
+# For local HTTP development, keep cross‑site cookies disabled to avoid Secure/None rejection.
+ENABLE_CROSS_SITE_COOKIES=false
 ENABLE_CROSS_SUBDOMAIN_COOKIES=false
 
 # OAuth providers
@@ -40,14 +41,15 @@ GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 ```
 
-# CORS
-WEB_ORIGIN=http://localhost:3000
+# CORS / Origin
+APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 Notes:
-- Set `WEB_ORIGIN` to the exact origin of the Next.js app.
+- Set `APP_URL` to the exact origin of the Next.js app.
 - Use a strong `BETTER_AUTH_SECRET` (run `npx @better-auth/cli@latest secret`).
-- For local cross-site testing, keep `ENABLE_CROSS_SITE_COOKIES=true`.
+- For local HTTP development, prefer `ENABLE_CROSS_SITE_COOKIES=false`. If you must test cross‑site flows locally, run HTTPS and enable cross‑site cookies.
 
 ## API, Payments, and Emails
 
@@ -115,5 +117,5 @@ Admins are allowlisted via `ADMIN_EMAILS`. Ensure your test/admin account email 
 ## Production Notes
 
 - Keep server-only secrets (Stripe, PayPal, Resend) out of client exposure. Only use `NEXT_PUBLIC_` for keys intended for the browser (e.g., Stripe publishable key).
-- `WEB_ORIGIN` must point to your deployed Next.js origin (e.g., `https://shop.example.com`).
+- `APP_URL` must point to your deployed Next.js origin (e.g., `https://shop.example.com`).
 - For stricter safety, enforce presence of prod-critical keys in production (tracked in TODO Phase 5).

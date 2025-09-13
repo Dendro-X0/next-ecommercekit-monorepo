@@ -31,9 +31,27 @@ const nextConfig: NextConfig = {
     "@repo/mail",
     "@repo/emails",
     "@repo/payments",
+    "@repo/storage",
   ],
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }],
+    loaderFile: "./src/lib/image-loader.ts",
+    remotePatterns: (() => {
+      const patterns: Array<{ protocol: "http" | "https"; hostname: string }> = [
+        { protocol: "https", hostname: "picsum.photos" },
+      ]
+      const base = process.env.S3_PUBLIC_BASE_URL
+      if (base) {
+        try {
+          const u = new URL(base)
+          patterns.push({ protocol: (u.protocol.replace(":", "") as "http" | "https") || "https", hostname: u.hostname })
+        } catch {
+          // ignore invalid URL
+        }
+      }
+      // Cloudinary
+      patterns.push({ protocol: "https", hostname: "res.cloudinary.com" })
+      return patterns
+    })(),
     formats: ["image/avif", "image/webp"],
     deviceSizes: [320, 420, 768, 1024, 1280, 1536],
     imageSizes: [16, 24, 32, 48, 64, 96, 128, 256],
