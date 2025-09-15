@@ -4,10 +4,13 @@ import dynamic from "next/dynamic"
 import type { JSX } from "react"
 import { useEffect, useState } from "react"
 
-const WishlistBadge = dynamic(async () => (await import("./islands/wishlist-badge")).WishlistBadge, {
-  ssr: false,
-  loading: () => null,
-})
+const WishlistBadge = dynamic(
+  async () => (await import("./islands/wishlist-badge")).WishlistBadge,
+  {
+    ssr: false,
+    loading: () => null,
+  },
+)
 const CartDrawer = dynamic(async () => (await import("@/components/cart/cart-drawer")).CartDrawer, {
   ssr: false,
   loading: () => null,
@@ -35,7 +38,11 @@ function useEnableOnFirstInteraction(): boolean {
       window.removeEventListener("touchstart", onAny)
       window.removeEventListener("focusin", onAny)
       if ((window as any).cancelIdleCallback) {
-        try { (window as any).cancelIdleCallback(idler) } catch { /* no-op */ }
+        try {
+          ;(window as any).cancelIdleCallback(idler)
+        } catch {
+          /* no-op */
+        }
       } else {
         window.clearTimeout(idler as number)
       }
@@ -46,9 +53,12 @@ function useEnableOnFirstInteraction(): boolean {
 
 export function HeaderActionsIsland(): JSX.Element {
   const enabled: boolean = useEnableOnFirstInteraction()
-  const disableWishlist: boolean = (process.env.NEXT_PUBLIC_DISABLE_WISHLIST_ISLAND ?? "false").toLowerCase() === "true"
-  const disableCart: boolean = (process.env.NEXT_PUBLIC_DISABLE_CART_ISLAND ?? "false").toLowerCase() === "true"
-  const disableAuth: boolean = (process.env.NEXT_PUBLIC_DISABLE_AUTH_ISLAND ?? "false").toLowerCase() === "true"
+  const disableWishlist: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_WISHLIST_ISLAND ?? "false").toLowerCase() === "true"
+  const disableCart: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_CART_ISLAND ?? "false").toLowerCase() === "true"
+  const disableAuth: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_AUTH_ISLAND ?? "false").toLowerCase() === "true"
 
   if (!enabled) {
     return <div className="hidden sm:flex items-center gap-2" />

@@ -1,6 +1,6 @@
-import { MagicLinkEmail, VerificationCodeEmail } from "@/components/emails"
 import * as React from "react"
 import { Resend } from "resend"
+import { MagicLinkEmail, VerificationCodeEmail } from "@/components/emails"
 
 interface MagicLinkParams {
   email: string

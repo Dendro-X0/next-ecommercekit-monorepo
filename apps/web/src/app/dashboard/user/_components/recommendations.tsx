@@ -1,10 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Star } from "lucide-react"
 import Image from "next/image"
 import type { ReactElement } from "react"
-import { Star } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 /**
  * Recommendations card rendered on the user dashboard.
@@ -41,7 +41,9 @@ export function RecommendationsCard(): ReactElement {
                   className="object-cover"
                 />
               </div>
-              <div className="font-medium truncate" title={it.title}>{it.title}</div>
+              <div className="font-medium truncate" title={it.title}>
+                {it.title}
+              </div>
               <div className="text-sm text-muted-foreground">${it.price.toFixed(2)}</div>
               <Button size="sm" className="w-full">
                 Add to Cart

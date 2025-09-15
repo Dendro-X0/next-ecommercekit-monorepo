@@ -1,6 +1,6 @@
 import { categoriesRepo, inventoryRepo, ordersRepo, productsRepo } from "@repo/db"
-import { Hono } from "hono"
 import type { Context } from "hono"
+import { Hono } from "hono"
 import { z } from "zod"
 import { AdminGuard } from "../lib/admin-guard"
 import { transactionalEmail } from "../lib/transactional-email"

@@ -1,8 +1,12 @@
+import { headers } from "next/headers"
 import type { JSX } from "react"
 import { productsDisabled } from "@/lib/safe-mode"
-import { headers } from "next/headers"
 
-export default async function ProductPage({ params }: { params: { slug: string } }): Promise<JSX.Element> {
+export default async function ProductPage({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<JSX.Element> {
   if (productsDisabled) {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
@@ -18,7 +22,10 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const base = `${proto}://${host}`
   let jsonLd: Record<string, unknown> | null = null
   try {
-    const res: Response = await fetch(`${base}/api/v1/products/${encodeURIComponent(params.slug)}`, { cache: "no-store" })
+    const res: Response = await fetch(
+      `${base}/api/v1/products/${encodeURIComponent(params.slug)}`,
+      { cache: "no-store" },
+    )
     if (res.ok) {
       const dto = (await res.json()) as Readonly<{
         id: string
@@ -54,13 +61,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const { default: ProductPageClient } = await import("./client")
   return (
     <>
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
       <ProductPageClient />
     </>
   )

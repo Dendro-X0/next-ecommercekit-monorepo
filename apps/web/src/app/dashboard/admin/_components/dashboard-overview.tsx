@@ -1,18 +1,10 @@
 "use client"
 
-import { type AdminStats, type RecentProduct, adminApi } from "@/lib/data/admin-api"
-import { Badge } from "@components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card"
 import { useQuery } from "@tanstack/react-query"
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  DollarSign,
-  Package,
-  ShoppingCart,
-  Users,
-} from "lucide-react"
+import { DollarSign, Package, ShoppingCart, Users } from "lucide-react"
 import Image from "next/image"
+import { type AdminStats, adminApi, type RecentProduct } from "@/lib/data/admin-api"
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("en-US", {

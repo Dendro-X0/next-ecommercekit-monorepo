@@ -1,5 +1,9 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { ReactElement } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,10 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import type { ReactElement } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 
 const PasswordSchema = z.object({ password: z.string().min(8) })
 type PasswordValues = z.infer<typeof PasswordSchema>
@@ -55,10 +56,10 @@ export default function SecuritySettingsPage(): ReactElement {
     await authClient.changeEmail({ newEmail: values.newEmail })
   }
   const onEnable2FA: SubmitHandler<PasswordValues> = async (values): Promise<void> => {
-    await authClient.twoFactor.enable({ password: values.password })
+    await authClientHelpers.twoFactorEnable({ password: values.password })
   }
   const onDisable2FA: SubmitHandler<PasswordValues> = async (values): Promise<void> => {
-    await authClient.twoFactor.disable({ password: values.password })
+    await authClientHelpers.twoFactorDisable({ password: values.password })
   }
   return (
     <div className="space-y-6">

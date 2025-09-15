@@ -2,7 +2,7 @@
  * useStripeIntent
  * Mutation to create a PaymentIntent and return clientSecret.
  */
-import { useMutation, type UseMutationResult } from "@tanstack/react-query"
+import { type UseMutationResult, useMutation } from "@tanstack/react-query"
 import { paymentsStripeApi } from "../client/stripe"
 
 export type CreateIntentInput = Readonly<{

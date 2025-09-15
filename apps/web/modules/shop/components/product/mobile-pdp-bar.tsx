@@ -1,9 +1,9 @@
 "use client"
 
+import type { JSX } from "react"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/lib/stores/cart"
 import type { Product } from "@/types"
-import type { JSX } from "react"
 
 /**
  * MobilePdpBar

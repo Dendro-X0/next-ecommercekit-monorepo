@@ -1,8 +1,5 @@
 "use client"
 
-import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
-import { orders } from "@/lib/admin-data"
-import { links } from "@/lib/links"
 import { Badge } from "@components/ui/badge"
 import { Button } from "@components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card"
@@ -18,8 +15,11 @@ import { Input } from "@components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@components/ui/table"
 import { Download, Filter, MoreHorizontal, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 import type React from "react"
+import { useState } from "react"
+import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
+import { orders } from "@/lib/admin-data"
+import { links } from "@/lib/links"
 
 export function OrdersTable(): React.ReactElement {
   const [searchTerm, setSearchTerm] = useState("")

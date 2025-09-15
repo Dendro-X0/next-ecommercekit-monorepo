@@ -1,6 +1,11 @@
 "use client"
 
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { Filter, SlidersHorizontal } from "lucide-react"
 import dynamic from "next/dynamic"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import type { JSX } from "react"
+import { useDeferredValue, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -14,15 +19,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { isDigitalProduct } from "@/lib/cart/utils"
 import { sortOptions } from "@/lib/data"
 import { type ListProductsResponse, productsApi } from "@/lib/data/products"
+import { productsDisabled } from "@/lib/safe-mode"
 import { mapSortToApi } from "@/lib/utils/product-sort"
 import { showToast } from "@/lib/utils/toast"
 import type { FilterOptions, Product } from "@/types"
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { Filter, SlidersHorizontal } from "lucide-react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useMemo, useState, useDeferredValue } from "react"
-import { productsDisabled } from "@/lib/safe-mode"
-import type { JSX } from "react"
 
 /**
  * Client-only Shop page. Split from server wrapper to avoid
@@ -34,7 +34,7 @@ export default function ShopPageClient(): JSX.Element {
   const productsPerPage: number = 12
   const skeletonKeys: readonly string[] = useMemo(
     () => Array.from({ length: productsPerPage }, (_v, i) => `shop-skel-${i}`),
-    [productsPerPage],
+    [],
   )
   // Lazy-load filters and grid to reduce initial bundle/CPU
   const ProductFilters = useMemo(
@@ -127,7 +127,10 @@ export default function ShopPageClient(): JSX.Element {
 
   const filteredAndSortedProducts = useMemo(() => {
     const filtered = items.filter((product: Product) => {
-      if (product.price < deferredFilters.priceRange[0] || product.price > deferredFilters.priceRange[1]) {
+      if (
+        product.price < deferredFilters.priceRange[0] ||
+        product.price > deferredFilters.priceRange[1]
+      ) {
         return false
       }
       if (deferredFilters.inStock && !product.inStock) {
@@ -142,7 +145,8 @@ export default function ShopPageClient(): JSX.Element {
       return true
     })
     if (sortBy === "rating") filtered.sort((a: Product, b: Product) => b.rating - a.rating)
-    if (sortBy === "popularity") filtered.sort((a: Product, b: Product) => b.reviewCount - a.reviewCount)
+    if (sortBy === "popularity")
+      filtered.sort((a: Product, b: Product) => b.reviewCount - a.reviewCount)
     return filtered
   }, [deferredFilters, sortBy, items])
 
@@ -162,7 +166,11 @@ export default function ShopPageClient(): JSX.Element {
     if (end - start + 1 < cap) start = Math.max(1, end - cap + 1)
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
   }
-  const pageWindow: readonly number[] = getPageWindow({ currentPage, totalPages, maxButtons: MAX_PAGINATION_BUTTONS })
+  const pageWindow: readonly number[] = getPageWindow({
+    currentPage,
+    totalPages,
+    maxButtons: MAX_PAGINATION_BUTTONS,
+  })
 
   if (isDisabled) {
     return (

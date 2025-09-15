@@ -1,10 +1,10 @@
 "use client"
 
+import { QueryClientProvider, useQuery } from "@tanstack/react-query"
+import type { JSX } from "react"
+import * as React from "react"
 import { authClient } from "@/lib/auth-client"
 import { queryClient } from "@/lib/query-client"
-import { QueryClientProvider, useQuery } from "@tanstack/react-query"
-import * as React from "react"
-import type { JSX } from "react"
 
 export interface Session {
   readonly user: {
@@ -73,7 +73,9 @@ export function SessionProviderStatic({
 
 export function AppWithQueryClient({
   children,
-}: { readonly children: React.ReactNode }): JSX.Element {
+}: {
+  readonly children: React.ReactNode
+}): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>{children}</SessionProvider>

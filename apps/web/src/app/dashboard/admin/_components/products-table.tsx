@@ -1,5 +1,12 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Filter, MoreHorizontal, Plus, Search } from "lucide-react"
+import NextImage from "next/image"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useMemo, useState } from "react"
+import { toast } from "sonner"
 import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,14 +31,7 @@ import {
 import { productsApi } from "@/lib/data/products"
 import { links } from "@/lib/links"
 import type { Product } from "@/types"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Filter, MoreHorizontal, Plus, Search } from "lucide-react"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import NextImage from "next/image"
-import { useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
-import type React from "react"
-import { toast } from "sonner"
 import ConfirmDialog from "./confirm-dialog"
 
 export function ProductsTable(): React.ReactElement {
@@ -187,7 +187,7 @@ export function ProductsTable(): React.ReactElement {
                     <TableCell>
                       <div className="relative h-12 w-12 rounded-md overflow-hidden">
                         <NextImage
-                          src={(product.images?.[0] ?? "/placeholder.svg") + "?height=48&width=48"}
+                          src={`${product.images?.[0] ?? "/placeholder.svg"}?height=48&width=48`}
                           alt={product.name}
                           fill
                           sizes="48px"

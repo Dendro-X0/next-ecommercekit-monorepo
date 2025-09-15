@@ -1,22 +1,24 @@
+import { Badge } from "@components/ui/badge"
+import { Button } from "@components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@components/ui/table"
+import NextImage from "next/image"
+import type React from "react"
 import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
 import { orders, products } from "@/lib/admin-data"
 import { links } from "@/lib/links"
-import { Badge } from "@components/ui/badge"
-import { Button } from "@components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@components/ui/table"
 import { AppLink } from "../../../../../../../modules/shared/components/app-link"
-import type React from "react"
-import NextImage from "next/image"
 
 /**
  * Admin → E-commerce → Orders → Detail page.
  */
 export default function OrderDetailPage({
   params,
-}: { readonly params: { readonly id: string } }): React.ReactElement {
+}: {
+  readonly params: { readonly id: string }
+}): React.ReactElement {
   const orderId: string = params.id
   const order = orders.find((o) => o.id === orderId)
   type OrderLine = {
@@ -139,7 +141,7 @@ export default function OrderDetailPage({
                   <TableCell>
                     <div className="relative h-12 w-12 rounded-md overflow-hidden">
                       <NextImage
-                        src={(line.image || "/placeholder.svg") + "?height=48&width=48"}
+                        src={`${line.image || "/placeholder.svg"}?height=48&width=48`}
                         alt={line.name}
                         fill
                         sizes="48px"

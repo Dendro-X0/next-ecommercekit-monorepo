@@ -1,7 +1,7 @@
+import { ArrowUpIcon, DollarSign, Gift, ShoppingCart, Star } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { UserStats } from "@/types/user"
-import { ArrowUpIcon, DollarSign, Gift, ShoppingCart, Star } from "lucide-react"
 
 interface UserStatsProps {
   stats: UserStats

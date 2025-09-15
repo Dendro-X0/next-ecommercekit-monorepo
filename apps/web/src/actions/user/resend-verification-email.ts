@@ -1,8 +1,8 @@
 "use server"
 
-import { authClient } from "@/lib/auth-client"
 import { auth } from "@repo/auth"
 import { headers } from "next/headers"
+import { authClient } from "@/lib/auth-client"
 
 /**
  * Result state for resend verification action.

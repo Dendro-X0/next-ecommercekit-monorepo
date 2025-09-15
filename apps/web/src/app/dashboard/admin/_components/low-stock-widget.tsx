@@ -1,9 +1,9 @@
 "use client"
 
-import { products } from "@/lib/admin-data"
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@components/ui/table"
 import type React from "react"
+import { products } from "@/lib/admin-data"
 
 const LOW_STOCK_THRESHOLD = 10 as const
 

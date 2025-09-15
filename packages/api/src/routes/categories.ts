@@ -1,9 +1,9 @@
 import { categoriesRepo } from "@repo/db"
+import type { Context } from "hono"
 /**
  * Categories routes for the Shop API.
  */
 import { Hono } from "hono"
-import type { Context } from "hono"
 
 const categoriesRoute = new Hono()
   /**

@@ -1,5 +1,15 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import type React from "react"
+import { useEffect, useId, useMemo, useRef, useState } from "react"
+import type { Resolver } from "react-hook-form"
+import { type FieldErrors, useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -15,18 +25,8 @@ import { categoriesApi } from "@/lib/data/categories"
 import { productsApi } from "@/lib/data/products"
 import { links } from "@/lib/links"
 import type { Category, Product } from "@/types"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import type React from "react"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { type FieldErrors, useForm } from "react-hook-form"
-import type { Resolver } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { MediaUploader } from "./media-uploader"
-import Image from "next/image"
 import { Textarea } from "../../../../../modules/ui/components/textarea"
+import { MediaUploader } from "./media-uploader"
 
 /** Create a URL-friendly slug */
 const slugify = (input: string): string =>
@@ -55,6 +55,17 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
   const [_debug, setDebug] = useState<string>("idle")
   const [isUploadingMedia, setIsUploadingMedia] = useState<boolean>(false)
   const initializedForId = useRef<string | null>(null)
+  // Unique IDs for form controls (avoid static ids)
+  const shippingId = useId()
+  const weightId = useId()
+  const digitalVersionId = useId()
+  const nameId = useId()
+  const slugId = useId()
+  const descriptionId = useId()
+  const categoryInputId = useId()
+  const categoryDatalistId = useId()
+  const priceId = useId()
+  const featuredId = useId()
 
   const schema = useMemo(
     () =>
@@ -71,12 +82,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
             const n: number = typeof v === "string" ? Number.parseFloat(v) : (v as number)
             return Number.isFinite(n) ? n : undefined
           },
-          z
-            .number({
-              required_error: "Price is required",
-              invalid_type_error: "Enter a valid price",
-            })
-            .min(0, { message: "Price cannot be negative" }),
+          z.number().min(0, { message: "Price cannot be negative" }),
         ),
         categorySlug: z.string().min(1, "Select a category").optional(),
         // Accept absolute URLs or app-relative paths (e.g., "/uploads/xyz.jpg")
@@ -92,7 +98,12 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
         // Optional long-form product description; empty string becomes undefined
         description: z.preprocess(
           (v: unknown) => (typeof v === "string" && v.trim().length === 0 ? undefined : v),
-          z.string().trim().min(1, "Enter a description").max(5000, "Description is too long").optional(),
+          z
+            .string()
+            .trim()
+            .min(1, "Enter a description")
+            .max(5000, "Description is too long")
+            .optional(),
         ),
         featured: z.boolean().default(false),
         kind: z.enum(["digital", "physical"]).optional(),
@@ -182,15 +193,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
     setCategoryInput(match ? match.name : currentSlug)
   }, [categorySlugValue, categoryOptions])
 
-  // Editing: fetch product details and populate
-  const { data: product } = useQuery<Product | undefined>({
-    queryKey: ["admin-product", productId],
-    queryFn: async () => {
-      if (!productId) return undefined
-      return await productsApi.byId(productId)
-    },
-    enabled: !!productId,
-  })
+  // Editing: fetch raw DTO (handled below)
 
   // Raw DTO for precise admin initialization (imageUrl, media, shipping, etc.)
   const { data: productDto } = useQuery<
@@ -252,7 +255,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
     )
     setGallery(initialMedia)
     initializedForId.current = pid
-  }, [productDto, categories, reset])
+  }, [productDto, reset])
 
   // Mutations
   const createMutation = useMutation<Product, Error, FormValues>({
@@ -320,7 +323,10 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
       const message: string = e instanceof Error ? e.message : "Failed to save product"
       console.error("[ProductForm] submit error", e)
       if (message.toLowerCase().includes("slug already exists")) {
-        setError("slug", { type: "validate", message: "Slug already exists. Please choose another." })
+        setError("slug", {
+          type: "validate",
+          message: "Slug already exists. Please choose another.",
+        })
       }
       toast.error(message)
       setDebug(`submit:error ${message}`)
@@ -352,6 +358,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
       })}
       noValidate
     >
+      {/** unique ids defined via useId() at top */}
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <Card>
@@ -361,9 +368,9 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Product Name</Label>
+                <Label htmlFor={nameId}>Product Name</Label>
                 <Input
-                  id="name"
+                  id={nameId}
                   placeholder="e.g. Premium T-Shirt"
                   {...register("name")}
                   onBlur={(e) => {
@@ -377,14 +384,14 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                 {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="slug">Slug</Label>
-                <Input id="slug" placeholder="e.g. premium-t-shirt" {...register("slug")} />
+                <Label htmlFor={slugId}>Slug</Label>
+                <Input id={slugId} placeholder="e.g. premium-t-shirt" {...register("slug")} />
                 {errors.slug && <p className="text-sm text-destructive">{errors.slug.message}</p>}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor={descriptionId}>Description</Label>
                 <Textarea
-                  id="description"
+                  id={descriptionId}
                   placeholder="Write a detailed description to help customers understand the product."
                   rows={6}
                   {...register("description")}
@@ -404,7 +411,8 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                   setGallery((prev) => {
                     const next = [...prev, { url, kind }]
                     return next.filter(
-                      (m, i, arr) => arr.findIndex((x) => x.url === m.url && x.kind === m.kind) === i,
+                      (m, i, arr) =>
+                        arr.findIndex((x) => x.url === m.url && x.kind === m.kind) === i,
                     )
                   })
                   if (kind === "video") setVideoPreviewUrl(url)
@@ -419,7 +427,8 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                   setGallery((prev) => {
                     const next = [...prev, ...results]
                     return next.filter(
-                      (m, i, arr) => arr.findIndex((x) => x.url === m.url && x.kind === m.kind) === i,
+                      (m, i, arr) =>
+                        arr.findIndex((x) => x.url === m.url && x.kind === m.kind) === i,
                     )
                   })
                   const firstVideo = results.find((r) => r.kind === "video")
@@ -450,7 +459,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                             preload="metadata"
                             muted
                             playsInline
-                            aria-hidden="true"
                           />
                         )}
                         <div className="mt-2 flex items-center justify-between gap-2">
@@ -515,10 +523,10 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
             </CardHeader>
             <CardContent>
               <div className="grid gap-2">
-                <Label htmlFor="categoryInput">Type to search or enter a category</Label>
+                <Label htmlFor={categoryInputId}>Type to search or enter a category</Label>
                 <Input
-                  id="categoryInput"
-                  list="category-suggestions"
+                  id={categoryInputId}
+                  list={categoryDatalistId}
                   placeholder="e.g., E‑Books, Software, Other"
                   value={categoryInput}
                   onChange={(e) => {
@@ -531,12 +539,14 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                     })
                   }}
                 />
-                <datalist id="category-suggestions">
+                <datalist id={categoryDatalistId}>
                   {categoryOptions.map((c) => (
                     <option key={c.id} value={c.name} />
                   ))}
                 </datalist>
-                <p className="text-xs text-muted-foreground">Slug: {categorySlugValue ?? "(none)"}</p>
+                <p className="text-xs text-muted-foreground">
+                  Slug: {categorySlugValue ?? "(none)"}
+                </p>
               </div>
               {errors.categorySlug && (
                 <p className="mt-2 text-sm text-destructive">{errors.categorySlug.message}</p>
@@ -549,9 +559,9 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="price">Price</Label>
+                <Label htmlFor={priceId}>Price</Label>
                 <Input
-                  id="price"
+                  id={priceId}
                   type="number"
                   step="0.01"
                   inputMode="decimal"
@@ -567,7 +577,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
               </div>
               <div className="flex items-center gap-2">
                 <input
-                  id="featured"
+                  id={featuredId}
                   type="checkbox"
                   className="h-4 w-4"
                   checked={featuredValue}
@@ -578,7 +588,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                     })
                   }
                 />
-                <Label htmlFor="featured">Featured</Label>
+                <Label htmlFor={featuredId}>Featured</Label>
               </div>
             </CardContent>
           </Card>
@@ -605,11 +615,11 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                   </SelectContent>
                 </Select>
               </div>
-              {kindValue !== "digital" && (
+              {kindValue === "physical" && (
                 <>
                   <div className="flex items-center gap-2">
                     <input
-                      id="shippingRequired"
+                      id={shippingId}
                       type="checkbox"
                       className="h-4 w-4"
                       checked={shippingRequiredValue}
@@ -620,12 +630,12 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                         })
                       }
                     />
-                    <Label htmlFor="shippingRequired">Requires shipping</Label>
+                    <Label htmlFor={shippingId}>Requires shipping</Label>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="weight">Weight (kg)</Label>
+                    <Label htmlFor={weightId}>Weight (kg)</Label>
                     <Input
-                      id="weight"
+                      id={weightId}
                       type="number"
                       step="0.01"
                       inputMode="decimal"
@@ -646,9 +656,9 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
               )}
               {kindValue === "digital" && (
                 <div className="grid gap-2">
-                  <Label htmlFor="digitalVersion">Digital version</Label>
+                  <Label htmlFor={digitalVersionId}>Digital version</Label>
                   <Input
-                    id="digitalVersion"
+                    id={digitalVersionId}
                     placeholder="e.g., v1.0.0"
                     {...register("digitalVersion")}
                   />

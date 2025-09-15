@@ -1,15 +1,15 @@
 "use client"
 
-import { PageHeader } from "@/app/dashboard/_components/page-header"
-import { Section } from "@/app/dashboard/_components/section"
-import { useStripeRefund } from "@repo/payments/hooks/use-stripe-refund"
 import { Button } from "@components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card"
 import { Input } from "@components/ui/input"
 import { Label } from "@components/ui/label"
+import { useStripeRefund } from "@repo/payments/hooks/use-stripe-refund"
 import type React from "react"
-import { useState } from "react"
+import { useId, useState } from "react"
 import { toast } from "sonner"
+import { PageHeader } from "@/app/dashboard/_components/page-header"
+import { Section } from "@/app/dashboard/_components/section"
 
 interface RefundInput {
   readonly paymentRef: string
@@ -25,6 +25,9 @@ export default function RefundsPage(): React.ReactElement {
   const [paymentRef, setPaymentRef] = useState<string>("")
   const [amountCents, setAmountCents] = useState<string>("")
   const [reason, setReason] = useState<RefundInput["reason"]>(undefined)
+  const paymentRefId = useId()
+  const amountCentsId = useId()
+  const reasonId = useId()
 
   const mutation = useStripeRefund()
 
@@ -68,9 +71,9 @@ export default function RefundsPage(): React.ReactElement {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="paymentRef">PaymentIntent ID</Label>
+              <Label htmlFor={paymentRefId}>PaymentIntent ID</Label>
               <Input
-                id="paymentRef"
+                id={paymentRefId}
                 value={paymentRef}
                 onChange={(e) => setPaymentRef(e.target.value)}
                 placeholder="pi_..."
@@ -79,9 +82,9 @@ export default function RefundsPage(): React.ReactElement {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="amountCents">Amount (cents, optional)</Label>
+              <Label htmlFor={amountCentsId}>Amount (cents, optional)</Label>
               <Input
-                id="amountCents"
+                id={amountCentsId}
                 type="number"
                 inputMode="numeric"
                 value={amountCents}
@@ -91,9 +94,9 @@ export default function RefundsPage(): React.ReactElement {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="reason">Reason (optional)</Label>
+              <Label htmlFor={reasonId}>Reason (optional)</Label>
               <select
-                id="reason"
+                id={reasonId}
                 className="w-full border rounded-md h-9 px-3 text-sm bg-background"
                 value={reason ?? ""}
                 onChange={(e) =>

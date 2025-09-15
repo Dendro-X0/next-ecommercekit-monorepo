@@ -114,12 +114,8 @@
           "name": "addresses_user_id_user_id_fk",
           "tableFrom": "addresses",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -440,9 +436,7 @@
         "uq_affiliate_order_id": {
           "name": "uq_affiliate_order_id",
           "nullsNotDistinct": false,
-          "columns": [
-            "order_id"
-          ]
+          "columns": ["order_id"]
         }
       },
       "policies": {},
@@ -509,16 +503,12 @@
         "uq_affiliate_user_id": {
           "name": "uq_affiliate_user_id",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         },
         "uq_affiliate_code": {
           "name": "uq_affiliate_code",
           "nullsNotDistinct": false,
-          "columns": [
-            "code"
-          ]
+          "columns": ["code"]
         }
       },
       "policies": {},
@@ -614,12 +604,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -689,12 +675,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -704,9 +686,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -767,9 +747,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -899,9 +877,7 @@
         "categories_slug_unique": {
           "name": "categories_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -1066,10 +1042,7 @@
         "uq_idem_key_scope": {
           "name": "uq_idem_key_scope",
           "nullsNotDistinct": false,
-          "columns": [
-            "key",
-            "scope"
-          ]
+          "columns": ["key", "scope"]
         }
       },
       "policies": {},
@@ -1590,12 +1563,8 @@
           "name": "preferences_user_id_user_id_fk",
           "tableFrom": "preferences",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1743,9 +1712,7 @@
         "products_slug_unique": {
           "name": "products_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -1951,10 +1918,7 @@
         "uq_wishlist_product": {
           "name": "uq_wishlist_product",
           "nullsNotDistinct": false,
-          "columns": [
-            "wishlist_id",
-            "product_id"
-          ]
+          "columns": ["wishlist_id", "product_id"]
         }
       },
       "policies": {},
@@ -2058,10 +2022,7 @@
         "uq_wishlist_owner": {
           "name": "uq_wishlist_owner",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id",
-            "guest_id"
-          ]
+          "columns": ["user_id", "guest_id"]
         }
       },
       "policies": {},

@@ -1,12 +1,12 @@
 "use client"
 
-import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { translate } from "modules/shared/lib/i18n"
+import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
 import { usePathname, useRouter } from "next/navigation"
 import type { JSX, KeyboardEvent } from "react"
 import { useRef } from "react"
-import { Search } from "lucide-react"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
-import { translate } from "modules/shared/lib/i18n"
+import { Input } from "@/components/ui/input"
 
 /**
  * HeaderSearch: lightweight search input that navigates

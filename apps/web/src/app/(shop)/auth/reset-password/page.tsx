@@ -1,5 +1,5 @@
-import { ResetPasswordForm } from "@/components/auth/reset-password-form"
 import type { ReactElement } from "react"
+import { ResetPasswordForm } from "@/components/auth/reset-password-form"
 
 type ResetSearchParams = { readonly token?: string; readonly error?: string }
 
@@ -16,9 +16,7 @@ export default async function resetPasswordPage(props: {
     return (
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-2">Invalid Reset Link</h1>
-        <p className="text-muted-foreground">
-          This password reset link is invalid or has expired.
-        </p>
+        <p className="text-muted-foreground">This password reset link is invalid or has expired.</p>
       </div>
     )
   }

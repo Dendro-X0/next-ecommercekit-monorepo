@@ -1,8 +1,8 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import { type ReactElement, useEffect, useState } from "react"
+import { authClient } from "@/lib/auth-client"
 
 /**
  * RequireAuth ensures a user session exists. If not, redirects to /auth/login.

@@ -1,7 +1,7 @@
 "use client"
 
-import type { ReactNode, ReactElement } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import type { ReactElement, ReactNode } from "react"
 import { SessionProviderStatic } from "@/hooks/use-session"
 
 let client: QueryClient | undefined

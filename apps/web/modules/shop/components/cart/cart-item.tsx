@@ -1,12 +1,12 @@
 "use client"
 
+import { Minus, Plus, Trash2 } from "lucide-react"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { isDigitalProduct } from "@/lib/cart/utils"
 import { useCartStore } from "@/lib/stores/cart"
 import type { CartItem as CartItemType } from "@/types/cart"
-import { Minus, Plus, Trash2 } from "lucide-react"
-import Image from "next/image"
 
 interface CartItemProps {
   item: CartItemType

@@ -1,31 +1,32 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Activity, Users } from "lucide-react"
 import type { ReactElement } from "react"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
 type SeriesPoint = Readonly<{ name: string; value: number }>
 type ChannelPoint = Readonly<{ name: string; value: number }>
 
-const EMPTY_STATE_CLASS = "flex h-[360px] w-full items-center justify-center text-sm text-muted-foreground" as const
+const EMPTY_STATE_CLASS =
+  "flex h-[360px] w-full items-center justify-center text-sm text-muted-foreground" as const
 
 function getTrafficSummary(data: ReadonlyArray<SeriesPoint>): string {
-  if (data.length === 0) return "No traffic data available.";
-  const values = data.map((d) => d.value);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const first = data[0]?.value ?? 0;
-  const last = data[data.length - 1]?.value ?? 0;
-  const trend = last > first ? "upward" : last < first ? "downward" : "flat";
-  return `Unique visitors per month. Min ${min}, max ${max}. Overall ${trend} trend.`;
+  if (data.length === 0) return "No traffic data available."
+  const values = data.map((d) => d.value)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const first = data[0]?.value ?? 0
+  const last = data[data.length - 1]?.value ?? 0
+  const trend = last > first ? "upward" : last < first ? "downward" : "flat"
+  return `Unique visitors per month. Min ${min}, max ${max}. Overall ${trend} trend.`
 }
 
 function getChannelsSummary(data: ReadonlyArray<ChannelPoint>): string {
-  if (data.length === 0) return "No channel data available.";
-  const top = [...data].sort((a, b) => b.value - a.value)[0];
-  return `Share of sessions by channel. Top channel is ${top.name} at ${top.value} percent.`;
+  if (data.length === 0) return "No channel data available."
+  const top = [...data].sort((a, b) => b.value - a.value)[0]
+  return `Share of sessions by channel. Top channel is ${top.name} at ${top.value} percent.`
 }
 
 const TRAFFIC: ReadonlyArray<SeriesPoint> = [
@@ -66,13 +67,18 @@ function TrafficCard({ data }: { readonly data: ReadonlyArray<SeriesPoint> }): R
           <div className={EMPTY_STATE_CLASS}>No traffic data available.</div>
         ) : (
           <ChartContainer
-            config={{ visitors: { label: "Visitors", theme: { light: "#2563eb", dark: "#60a5fa" } } }}
+            config={{
+              visitors: { label: "Visitors", theme: { light: "#2563eb", dark: "#60a5fa" } },
+            }}
             className="h-[360px] w-full mx-auto"
             ariaLabel="Traffic line chart"
             ariaDescription={getTrafficSummary(data)}
           >
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={Array.from(data)} margin={{ top: 12, right: 16, left: 8, bottom: 8 }}>
+              <LineChart
+                data={Array.from(data)}
+                margin={{ top: 12, right: 16, left: 8, bottom: 8 }}
+              >
                 <XAxis
                   dataKey="name"
                   tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}

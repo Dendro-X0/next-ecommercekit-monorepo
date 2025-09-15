@@ -4,6 +4,10 @@ export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  // Username support
+  username: text("username").notNull().unique(),
+  // Preserve the original casing/presentation the user chose
+  displayUsername: text("display_username"),
   emailVerified: boolean("email_verified")
     .$defaultFn(() => false)
     .notNull(),

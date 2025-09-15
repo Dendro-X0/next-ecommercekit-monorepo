@@ -3,8 +3,8 @@ import { auth } from "@repo/auth"
 import { db } from "@repo/db"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import { Hono } from "hono"
 import type { Context, Next } from "hono"
+import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { ZodError } from "zod"
 import { apiEnv } from "./env"
@@ -59,7 +59,7 @@ function renderMetrics(): string {
     const [method, status] = k.split("|")
     lines.push(`requests_total{method="${method}",status="${status}"} ${v}`)
   }
-  const base: string = lines.join("\n") + "\n"
+  const base: string = `${lines.join("\n")}\n`
   return base + renderEmailMetrics()
 }
 

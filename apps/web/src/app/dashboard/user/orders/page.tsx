@@ -1,5 +1,8 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { Download, Eye, Package, Search } from "lucide-react"
+import { type JSX, useMemo, useState } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -23,12 +26,8 @@ import {
 } from "@/components/ui/table"
 import { ordersApi } from "@/lib/data/orders"
 import { ORDERS_QK } from "@/lib/orders/query-keys"
-import type { Order } from "@/types/order"
-import type { OrderStatus } from "@/types/order"
-import { useQuery } from "@tanstack/react-query"
-import { Download, Eye, Package, Search } from "lucide-react"
+import type { Order, OrderStatus } from "@/types/order"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import { type JSX, useMemo, useState } from "react"
 
 export default function OrdersPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")

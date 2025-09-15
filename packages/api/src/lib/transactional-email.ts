@@ -27,7 +27,7 @@ export function renderEmailMetrics(): string {
     const [kind, outcome] = k.split("|")
     lines.push(`email_sends_total{kind="${kind}",outcome="${outcome}"} ${v}`)
   }
-  return lines.join("\n") + "\n"
+  return `${lines.join("\n")}\n`
 }
 
 /**
@@ -96,7 +96,7 @@ export const transactionalEmail: TransactionalEmail = (() => {
           incEmailMetric(kind, "failure")
           return // do not throw; avoid impacting business flow
         }
-        const backoffMs: number = 250 * Math.pow(2, attempt - 1) // 250, 500
+        const backoffMs: number = 250 * 2 ** (attempt - 1) // 250, 500
         await new Promise<void>((r) => setTimeout(r, backoffMs))
       }
     }

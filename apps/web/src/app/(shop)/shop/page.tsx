@@ -7,7 +7,7 @@ import ShopPageClient from "./client"
  * and avoid importing any heavy client logic. Otherwise, render the client page.
  */
 export default async function ShopPage({
-  searchParams,
+  searchParams: _searchParams,
 }: {
   readonly searchParams: Record<string, string | string[] | undefined>
 }): Promise<JSX.Element> {

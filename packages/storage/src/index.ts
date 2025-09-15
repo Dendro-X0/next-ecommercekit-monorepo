@@ -1,2 +1,7 @@
-export { s3Storage, type S3StorageConfig, type UploadParams, type UploadResult } from "./s3"
-export { cloudinaryStorage, type CloudinaryConfig, type CloudinaryUploadParams, type CloudinaryUploadResult } from "./cloudinary"
+export {
+  type CloudinaryConfig,
+  type CloudinaryUploadParams,
+  type CloudinaryUploadResult,
+  cloudinaryStorage,
+} from "./cloudinary"
+export { type S3StorageConfig, s3Storage, type UploadParams, type UploadResult } from "./s3"

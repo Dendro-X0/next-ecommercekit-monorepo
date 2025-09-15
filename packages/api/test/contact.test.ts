@@ -17,6 +17,7 @@ vi.mock("@repo/db", () => {
     },
   } as const
 })
+
 import { contactsRepo } from "@repo/db"
 
 /**

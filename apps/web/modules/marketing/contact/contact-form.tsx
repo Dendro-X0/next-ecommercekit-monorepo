@@ -1,7 +1,9 @@
 "use client"
 
+import { useMutation } from "@tanstack/react-query"
+import { Mail, MapPin, Phone, Send } from "lucide-react"
 import type React from "react"
-
+import { useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -17,9 +19,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { contactApi } from "@/lib/data/contact"
 import { showToast } from "@/lib/utils/toast"
 import type { ContactFormData } from "@/types/contact"
-import { useMutation } from "@tanstack/react-query"
-import { Mail, MapPin, Phone, Send } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
 
 const subjects = [
   "General Inquiry",
@@ -31,6 +30,8 @@ const subjects = [
 ]
 
 export function ContactForm() {
+  const uid = useId()
+  const fid = (name: string): string => `${uid}-${name}`
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
@@ -177,7 +178,7 @@ export function ContactForm() {
           {/* Honeypot & time-trap */}
           <input
             type="text"
-            id="company"
+            id={fid("company")}
             name="company"
             value={honeypot}
             onChange={(e) => setHoneypot(e.target.value)}
@@ -189,27 +190,29 @@ export function ContactForm() {
           <input type="hidden" name="_start" value={String(startTs)} readOnly />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
+              <Label htmlFor={fid("name")}>Full Name *</Label>
               <Input
-                id="name"
+                id={fid("name")}
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
                 autoComplete="name"
                 aria-required="true"
                 aria-invalid={Boolean(errors.name) || undefined}
-                aria-describedby={errors.name ? "name-error" : undefined}
+                aria-describedby={errors.name ? fid("name-error") : undefined}
                 ref={nameRef}
                 required
               />
               {errors.name && (
-                <p id="name-error" className="text-sm text-destructive">{errors.name}</p>
+                <p id={fid("name-error")} className="text-sm text-destructive">
+                  {errors.name}
+                </p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
+              <Label htmlFor={fid("email")}>Email *</Label>
               <Input
-                id="email"
+                id={fid("email")}
                 type="email"
                 placeholder="john@example.com"
                 value={formData.email}
@@ -218,21 +221,25 @@ export function ContactForm() {
                 inputMode="email"
                 aria-required="true"
                 aria-invalid={Boolean(errors.email) || undefined}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={errors.email ? fid("email-error") : undefined}
                 ref={emailRef}
                 required
               />
               {errors.email && (
-                <p id="email-error" className="text-sm text-destructive">{errors.email}</p>
+                <p id={fid("email-error")} className="text-sm text-destructive">
+                  {errors.email}
+                </p>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone (optional)</Label>
+              <Label htmlFor={fid("phone")}>
+                Phone (optional)
+              </Label>
               <Input
-                id="phone"
+                id={fid("phone")}
                 type="tel"
                 placeholder="+1 (555) 123-4567"
                 value={formData.phone}
@@ -240,15 +247,19 @@ export function ContactForm() {
                 autoComplete="tel"
                 inputMode="tel"
                 aria-invalid={Boolean(errors.phone) || undefined}
-                aria-describedby={errors.phone ? "phone-error" : undefined}
+                aria-describedby={errors.phone ? fid("phone-error") : undefined}
                 ref={phoneRef}
               />
               {errors.phone && (
-                <p id="phone-error" className="text-sm text-destructive">{errors.phone}</p>
+                <p id={fid("phone-error")} className="text-sm text-destructive">
+                  {errors.phone}
+                </p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="subject">Subject *</Label>
+              <Label htmlFor={fid("subject")}>
+                Subject *
+              </Label>
               <Select
                 value={formData.subject}
                 onValueChange={(value) => handleChange("subject", value)}
@@ -257,7 +268,7 @@ export function ContactForm() {
                   aria-label="Subject"
                   ref={subjectRef}
                   aria-invalid={Boolean(errors.subject) || undefined}
-                  aria-describedby={errors.subject ? "subject-error" : undefined}
+                  aria-describedby={errors.subject ? fid("subject-error") : undefined}
                   className="w-full"
                 >
                   <SelectValue placeholder="Select a subject" />
@@ -271,27 +282,33 @@ export function ContactForm() {
                 </SelectContent>
               </Select>
               {errors.subject && (
-                <p id="subject-error" className="text-sm text-destructive">{errors.subject}</p>
+                <p id={fid("subject-error")} className="text-sm text-destructive">
+                  {errors.subject}
+                </p>
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">Message *</Label>
+            <Label htmlFor={fid("message")}>
+              Message *
+            </Label>
             <Textarea
-              id="message"
+              id={fid("message")}
               placeholder="Tell us how we can help you..."
               value={formData.message}
               onChange={(e) => handleChange("message", e.target.value)}
               rows={6}
               aria-required="true"
               aria-invalid={Boolean(errors.message) || undefined}
-              aria-describedby={errors.message ? "message-error" : undefined}
+              aria-describedby={errors.message ? fid("message-error") : undefined}
               ref={messageRef}
               required
             />
             {errors.message && (
-              <p id="message-error" className="text-sm text-destructive">{errors.message}</p>
+              <p id={fid("message-error")} className="text-sm text-destructive">
+                {errors.message}
+              </p>
             )}
           </div>
 
@@ -381,10 +398,11 @@ export function ContactInfo() {
       </div>
 
       {/* Map embed */}
-      <Card>
+      <Card className="py-0">
         <CardContent className="p-0">
           {(() => {
-            const addressLine = contactDetails.find((i) => i.title === "Address")?.details[0] ??
+            const addressLine =
+              contactDetails.find((i) => i.title === "Address")?.details[0] ??
               "123 Business Ave, New York, NY 10001"
             const q = encodeURIComponent(addressLine)
             const src = `https://www.google.com/maps?q=${q}&output=embed`

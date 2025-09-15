@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,7 +9,6 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { mockUser } from "@/lib/data/mock"
 import type { User } from "@/types/user"
-import { useState } from "react"
 
 export function ProfileForm() {
   const [user, setUser] = useState<User>(mockUser)

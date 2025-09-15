@@ -1,5 +1,5 @@
-import { links } from "@/lib/links"
 import { redirect } from "next/navigation"
+import { links } from "@/lib/links"
 
 /**
  * AdminDashboardIndexPage

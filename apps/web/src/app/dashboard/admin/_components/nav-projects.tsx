@@ -1,9 +1,5 @@
 "use client"
 
-import { Folder, Forward, type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react"
-import { AppLink } from "../../../../../modules/shared/components/app-link"
-import type React from "react"
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +16,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@components/ui/sidebar"
+import { Folder, Forward, type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react"
+import type React from "react"
+import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 /**
  * NavProjects renders the Settings & Tools sidebar group.
@@ -34,12 +33,12 @@ export function NavProjects({
     icon: LucideIcon
     disabled?: boolean
   }[]
-}): React.ReactElement {
+}): React.ReactElement | null {
   const { isMobile } = useSidebar()
 
   const enabled: { name: string; url: string; icon: LucideIcon; disabled?: boolean }[] =
     projects.filter((p) => !p.disabled)
-  if (enabled.length === 0) return <></>
+  if (enabled.length === 0) return null
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">

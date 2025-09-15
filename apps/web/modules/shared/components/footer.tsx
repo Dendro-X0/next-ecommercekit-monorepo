@@ -57,11 +57,10 @@ export function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <AppLink href="/" className="inline-block mb-6">
-              <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
+              <span className="text-2xl font-black text-black dark:text-white">ModularShop</span>
             </AppLink>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
-              We have clothes that suits your style and which you&apos;re proud to wear. From women to
-              men.
+              ModularShop is an end-to-end, production-ready foundation for modern commerce.
             </p>
             <div className="flex gap-4">
               <AppLink
@@ -117,7 +116,7 @@ export function Footer() {
         <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Shop.co © 2025, All Rights Reserved
+              ModularShop © 2025, All Rights Reserved
             </p>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center md:justify-start">

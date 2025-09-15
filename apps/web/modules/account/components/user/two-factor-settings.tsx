@@ -1,5 +1,7 @@
 "use client"
 
+import { AlertTriangle, Download, Shield, ShieldCheck } from "lucide-react"
+import { type ReactElement, useEffect, useState } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -13,9 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { authClient } from "@/lib/auth-client"
-import { AlertTriangle, Download, Shield, ShieldCheck } from "lucide-react"
-import { type ReactElement, useEffect, useState } from "react"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 
 interface TwoFactorSettingsProps {
   readonly isEnabled: boolean
@@ -59,7 +59,7 @@ export function TwoFactorSettings({
   const handleEnable2FA = async (): Promise<void> => {
     setLoading(true)
     setError(undefined)
-    const { data, error: err } = await authClient.twoFactor.enable({ password })
+    const { data, error: err } = await authClientHelpers.twoFactorEnable({ password })
     setLoading(false)
     if (err) {
       setError(err.message)
@@ -93,7 +93,7 @@ export function TwoFactorSettings({
   const handleDisable2FA = async (): Promise<void> => {
     setLoading(true)
     setError(undefined)
-    const { error: err } = await authClient.twoFactor.disable({ password })
+    const { error: err } = await authClientHelpers.twoFactorDisable({ password })
     setLoading(false)
     if (err) {
       setError(err.message)

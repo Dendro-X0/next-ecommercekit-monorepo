@@ -1,8 +1,8 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
 import type React from "react"
 import { useState } from "react"
+import { authClient } from "@/lib/auth-client"
 
 const MIN_PASSWORD_LENGTH: number = 8
 

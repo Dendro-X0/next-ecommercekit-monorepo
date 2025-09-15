@@ -1,10 +1,9 @@
 "use client"
 
-import { type VariantProps, cva } from "class-variance-authority"
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
 import { Button as UIButton } from "@repo/ui/button"
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -46,11 +45,12 @@ type ButtonShimProps = React.ComponentProps<typeof UIButton> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
     className?: string
+    type?: "button" | "submit" | "reset"
   }
 
 const Button = React.forwardRef<React.ElementRef<"button">, ButtonShimProps>(
   (rawProps, ref): React.JSX.Element => {
-    const { asChild = false, className, children, variant, size, ...rest } = rawProps
+    const { asChild = false, className, children, variant, size, type, ...rest } = rawProps
     if (asChild) {
       if (
         process.env.NODE_ENV !== "production" &&
@@ -76,25 +76,33 @@ const Button = React.forwardRef<React.ElementRef<"button">, ButtonShimProps>(
         ...(rest as unknown as Record<string, unknown>),
         ...(childRest as Record<string, unknown>),
       }
+      const refProps: Record<string, unknown> = ref
+        ? ({ ref: ref as unknown } as Record<string, unknown>)
+        : {}
       return (
         <UIButton
-          ref={ref as React.Ref<HTMLButtonElement>}
           as={Comp}
           variant={variant}
           size={size}
           className={cn(className, childClassName as string | undefined)}
+          type={type ?? "button"}
+          {...refProps}
           {...mergedProps}
         >
           {childChildren as React.ReactNode}
         </UIButton>
       )
     }
+    const refProps: Record<string, unknown> = ref
+      ? ({ ref: ref as unknown } as Record<string, unknown>)
+      : {}
     return (
       <UIButton
-        ref={ref as React.Ref<HTMLButtonElement>}
         variant={variant}
         size={size}
         className={className}
+        type={type ?? "button"}
+        {...refProps}
         {...(rest as unknown as Record<string, unknown>)}
       >
         {children}

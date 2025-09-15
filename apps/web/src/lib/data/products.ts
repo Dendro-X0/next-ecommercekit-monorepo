@@ -53,7 +53,8 @@ const API_BASE: string = "/api/v1"
 const DISABLE_DATA_FETCH: boolean =
   (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false").toLowerCase() === "true"
 const DISABLE_PRODUCTS: boolean =
-  DISABLE_DATA_FETCH || (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
+  DISABLE_DATA_FETCH ||
+  (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
 
 function localProductsList(params: ListProductsParams = {}): ListProductsResponse {
   const pageSize: number = Math.max(1, Math.min(100, params.pageSize ?? 12))
@@ -115,7 +116,9 @@ function mapServerToProduct(dto: ServerProductDto): Product {
   const description: string =
     (typeof dto.description === "string" && dto.description.trim().length > 0
       ? dto.description
-      : undefined) ?? fallback?.description ?? "Product description coming soon."
+      : undefined) ??
+    fallback?.description ??
+    "Product description coming soon."
   return {
     id: dto.id,
     name: dto.name ?? fallback?.name ?? dto.slug,
@@ -295,7 +298,7 @@ export const productsApi = {
     if (typeof patch.price === "number") body.priceCents = Math.round(patch.price * 100)
     if (typeof patch.categorySlug === "string") body.categorySlug = patch.categorySlug
     if (typeof patch.imageUrl === "string") body.imageUrl = patch.imageUrl
-     if (typeof patch.description === "string") body.description = patch.description
+    if (typeof patch.description === "string") body.description = patch.description
     if (typeof patch.featured === "boolean") body.featured = patch.featured
     if (Array.isArray(patch.media)) body.media = patch.media
     if (typeof patch.kind === "string") body.kind = patch.kind

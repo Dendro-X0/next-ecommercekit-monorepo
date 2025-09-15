@@ -1,8 +1,12 @@
+import { headers } from "next/headers"
 import type { JSX } from "react"
 import { productsDisabled } from "@/lib/safe-mode"
-import { headers } from "next/headers"
 
-export default async function CategoryPage({ params }: { params: { slug: string } }): Promise<JSX.Element> {
+export default async function CategoryPage({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<JSX.Element> {
   if (productsDisabled) {
     return (
       <div className="container mx-auto px-4 py-12 text-center text-muted-foreground">
@@ -26,11 +30,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   const { default: CategoryPageClient } = await import("./client")
   return (
     <>
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       <CategoryPageClient params={params} />
     </>
   )

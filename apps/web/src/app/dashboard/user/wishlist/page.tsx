@@ -1,19 +1,19 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Heart, Plus, Share2, ShoppingCart, Trash2 } from "lucide-react"
+import { useMemo } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SafeImage } from "@/components/ui/safe-image"
 import { SidebarInset } from "@/components/ui/sidebar"
 import { wishlistApi } from "@/lib/data/wishlist"
 import { useCartStore } from "@/lib/stores/cart"
 import { WISHLIST_QK } from "@/lib/wishlist/query-keys"
-import type { Wishlist } from "@/types/user"
 import type { Product } from "@/types"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Heart, Plus, Share2, ShoppingCart, Trash2 } from "lucide-react"
-import { useMemo } from "react"
-import { SafeImage } from "@/components/ui/safe-image"
+import type { Wishlist } from "@/types/user"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 export default function WishlistPage() {
@@ -142,7 +142,7 @@ export default function WishlistPage() {
                     <div key={item.id} className="border rounded-lg p-4 space-y-3">
                       <div className="relative w-full h-32 rounded overflow-hidden">
                         <SafeImage
-                          src={(item.image || "/placeholder.svg") + "?height=128&width=256"}
+                          src={`${item.image || "/placeholder.svg"}?height=128&width=256`}
                           alt={item.name}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

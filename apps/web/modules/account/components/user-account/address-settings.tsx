@@ -1,5 +1,9 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Edit, MapPin, Plus, Trash2 } from "lucide-react"
+import type React from "react"
+import { memo, useCallback, useId, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,15 +25,11 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import {
+  addressesApi,
   type CreateAddressInput,
   type UpdateAddressInput,
-  addressesApi,
 } from "@/lib/data/addresses"
 import type { Address } from "@/types/address"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Edit, MapPin, Plus, Trash2 } from "lucide-react"
-import type React from "react"
-import { memo, useCallback, useState } from "react"
 
 const ADDRESS_QK = ["account", "addresses"] as const
 
@@ -48,13 +48,15 @@ const AddressForm = memo(function AddressForm({
   onCancel,
   isEditing,
 }: AddressFormProps) {
+  const uid = useId()
+  const fid = (name: string): string => `${uid}-${name}`
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+          <Label htmlFor={fid("firstName")}>First Name</Label>
           <Input
-            id="firstName"
+            id={fid("firstName")}
             value={formData.firstName || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChange({ firstName: e.target.value })
@@ -62,9 +64,9 @@ const AddressForm = memo(function AddressForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+          <Label htmlFor={fid("lastName")}>Last Name</Label>
           <Input
-            id="lastName"
+            id={fid("lastName")}
             value={formData.lastName || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChange({ lastName: e.target.value })
@@ -74,9 +76,11 @@ const AddressForm = memo(function AddressForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Address</Label>
+        <Label htmlFor={fid("address")}>
+          Address
+        </Label>
         <Input
-          id="address"
+          id={fid("address")}
           value={formData.address || ""}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange({ address: e.target.value })
@@ -86,9 +90,11 @@ const AddressForm = memo(function AddressForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor={fid("city")}>
+            City
+          </Label>
           <Input
-            id="city"
+            id={fid("city")}
             value={formData.city || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChange({ city: e.target.value })
@@ -96,9 +102,11 @@ const AddressForm = memo(function AddressForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="state">State</Label>
+          <Label htmlFor={fid("state")}>
+            State
+          </Label>
           <Input
-            id="state"
+            id={fid("state")}
             value={formData.state || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChange({ state: e.target.value })
@@ -109,9 +117,11 @@ const AddressForm = memo(function AddressForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="zipCode">ZIP Code</Label>
+          <Label htmlFor={fid("zipCode")}>
+            ZIP Code
+          </Label>
           <Input
-            id="zipCode"
+            id={fid("zipCode")}
             value={formData.zipCode || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onChange({ zipCode: e.target.value })
@@ -119,9 +129,11 @@ const AddressForm = memo(function AddressForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor={fid("country")}>
+            Country
+          </Label>
           <Select value={formData.country} onValueChange={(value) => onChange({ country: value })}>
-            <SelectTrigger>
+            <SelectTrigger id={fid("country")}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -136,12 +148,14 @@ const AddressForm = memo(function AddressForm({
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="type">Address Type</Label>
+          <Label htmlFor={fid("type")}>
+            Address Type
+          </Label>
           <Select
             value={formData.type}
             onValueChange={(value) => onChange({ type: value as "shipping" | "billing" })}
           >
-            <SelectTrigger>
+            <SelectTrigger id={fid("type")}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -153,11 +167,13 @@ const AddressForm = memo(function AddressForm({
 
         <div className="flex items-center space-x-2">
           <Switch
-            id="isDefault"
+            id={fid("isDefault")}
             checked={!!formData.isDefault}
             onCheckedChange={(checked) => onChange({ isDefault: checked })}
           />
-          <Label htmlFor="isDefault">Set as default address</Label>
+          <Label htmlFor={fid("isDefault")}>
+            Set as default address
+          </Label>
         </div>
       </div>
 

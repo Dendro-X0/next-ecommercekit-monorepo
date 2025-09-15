@@ -1,15 +1,11 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
-import { showToast } from "@/lib/utils/toast"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowLeft } from "lucide-react"
-import { AppLink } from "@/modules/shared/components/app-link"
-import { useEffect, useState } from "react"
 import type { ReactElement } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -28,6 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { authClient } from "@/lib/auth-client"
+import { showToast } from "@/lib/utils/toast"
+import { AppLink } from "@/modules/shared/components/app-link"
 
 const ForgotPasswordSchema = z.object({
   email: z.string().email(),

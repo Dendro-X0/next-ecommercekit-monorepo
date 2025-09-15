@@ -1,9 +1,9 @@
+import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { isDigitalOnlyCart } from "@/lib/cart/utils"
 import { useCartStore } from "@/lib/stores/cart"
 import type { PaymentMethod, ShippingAddress } from "@/types/cart"
-import Image from "next/image"
 
 /**
  * Compact, resilient order summary used in checkout sidebar and review step.

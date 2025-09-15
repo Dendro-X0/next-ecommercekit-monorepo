@@ -1,11 +1,11 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Check, ChevronLeft, ChevronRight, Star } from "lucide-react"
 import { animate, motion, useMotionValue } from "motion/react"
 import type { JSX } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { animationsDisabled } from "@/lib/safe-mode"
 
 type Testimonial = {
@@ -69,8 +69,16 @@ function useIdleOrFirstInteraction(timeoutMs: number = 1500): boolean {
   useEffect(() => {
     if (ready) return
     const onAny = (): void => setReady(true)
-    const idler = (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback
-      ? (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(() => setReady(true), { timeout: timeoutMs })
+    const idler = (
+      window as unknown as {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+      }
+    ).requestIdleCallback
+      ? (
+          window as unknown as {
+            requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number
+          }
+        ).requestIdleCallback(() => setReady(true), { timeout: timeoutMs })
       : window.setTimeout(() => setReady(true), timeoutMs)
     window.addEventListener("pointerdown", onAny, { once: true, passive: true })
     window.addEventListener("keydown", onAny, { once: true })
@@ -173,7 +181,10 @@ export function CustomerTestimonials(): JSX.Element {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {testimonials.map((t) => (
-              <Card key={t.id} className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full">
+              <Card
+                key={t.id}
+                className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-1 mb-4">
                     {stars.map((s) => (

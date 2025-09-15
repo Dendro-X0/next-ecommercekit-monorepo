@@ -1,3 +1,4 @@
+import { Eye, Package, Truck } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { UserOrder } from "@/types/user"
-import { Eye, Package, Truck } from "lucide-react"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 interface RecentOrdersProps {

@@ -1,32 +1,33 @@
 "use client"
 
+import { FileBarChart, Star } from "lucide-react"
+import { type ReactElement, useId } from "react"
+import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { FileBarChart, Star } from "lucide-react"
-import type { ReactElement } from "react"
-import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 type MonthPoint = Readonly<{ name: string; revenue: number }>
 type ProductPoint = Readonly<{ name: string; sales: number }>
 
-const EMPTY_STATE_CLASS = "flex h-[360px] w-full items-center justify-center text-sm text-muted-foreground" as const
+const EMPTY_STATE_CLASS =
+  "flex h-[360px] w-full items-center justify-center text-sm text-muted-foreground" as const
 
 function getRevenueSummary(data: ReadonlyArray<MonthPoint>): string {
-  if (data.length === 0) return "No revenue data available.";
-  const values = data.map((d) => d.revenue);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const first = data[0]?.revenue ?? 0;
-  const last = data[data.length - 1]?.revenue ?? 0;
-  const trend = last > first ? "upward" : last < first ? "downward" : "flat";
-  return `Gross revenue for the last ${data.length} months. Min $${min}, max $${max}. Overall ${trend} trend.`;
+  if (data.length === 0) return "No revenue data available."
+  const values = data.map((d) => d.revenue)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const first = data[0]?.revenue ?? 0
+  const last = data[data.length - 1]?.revenue ?? 0
+  const trend = last > first ? "upward" : last < first ? "downward" : "flat"
+  return `Gross revenue for the last ${data.length} months. Min $${min}, max $${max}. Overall ${trend} trend.`
 }
 
 function getTopProductsSummary(data: ReadonlyArray<ProductPoint>): string {
-  if (data.length === 0) return "No product sales data available.";
-  const top = [...data].sort((a, b) => b.sales - a.sales)[0];
-  return `Units sold for top products in the last period. Top product: ${top.name} with ${top.sales} units.`;
+  if (data.length === 0) return "No product sales data available."
+  const top = [...data].sort((a, b) => b.sales - a.sales)[0]
+  return `Units sold for top products in the last period. Top product: ${top.name} with ${top.sales} units.`
 }
 
 const REVENUE: ReadonlyArray<MonthPoint> = [
@@ -47,6 +48,7 @@ const TOP_PRODUCTS: ReadonlyArray<ProductPoint> = [
 ] as const
 
 function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): ReactElement {
+  const gradientId = useId()
   return (
     <Card>
       <CardHeader>
@@ -67,9 +69,12 @@ function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): Re
             ariaDescription={getRevenueSummary(data)}
           >
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={Array.from(data)} margin={{ top: 12, right: 16, left: 8, bottom: 8 }}>
+              <AreaChart
+                data={Array.from(data)}
+                margin={{ top: 12, right: 16, left: 8, bottom: 8 }}
+              >
                 <defs>
-                  <linearGradient id="revGradient" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="var(--color-revenue)" stopOpacity={0.8} />
                     <stop offset="95%" stopColor="var(--color-revenue)" stopOpacity={0.1} />
                   </linearGradient>
@@ -94,7 +99,7 @@ function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): Re
                   type="monotone"
                   dataKey="revenue"
                   stroke="var(--color-revenue)"
-                  fill="url(#revGradient)"
+                  fill={`url(#${gradientId})`}
                   strokeWidth={3}
                 />
               </AreaChart>

@@ -1,5 +1,6 @@
 "use client"
 
+import { FaShoppingCart } from "react-icons/fa"
 import { ThemeToggle } from "@/components/theme/theme-toggle"
 import {
   Breadcrumb,
@@ -12,11 +13,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { FaShoppingCart } from "react-icons/fa"
-import { AppLink } from "../../../../../modules/shared/components/app-link"
 import { useSession } from "@/hooks/use-session"
-import { type Role, hasRole } from "@/lib/roles"
 import { isAdminEmail } from "@/lib/admin-allowlist"
+import { hasRole, type Role } from "@/lib/roles"
+import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 interface DashboardHeaderProps {
   title: string
@@ -29,7 +29,10 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ title, breadcrumbs }: DashboardHeaderProps) {
   const session = useSession()
   const roles = session?.user?.roles as readonly Role[] | undefined
-  const isAdmin: boolean = session?.user?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(session?.user?.email ?? null)
+  const isAdmin: boolean =
+    session?.user?.isAdmin === true ||
+    hasRole(roles, ["admin"]) ||
+    isAdminEmail(session?.user?.email ?? null)
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b">
       <div className="flex items-center gap-2 px-4 flex-1">

@@ -1,17 +1,19 @@
-import { DashboardShell } from "@/app/dashboard/_components/shell"
-import { AdminSidebar } from "@/app/dashboard/admin/_components/admin-sidebar"
-import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
-import { ThemeProvider } from "@/components/theme/theme-provider"
-import { type Role, hasRole } from "@/lib/roles"
 import { getServerSession } from "modules/shared/lib/auth/get-server-session"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import type React from "react"
 import { Toaster } from "sonner"
+import { DashboardShell } from "@/app/dashboard/_components/shell"
+import { AdminSidebar } from "@/app/dashboard/admin/_components/admin-sidebar"
+import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
+import { ThemeProvider } from "@/components/theme/theme-provider"
+import { hasRole, type Role } from "@/lib/roles"
 
 export default async function AdminLayout({
   children,
-}: { children: React.ReactNode }): Promise<React.ReactElement> {
+}: {
+  children: React.ReactNode
+}): Promise<React.ReactElement> {
   const h = await headers()
   const session = await getServerSession({ headers: h })
   const user = session?.user

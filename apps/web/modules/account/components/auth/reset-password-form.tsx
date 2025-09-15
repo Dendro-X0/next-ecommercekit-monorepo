@@ -1,14 +1,11 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
-import { showToast } from "@/lib/utils/toast"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import type { ReactElement } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -21,6 +18,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator"
+import { authClient } from "@/lib/auth-client"
+import { showToast } from "@/lib/utils/toast"
 
 const ResetPasswordSchema = z
   .object({

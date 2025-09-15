@@ -1,13 +1,13 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 import { CART_QK } from "@/lib/cart/query-keys"
 import { type CartApi, type CartApiItem, cartApi } from "@/lib/data/cart"
 import { productsApi } from "@/lib/data/products"
 import { useCartStore } from "@/lib/stores/cart"
 import type { Product } from "@/types"
 import type { CartItem } from "@/types/cart"
-import { useQuery } from "@tanstack/react-query"
-import { useEffect } from "react"
 
 /**
  * Hydrates the client cart store from the server cart using TanStack Query.

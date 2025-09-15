@@ -29,7 +29,9 @@ function readConfigFromEnv(): CloudinaryConfig {
 
 function ensureValid(cfg: CloudinaryConfig): void {
   if (!cfg.cloudName || !cfg.apiKey || !cfg.apiSecret) {
-    throw new Error("Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET")
+    throw new Error(
+      "Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET",
+    )
   }
 }
 
@@ -45,12 +47,16 @@ export const cloudinaryStorage = {
     return cfg
   },
   async upload(params: CloudinaryUploadParams): Promise<CloudinaryUploadResult> {
-    const cfg = cloudinaryStorage.config()
+    const _cfg = cloudinaryStorage.config()
     const folder = params.folder || "uploads"
     const resourceType = (params.contentType || "").startsWith("video/") ? "video" : "image"
     return await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder, resource_type: resourceType, public_id: params.fileName?.replace(/\.[^.]+$/, "") },
+        {
+          folder,
+          resource_type: resourceType,
+          public_id: params.fileName?.replace(/\.[^.]+$/, ""),
+        },
         (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
           if (error || !result) return reject(error || new Error("Cloudinary upload failed"))
           const secureUrl: string = (result.secure_url as string) || (result.url as string)

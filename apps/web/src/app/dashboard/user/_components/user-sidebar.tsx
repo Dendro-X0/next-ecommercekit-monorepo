@@ -1,18 +1,5 @@
 "use client"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar"
-import { links } from "@/lib/links"
-import {
   Bell,
   CreditCard,
   Gift,
@@ -26,10 +13,23 @@ import {
   Star,
   User,
 } from "lucide-react"
-import { AppLink } from "../../../../../modules/shared/components/app-link"
-import { useSession } from "@/hooks/use-session"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar"
+import { useSession } from "@/hooks/use-session"
+import { links } from "@/lib/links"
+import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 type NavItem = { readonly title: string; readonly url: string; readonly icon: React.ComponentType }
 type SidebarData = { readonly navMain: readonly NavItem[]; readonly account: readonly NavItem[] }
@@ -59,16 +59,18 @@ const data: SidebarData = {
 export function UserSidebar(): React.ReactElement {
   const session = useSession()
   const u = session?.user
-  const displayName: string = (u?.name && String(u.name).length > 0 ? String(u.name) : String(u?.email ?? "User"))
+  const displayName: string =
+    u?.name && String(u.name).length > 0 ? String(u.name) : String(u?.email ?? "User")
   const displayEmail: string = String(u?.email ?? "")
-  const initials: string = (displayName.includes(" ")
-    ? displayName
-        .split(" ")
-        .filter((s) => s.length > 0)
-        .slice(0, 2)
-        .map((s) => s[0])
-        .join("")
-    : displayName.slice(0, 2)
+  const initials: string = (
+    displayName.includes(" ")
+      ? displayName
+          .split(" ")
+          .filter((s) => s.length > 0)
+          .slice(0, 2)
+          .map((s) => s[0])
+          .join("")
+      : displayName.slice(0, 2)
   ).toUpperCase()
   return (
     <Sidebar collapsible="icon">
@@ -130,7 +132,10 @@ export function UserSidebar(): React.ReactElement {
             <SidebarMenuButton size="lg" asChild>
               <AppLink href={links.getDashboardUserSettingsProfileRoute()}>
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={(u?.image as string | undefined) ?? undefined} alt={displayName} />
+                  <AvatarImage
+                    src={(u?.image as string | undefined) ?? undefined}
+                    alt={displayName}
+                  />
                   <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

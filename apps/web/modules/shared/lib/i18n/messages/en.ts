@@ -15,4 +15,3 @@ export const en: Messages = {
   "actions.logout": "Logout",
   "search.placeholder": "Search for products...",
 } as const
-

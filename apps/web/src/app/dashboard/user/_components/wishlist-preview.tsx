@@ -1,14 +1,14 @@
 "use client"
 
+import { Heart } from "lucide-react"
+import type React from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SafeImage } from "@/components/ui/safe-image"
 import { links } from "@/lib/links"
 import type { Wishlist } from "@/types/user"
-import { Heart } from "lucide-react"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import { SafeImage } from "@/components/ui/safe-image"
-import type React from "react"
 
 interface WishlistPreviewProps {
   readonly wishlist: Wishlist | undefined
@@ -48,7 +48,7 @@ export function WishlistPreview({
             <div key={item.id} className="flex items-center gap-3">
               <div className="relative w-12 h-12 rounded-lg overflow-hidden">
                 <SafeImage
-                  src={(item.image || "/placeholder.svg") + "?height=48&width=48"}
+                  src={`${item.image || "/placeholder.svg"}?height=48&width=48`}
                   alt={item.name}
                   fill
                   sizes="48px"

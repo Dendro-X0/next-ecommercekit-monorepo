@@ -1,12 +1,12 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { usePaypalCapture } from "@repo/payments/hooks/use-paypal-order"
 import { Loader2 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useMemo } from "react"
 import type { JSX } from "react"
+import { useEffect, useMemo } from "react"
 import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 
 /**
  * Handles PayPal return redirect. Captures the PayPal order using the `token` query param,
@@ -39,7 +39,7 @@ export default function PaypalReturnPage(): JSX.Element {
         },
       )
     }
-  }, [token, captureMut])
+  }, [token, captureMut, router.replace])
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-lg text-center">

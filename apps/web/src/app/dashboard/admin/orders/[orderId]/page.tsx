@@ -1,5 +1,8 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useParams } from "next/navigation"
+import { type JSX, useId } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -12,15 +15,13 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { SidebarInset } from "@/components/ui/sidebar"
-import { ADMIN_ORDERS_QK, ADMIN_ORDER_BY_ID_QK } from "@/lib/admin/orders/query-keys"
+import { ADMIN_ORDER_BY_ID_QK, ADMIN_ORDERS_QK } from "@/lib/admin/orders/query-keys"
 import { type AdminOrder, adminApi } from "@/lib/data/admin-api"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { AppLink } from "../../../../../../modules/shared/components/app-link"
-import { useParams } from "next/navigation"
-import type { JSX } from "react"
 
 export default function AdminOrderDetailPage(): JSX.Element {
   const { orderId } = useParams<{ orderId: string }>()
+  const statusId = useId()
   const qc = useQueryClient()
   const { data } = useQuery<AdminOrder>({
     queryKey: ADMIN_ORDER_BY_ID_QK(orderId),
@@ -99,13 +100,13 @@ export default function AdminOrderDetailPage(): JSX.Element {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor={statusId}>Status</Label>
                   <Select
                     value={order.status}
                     onValueChange={(v) => mutation.mutate(v as AdminOrder["status"])}
                     disabled={mutation.isPending}
                   >
-                    <SelectTrigger id="status" className="w-[200px] capitalize">
+                    <SelectTrigger id={statusId} className="w-[200px] capitalize">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>

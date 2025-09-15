@@ -3,7 +3,7 @@
 import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
 import { useStripeIntent } from "@repo/payments/hooks/use-stripe-intent"
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { type Stripe, type StripeElements, loadStripe } from "@stripe/stripe-js"
+import { loadStripe, type Stripe, type StripeElements } from "@stripe/stripe-js"
 import { AlertCircle } from "lucide-react"
 import type { JSX } from "react"
 import { useEffect, useMemo, useRef, useState } from "react"

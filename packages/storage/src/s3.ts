@@ -2,7 +2,7 @@
  * S3 storage implementation.
  * One export per file: `s3Storage`.
  */
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 
 export type S3StorageConfig = Readonly<{
   region: string
@@ -33,13 +33,16 @@ function readConfigFromEnv(): S3StorageConfig {
   const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY || ""
   const endpoint = process.env.S3_ENDPOINT || undefined
   const publicBaseUrl = process.env.S3_PUBLIC_BASE_URL || undefined
-  const forcePathStyle: boolean = (process.env.S3_FORCE_PATH_STYLE || "false").toLowerCase() === "true"
+  const forcePathStyle: boolean =
+    (process.env.S3_FORCE_PATH_STYLE || "false").toLowerCase() === "true"
   return { region, bucket, accessKeyId, secretAccessKey, endpoint, publicBaseUrl, forcePathStyle }
 }
 
 function ensureConfigValid(cfg: S3StorageConfig): void {
   if (!cfg.region || !cfg.bucket || !cfg.accessKeyId || !cfg.secretAccessKey) {
-    throw new Error("S3 storage is not configured. Please set S3_REGION, S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY.")
+    throw new Error(
+      "S3 storage is not configured. Please set S3_REGION, S3_BUCKET, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY.",
+    )
   }
 }
 
@@ -59,14 +62,16 @@ function buildPublicUrl(cfg: S3StorageConfig, key: string): string {
     return `${cfg.publicBaseUrl.replace(/\/$/, "")}/${key}`
   }
   if (cfg.endpoint) {
-    const base = cfg.forcePathStyle ? `${cfg.endpoint.replace(/\/$/, "")}/${cfg.bucket}` : cfg.endpoint.replace(/\/$/, "")
+    const base = cfg.forcePathStyle
+      ? `${cfg.endpoint.replace(/\/$/, "")}/${cfg.bucket}`
+      : cfg.endpoint.replace(/\/$/, "")
     return `${base}/${key}`
   }
   return `https://${cfg.bucket}.s3.${cfg.region}.amazonaws.com/${key}`
 }
 
 function sanitizeKeySegment(seg: string): string {
-  return seg.replace(/[^a-zA-Z0-9!_\-\.\/*]/g, "-")
+  return seg.replace(/[^a-zA-Z0-9!_\-./*]/g, "-")
 }
 
 /**
@@ -106,7 +111,8 @@ export const s3Storage = {
     const now = new Date()
     const yyyy = String(now.getUTCFullYear())
     const mm = String(now.getUTCMonth() + 1).padStart(2, "0")
-    const uuid = (globalThis.crypto?.randomUUID?.() ?? `${now.getTime()}-${Math.random().toString(16).slice(2)}`)
+    const uuid =
+      globalThis.crypto?.randomUUID?.() ?? `${now.getTime()}-${Math.random().toString(16).slice(2)}`
     const baseName = opts.fileName ? opts.fileName.replace(/\s+/g, "-") : "file"
     const ext = opts.ext?.replace(/^\./, "") || baseName.split(".").pop() || "bin"
     const prefix = opts.prefix ? sanitizeKeySegment(opts.prefix) : "uploads"

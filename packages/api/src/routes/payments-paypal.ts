@@ -1,6 +1,6 @@
 import { idempotencyRepo, inventoryRepo, ordersRepo } from "@repo/db"
-import { Hono } from "hono"
 import type { Context } from "hono"
+import { Hono } from "hono"
 import { z } from "zod"
 import { apiEnv } from "../env"
 import { transactionalEmail } from "../lib/transactional-email"
@@ -239,7 +239,7 @@ const route = new Hono()
         const upHref: string | undefined = resource.links?.find((l) => l.rel === "up")?.href
         if (upHref) {
           const match = /\/v2\/checkout\/orders\/([A-Za-z0-9-]+)/.exec(upHref)
-          if (match && match[1]) return match[1]
+          if (match?.[1]) return match[1]
         }
         return null
       }
@@ -263,7 +263,7 @@ const route = new Hono()
           target = "cancelled"
           mailKind = event.event_type === "PAYMENT.CAPTURE.REFUNDED" ? "refunded" : "cancelled"
           break
-        default:
+        default: {
           const resBody = { received: true } as const
           if (transmissionId) {
             await idempotencyRepo.create({
@@ -275,6 +275,7 @@ const route = new Hono()
             })
           }
           return c.json(resBody, 200)
+        }
       }
       if (orderId && target) {
         const updated = await ordersRepo.updateStatusByPaymentRef(orderId, target)

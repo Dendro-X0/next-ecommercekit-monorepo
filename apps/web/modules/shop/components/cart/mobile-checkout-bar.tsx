@@ -1,9 +1,9 @@
 "use client"
 
+import type { JSX } from "react"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/lib/stores/cart"
 import { AppLink } from "../../../shared/components/app-link"
-import type { JSX } from "react"
 
 /**
  * MobileCheckoutBar

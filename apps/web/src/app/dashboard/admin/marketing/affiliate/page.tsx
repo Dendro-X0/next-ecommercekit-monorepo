@@ -1,5 +1,9 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { CheckCircle2, DollarSign, Search } from "lucide-react"
+import type { JSX } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
 import { Toolbar } from "@/app/dashboard/_components/toolbar"
@@ -32,11 +36,7 @@ import {
 import { ADMIN_AFFILIATE_CONVERSIONS_FILTERED_QK } from "@/lib/admin/affiliate/query-keys"
 import { type AdminAffiliateConversion, adminApi } from "@/lib/data/admin-api"
 import { showToast } from "@/lib/utils/toast"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { CheckCircle2, DollarSign, Search } from "lucide-react"
 import { AppLink } from "../../../../../../modules/shared/components/app-link"
-import type { JSX } from "react"
-import { useEffect, useMemo, useState } from "react"
 
 /**
  * Admin → Marketing → Affiliate
@@ -54,6 +54,11 @@ export default function Page(): JSX.Element {
     id: string
     next: AdminAffiliateConversion["status"]
   }> | null>(null)
+  // Stable keys for skeleton rows
+  const skeletonKeys = useMemo<readonly string[]>(
+    () => Array.from({ length: 5 }, (_v, i) => `aff-skel-${i}`),
+    [],
+  )
 
   const { data, isLoading, error } = useQuery<
     Readonly<{ items: readonly AdminAffiliateConversion[] }>
@@ -231,8 +236,8 @@ export default function Page(): JSX.Element {
           </TableHeader>
           <TableBody>
             {isLoading &&
-              Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={`skeleton-${i}`}>
+              skeletonKeys.map((k) => (
+                <TableRow key={k}>
                   <TableCell>
                     <Skeleton className="h-4 w-40" />
                   </TableCell>

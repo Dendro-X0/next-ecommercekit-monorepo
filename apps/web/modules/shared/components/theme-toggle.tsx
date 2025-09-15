@@ -1,10 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 import React from "react"
 import { BsLaptop, BsMoon, BsSun } from "react-icons/bs"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export function ThemeToggle(): React.ReactElement {
   const [mounted, setMounted] = React.useState(false)

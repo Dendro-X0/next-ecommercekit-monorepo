@@ -1,7 +1,7 @@
 "use client"
 
-import { Skeleton } from "@/components/ui/skeleton"
 import type React from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 /**
  * ChartSkeleton: simple aspect-video block for chart loading state.

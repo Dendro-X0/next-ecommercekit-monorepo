@@ -1,21 +1,20 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { usePaypalConfig } from "@repo/payments/hooks/use-paypal-config"
+import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
+import { CreditCard } from "lucide-react"
 import type React from "react"
-
+import type { JSX } from "react"
+import { useId, useMemo, useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import type { PaymentMethod } from "@/types/cart"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { CreditCard } from "lucide-react"
-import { useMemo, useState } from "react"
-import type { JSX } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
-import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
-import { usePaypalConfig } from "@repo/payments/hooks/use-paypal-config"
 
 /**
  * Checkout payment step. Supports custom provider ordering and optional back button.
@@ -47,6 +46,8 @@ export function PaymentForm({
   providers,
   backLabel,
 }: PaymentFormProps): JSX.Element {
+  const uid = useId()
+  const fid = (name: string): string => `${uid}-${name}`
   type CardData = Readonly<{
     number: string
     expiryMonth: string
@@ -123,8 +124,8 @@ export function PaymentForm({
       ...(paymentType === "card" &&
         card && {
           last4: card.number.replace(/\s+/g, "").slice(-4),
-          expiryMonth: Number.parseInt(card.expiryMonth),
-          expiryYear: Number.parseInt(card.expiryYear),
+          expiryMonth: Number.parseInt(card.expiryMonth, 10),
+          expiryYear: Number.parseInt(card.expiryYear, 10),
         }),
     }
     onNext(method)
@@ -152,9 +153,9 @@ export function PaymentForm({
           >
             {availableProviders.map((p) => (
               <div key={p} className="flex items-center space-x-2 p-4 border rounded-lg">
-                <RadioGroupItem value={p} id={p} />
+                <RadioGroupItem value={p} id={fid(`provider-${p}`)} />
                 <Label
-                  htmlFor={p}
+                  htmlFor={fid(`provider-${p}`)}
                   className={`cursor-pointer ${p === "card" ? "flex items-center gap-2" : ""}`}
                 >
                   {p === "card" && <CreditCard className="h-4 w-4" />}
@@ -167,15 +168,15 @@ export function PaymentForm({
           {paymentType === "card" && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="cardName">Cardholder Name</Label>
-                <Input id="cardName" {...register("name")} />
+                <Label htmlFor={fid("cardName")}>Cardholder Name</Label>
+                <Input id={fid("cardName")} {...register("name")} />
                 {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
               </div>
 
               <div>
-                <Label htmlFor="cardNumber">Card Number</Label>
+                <Label htmlFor={fid("cardNumber")}>Card Number</Label>
                 <Input
-                  id="cardNumber"
+                  id={fid("cardNumber")}
                   placeholder="1234 5678 9012 3456"
                   inputMode="numeric"
                   {...register("number")}
@@ -187,9 +188,9 @@ export function PaymentForm({
 
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 <div>
-                  <Label htmlFor="expiryMonth">Month</Label>
+                  <Label htmlFor={fid("expiryMonth")}>Month</Label>
                   <Input
-                    id="expiryMonth"
+                    id={fid("expiryMonth")}
                     placeholder="MM"
                     inputMode="numeric"
                     {...register("expiryMonth")}
@@ -199,9 +200,9 @@ export function PaymentForm({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="expiryYear">Year</Label>
+                  <Label htmlFor={fid("expiryYear")}>Year</Label>
                   <Input
-                    id="expiryYear"
+                    id={fid("expiryYear")}
                     placeholder="YYYY"
                     inputMode="numeric"
                     {...register("expiryYear")}
@@ -211,8 +212,8 @@ export function PaymentForm({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="cvv">CVV</Label>
-                  <Input id="cvv" placeholder="123" inputMode="numeric" {...register("cvv")} />
+                  <Label htmlFor={fid("cvv")}>CVV</Label>
+                  <Input id={fid("cvv")} placeholder="123" inputMode="numeric" {...register("cvv")} />
                   {errors.cvv && <p className="text-sm text-destructive">{errors.cvv.message}</p>}
                 </div>
               </div>

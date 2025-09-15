@@ -1,12 +1,13 @@
-import path from "path"
 import type { NextConfig } from "next"
+import path from "path"
 
 // Enable bundle analyzer only when ANALYZE=true to avoid overhead in normal builds.
 // Run: ANALYZE=true pnpm --filter web build
-const withBundleAnalyzer = process.env.ANALYZE === "true"
-  ? // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require("@next/bundle-analyzer")({ enabled: true })
-  : (config: NextConfig) => config
+const withBundleAnalyzer =
+  process.env.ANALYZE === "true"
+    ? // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require("@next/bundle-analyzer")({ enabled: true })
+    : (config: NextConfig) => config
 
 const nextConfig: NextConfig = {
   eslint: {
@@ -43,7 +44,10 @@ const nextConfig: NextConfig = {
       if (base) {
         try {
           const u = new URL(base)
-          patterns.push({ protocol: (u.protocol.replace(":", "") as "http" | "https") || "https", hostname: u.hostname })
+          patterns.push({
+            protocol: (u.protocol.replace(":", "") as "http" | "https") || "https",
+            hostname: u.hostname,
+          })
         } catch {
           // ignore invalid URL
         }

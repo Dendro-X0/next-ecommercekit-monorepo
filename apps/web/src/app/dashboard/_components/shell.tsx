@@ -1,5 +1,5 @@
-import { SidebarProvider } from "@/components/ui/sidebar"
 import type React from "react"
+import { SidebarProvider } from "@/components/ui/sidebar"
 
 /**
  * DashboardShell composes the application sidebar with a flexible content area.

@@ -3,10 +3,14 @@ import { handle } from "hono/vercel"
 
 export const runtime = "nodejs"
 
-export const GET = handle(app)
-export const POST = handle(app)
-export const PATCH = handle(app)
-export const PUT = handle(app)
-export const DELETE = handle(app)
-export const OPTIONS = handle(app)
-export const HEAD = handle(app)
+type NextHandler = (req: Request) => Promise<Response>
+const anyHandle = handle as unknown as (h: unknown) => NextHandler
+const handler: NextHandler = anyHandle(app as unknown)
+
+export const GET = handler
+export const POST = handler
+export const PATCH = handler
+export const PUT = handler
+export const DELETE = handler
+export const OPTIONS = handler
+export const HEAD = handler

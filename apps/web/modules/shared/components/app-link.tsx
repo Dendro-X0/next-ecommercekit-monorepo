@@ -15,9 +15,10 @@ import * as React from "react"
  * AppLink is a thin wrapper around `next/link` that defaults `prefetch` to `false`.
  * It forwards refs so it can be used with shadcn/ui `asChild` slots.
  */
-export type AppLinkProps = LinkProps & React.ComponentPropsWithoutRef<"a"> & {
-  readonly prefetch?: boolean | null
-}
+export type AppLinkProps = LinkProps &
+  React.ComponentPropsWithoutRef<"a"> & {
+    readonly prefetch?: boolean | null
+  }
 
 export const AppLink = React.forwardRef<React.ElementRef<"a">, AppLinkProps>(function AppLink(
   { prefetch = false, children, ...props },

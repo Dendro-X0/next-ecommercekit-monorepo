@@ -1,5 +1,10 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Camera, CheckCircle2, XCircle } from "lucide-react"
+import { type ReactElement, useActionState, useEffect, useId, useRef, useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 import { uploadAvatarAction } from "@/actions/user/upload-avatar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,26 +21,31 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { type ReactElement, useActionState, useEffect, useRef, useState } from "react"
-import { Camera, CheckCircle2, XCircle } from "lucide-react"
-import { type SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 
 type SessionUser = {
   id: string
   email: string
   name: string | null
+  username?: string | null
   image?: string | null
   roles?: readonly string[]
   emailVerified?: boolean
 }
-const NameSchema = z.object({ name: z.string().min(2) })
-type NameValues = z.infer<typeof NameSchema>
+const usernamePattern = /^[a-zA-Z0-9._-]{3,30}$/
+const ProfileSchema = z.object({
+  name: z.string().min(2),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username must be at most 30 characters")
+    .regex(usernamePattern, "Use letters, numbers, dot, underscore or hyphen"),
+})
+type ProfileValues = z.infer<typeof ProfileSchema>
 
 type AnyRecord = Record<string, unknown>
 const getRoles = (u: AnyRecord): readonly string[] | undefined => {
-  const v = u["roles"]
+  const v = u.roles
   return Array.isArray(v) && v.every((x) => typeof x === "string")
     ? (v as readonly string[])
     : undefined
@@ -52,9 +62,11 @@ export default function ProfileSettingsPage(): ReactElement {
   const [verifyMsg, setVerifyMsg] = useState<string | undefined>(undefined)
   const [verifyErr, setVerifyErr] = useState<string | undefined>(undefined)
   const [verifyLoading, setVerifyLoading] = useState<boolean>(false)
-  const form = useForm<NameValues>({
-    resolver: zodResolver(NameSchema),
-    defaultValues: { name: "" },
+  const avatarInputId = useId()
+  const emailInputId = useId()
+  const form = useForm<ProfileValues>({
+    resolver: zodResolver(ProfileSchema),
+    defaultValues: { name: "", username: "" },
   })
   useEffect(() => {
     let mounted = true
@@ -63,16 +75,18 @@ export default function ProfileSettingsPage(): ReactElement {
       const u = data?.user as AnyRecord | undefined
       if (u) {
         setSessionUser({
-          id: String(u["id"] ?? ""),
-          email: String(u["email"] ?? ""),
-          name: typeof u["name"] === "string" ? (u["name"] as string) : null,
-          image: (typeof u["image"] === "string" ? (u["image"] as string) : undefined) ?? null,
+          id: String(u.id ?? ""),
+          email: String(u.email ?? ""),
+          name: typeof u.name === "string" ? (u.name as string) : null,
+          username: typeof u.username === "string" ? (u.username as string) : null,
+          image: (typeof u.image === "string" ? (u.image as string) : undefined) ?? null,
           roles: getRoles(u),
           emailVerified:
-            typeof u["emailVerified"] === "boolean" ? (u["emailVerified"] as boolean) : undefined,
+            typeof u.emailVerified === "boolean" ? (u.emailVerified as boolean) : undefined,
         })
         form.reset({
-          name: typeof u["name"] === "string" ? (u["name"] as string) : "",
+          name: typeof u.name === "string" ? (u.name as string) : "",
+          username: typeof u.username === "string" ? (u.username as string) : "",
         })
       }
     })
@@ -80,14 +94,19 @@ export default function ProfileSettingsPage(): ReactElement {
       mounted = false
     }
   }, [form])
-  const onUpdateName: SubmitHandler<NameValues> = async (values): Promise<void> => {
+  const onUpdateName: SubmitHandler<ProfileValues> = async (values): Promise<void> => {
     setMessage(undefined)
     setError(undefined)
-    const { error: e } = await authClient.updateUser({ name: values.name })
+    const { error: e } = await authClientHelpers.updateUserProfile({
+      name: values.name,
+      username: values.username,
+    })
     if (e) setError(e.message)
     else {
       setMessage("Profile updated.")
-      setSessionUser((prev) => (prev ? { ...prev, name: values.name } : prev))
+      setSessionUser((prev) =>
+        prev ? { ...prev, name: values.name, username: values.username } : prev,
+      )
     }
   }
   const onResendVerify = async (): Promise<void> => {
@@ -139,9 +158,15 @@ export default function ProfileSettingsPage(): ReactElement {
               }
             }}
           >
-            <input id="avatar" name="avatar" type="file" accept="image/*" className="sr-only" />
+            <input
+              id={avatarInputId}
+              name="avatar"
+              type="file"
+              accept="image/*"
+              className="sr-only"
+            />
             <label
-              htmlFor="avatar"
+              htmlFor={avatarInputId}
               className="relative h-32 w-32 rounded-full ring-1 ring-border overflow-hidden cursor-pointer group"
             >
               <Avatar className="h-32 w-32">
@@ -154,7 +179,9 @@ export default function ProfileSettingsPage(): ReactElement {
                 <Camera className="h-5 w-5 mr-2" /> Upload
               </span>
             </label>
-            <p className="text-xs text-muted-foreground mt-1">Click the avatar to upload. JPG, PNG or GIF. Max size 5MB.</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Click the avatar to upload. JPG, PNG or GIF. Max size 5MB.
+            </p>
           </form>
           {avatarState?.message && (
             <p className="text-sm text-muted-foreground">{avatarState.message}</p>
@@ -169,8 +196,8 @@ export default function ProfileSettingsPage(): ReactElement {
               {/* Left column: Email and Email Verification */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={sessionUser?.email ?? ""} readOnly />
+                  <Label htmlFor={emailInputId}>Email</Label>
+                  <Input id={emailInputId} type="email" value={sessionUser?.email ?? ""} readOnly />
                 </div>
                 <div className="space-y-2">
                   <Label>Email Verification</Label>
@@ -192,7 +219,9 @@ export default function ProfileSettingsPage(): ReactElement {
                       type="button"
                       variant="secondary"
                       onClick={onResendVerify}
-                      disabled={!sessionUser || sessionUser?.emailVerified === true || verifyLoading}
+                      disabled={
+                        !sessionUser || sessionUser?.emailVerified === true || verifyLoading
+                      }
                       loading={verifyLoading}
                     >
                       Resend
@@ -200,7 +229,9 @@ export default function ProfileSettingsPage(): ReactElement {
                   </div>
                   {verifyMsg && <p className="text-sm text-muted-foreground">{verifyMsg}</p>}
                   {!sessionUser && (
-                    <p className="text-sm text-muted-foreground">Sign in to resend verification email.</p>
+                    <p className="text-sm text-muted-foreground">
+                      Sign in to resend verification email.
+                    </p>
                   )}
                   {verifyErr && <p className="text-sm text-destructive">{verifyErr}</p>}
                 </div>
@@ -208,6 +239,19 @@ export default function ProfileSettingsPage(): ReactElement {
 
               {/* Right column: Display name */}
               <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="yourname" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="name"

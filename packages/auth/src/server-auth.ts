@@ -4,7 +4,7 @@ import { createSmtpEmailService } from "@repo/mail"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { nextCookies } from "better-auth/next-js"
-import { magicLink, twoFactor } from "better-auth/plugins"
+import { magicLink, twoFactor, username } from "better-auth/plugins"
 import { authEnv } from "./env"
 
 /**
@@ -96,7 +96,8 @@ export const auth = betterAuth({
   advanced: {
     ...(authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES ? { crossSubDomainCookies: { enabled: true } } : {}),
     ...(() => {
-      const useCrossSite = !authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES && authEnv.ENABLE_CROSS_SITE_COOKIES
+      const useCrossSite =
+        !authEnv.ENABLE_CROSS_SUBDOMAIN_COOKIES && authEnv.ENABLE_CROSS_SITE_COOKIES
       if (!useCrossSite) return {}
       const isHttps = appUrl?.startsWith("https://") ?? false
       if (!isHttps && process.env.NODE_ENV !== "production") {
@@ -108,7 +109,9 @@ export const auth = betterAuth({
         )
         return { defaultCookieAttributes: { sameSite: "lax", secure: false } as const }
       }
-      return { defaultCookieAttributes: { sameSite: "none", secure: true, partitioned: true } as const }
+      return {
+        defaultCookieAttributes: { sameSite: "none", secure: true, partitioned: true } as const,
+      }
     })(),
   },
   // Start with email/password; OAuth, magic link, passkeys can be added later.
@@ -157,6 +160,13 @@ export const auth = betterAuth({
   ...("google" in socialProviders || "github" in socialProviders ? { socialProviders } : {}),
   plugins: [
     nextCookies(),
+    username({
+      minUsernameLength: 3,
+      maxUsernameLength: 30,
+      usernameNormalization: (s) => s.toLowerCase(),
+      usernameValidator: (s) => /^[a-zA-Z0-9._-]{3,30}$/.test(s),
+      displayUsernameValidator: (s) => /^[a-zA-Z0-9._-]{3,30}$/.test(s),
+    }),
     twoFactor(),
     magicLink({
       // Send magic link email

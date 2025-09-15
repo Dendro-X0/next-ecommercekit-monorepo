@@ -6,7 +6,7 @@
  */
 // Removed legacy frontend-only stub; using real Better Auth client below.
 
-import { magicLinkClient, twoFactorClient } from "better-auth/client/plugins"
+import { magicLinkClient, twoFactorClient, usernameClient } from "better-auth/client/plugins"
 // Single export per file
 import { createAuthClient } from "better-auth/react"
 
@@ -15,7 +15,7 @@ import { createAuthClient } from "better-auth/react"
  * - Uses same-origin `/api/auth` by default (no baseURL needed)
  * - Cookies are handled automatically by the browser on same-origin requests
  */
-const client = createAuthClient({
+const client: ReturnType<typeof createAuthClient> = createAuthClient({
   plugins: [
     twoFactorClient({
       onTwoFactorRedirect: (): void => {
@@ -23,12 +23,12 @@ const client = createAuthClient({
       },
     }),
     magicLinkClient(),
+    usernameClient(),
   ],
 })
-
-type AuthClient = typeof client
 
 /**
  * Public Better Auth client instance for the web app.
  */
-export const authClient: AuthClient = client
+export type AuthClient = ReturnType<typeof createAuthClient>
+export const authClient: AuthClient = client as AuthClient

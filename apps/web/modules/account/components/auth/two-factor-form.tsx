@@ -1,16 +1,14 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { Shield } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
 import type React from "react"
 import type { ReactElement } from "react"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,6 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { authClient } from "@/lib/auth-client"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 
 const CODE_LENGTH: number = 6 as const
 
@@ -68,7 +68,7 @@ export function TwoFactorForm(): React.JSX.Element {
   }, [form])
 
   const onSubmit: SubmitHandler<TwoFactorValues> = async (values): Promise<void> => {
-    const { error: verifyError } = await authClient.twoFactor.verifyTotp({
+    const { error: verifyError } = await authClientHelpers.twoFactorVerifyTotp({
       code: values.code,
       trustDevice: values.trustDevice,
     })

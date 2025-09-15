@@ -1,37 +1,49 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Heart, Minus, Plus, Share2, ShoppingCart } from "lucide-react"
+import { useParams } from "next/navigation"
+import { type ReactElement, useEffect, useId, useMemo, useState } from "react"
 import { MobilePdpBar } from "@/components/product/mobile-pdp-bar"
 import { ProductFAQ } from "@/components/product/product-faq"
 import { RelatedProducts } from "@/components/product/related-products"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { SafeImage } from "@/components/ui/safe-image"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { StarRating } from "@/components/ui/star-rating"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
+import { useSession } from "@/hooks/use-session"
 import { isDigitalProduct } from "@/lib/cart/utils"
 import { productsApi } from "@/lib/data/products"
 import { reviewsApi } from "@/lib/data/reviews"
 import { wishlistApi } from "@/lib/data/wishlist"
 import { PRODUCT_REVIEWS_QK } from "@/lib/reviews/query-keys"
+import { productsDisabled } from "@/lib/safe-mode"
 import { useCartStore } from "@/lib/stores/cart"
 import { showToast } from "@/lib/utils/toast"
 import { WISHLIST_HAS_QK, WISHLIST_QK } from "@/lib/wishlist/query-keys"
 import type { Product } from "@/types"
 import type { UserReview } from "@/types/review"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Heart, Minus, Plus, Share2, ShoppingCart } from "lucide-react"
-import { SafeImage } from "@/components/ui/safe-image"
-import { productsDisabled } from "@/lib/safe-mode"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import { useParams } from "next/navigation"
-import { type ReactElement, useEffect, useMemo, useState } from "react"
-import { useSession } from "@/hooks/use-session"
 
 /**
  * Client PDP page (extracted from previous page.tsx).
@@ -43,6 +55,9 @@ export default function ProductPageClient(): ReactElement {
     () => Array.from({ length: 4 }, (_v, i) => `pdp-thumb-skel-${i}`),
     [],
   )
+  // Unique IDs for a11y error messages
+  const ratingErrorId = useId()
+  const contentErrorId = useId()
   const params = useParams<{ slug?: string | string[] }>()
   const slugParam = params?.slug
   const slug: string =
@@ -68,7 +83,7 @@ export default function ProductPageClient(): ReactElement {
   // Tabs: deep-linking via hash (declare early so queries can depend on it)
   const [tab, setTab] = useState<string>("description")
   useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash) {
+    if (window?.location.hash) {
       setTab(window.location.hash.slice(1))
     }
   }, [])
@@ -109,7 +124,7 @@ export default function ProductPageClient(): ReactElement {
   // Review modal state (after avgRating is computed)
   const [reviewOpen, setReviewOpen] = useState<boolean>(false)
   const [reviewRating, setReviewRating] = useState<number>(
-    Math.max(1, Math.min(5, Math.round((avgRating || 5))))
+    Math.max(1, Math.min(5, Math.round(avgRating || 5))),
   )
   const [reviewTitle, setReviewTitle] = useState<string>("")
   const [reviewContent, setReviewContent] = useState<string>("")
@@ -120,7 +135,8 @@ export default function ProductPageClient(): ReactElement {
 
   const validateReviewDraft = (rating: number, content: string): ReviewErrors => {
     const errs: { rating?: string; content?: string } = {}
-    if (Number.isNaN(rating) || rating < 1 || rating > 5) errs.rating = "Please select a rating between 1 and 5."
+    if (Number.isNaN(rating) || rating < 1 || rating > 5)
+      errs.rating = "Please select a rating between 1 and 5."
     const len = content.trim().length
     if (len < 10) errs.content = "Please enter at least 10 characters."
     if (len > CONTENT_MAX) errs.content = `Please keep your review under ${CONTENT_MAX} characters.`
@@ -130,7 +146,12 @@ export default function ProductPageClient(): ReactElement {
   const createReview = useMutation<
     UserReview,
     Error,
-    { readonly productId: string; readonly rating: number; readonly title?: string; readonly content?: string },
+    {
+      readonly productId: string
+      readonly rating: number
+      readonly title?: string
+      readonly content?: string
+    },
     { readonly prev?: readonly UserReview[]; readonly tempId?: string }
   >({
     mutationFn: async (vars) => reviewsApi.createReview(vars),
@@ -275,8 +296,19 @@ export default function ProductPageClient(): ReactElement {
         <p className="text-muted-foreground mt-2">
           The requested product does not exist or failed to load.
         </p>
-        <div className="mt-6 flex justify-center" data-testid="pdp-wishlist-toggle" data-ready="false">
-          <Button size="lg" variant="outline" className="w-12 h-12 p-0" disabled aria-pressed={false} aria-label="Add to wishlist">
+        <div
+          className="mt-6 flex justify-center"
+          data-testid="pdp-wishlist-toggle"
+          data-ready="false"
+        >
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-12 h-12 p-0"
+            disabled
+            aria-pressed={false}
+            aria-label="Add to wishlist"
+          >
             <Heart className="h-4 w-4 opacity-50" />
           </Button>
         </div>
@@ -314,10 +346,18 @@ export default function ProductPageClient(): ReactElement {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="space-y-4">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
-            <SafeImage src={product.images[selectedImage] || "/placeholder.svg"} alt={product.name} fill className="object-cover" sizes="(min-width: 1024px) 50vw, 100vw" />
+            <SafeImage
+              src={product.images[selectedImage] || "/placeholder.svg"}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
             {hasDiscount && (
               <Badge variant="destructive" className="absolute top-4 left-4">
-                {Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100)}
+                {Math.round(
+                  ((product.originalPrice! - product.price) / product.originalPrice!) * 100,
+                )}
                 % OFF
               </Badge>
             )}
@@ -336,7 +376,13 @@ export default function ProductPageClient(): ReactElement {
                     selectedImage === index ? "border-primary" : "border-transparent"
                   }`}
                 >
-                  <SafeImage src={image || "/placeholder.svg"} alt={`${product.name} ${index + 1}`} fill className="object-cover" sizes="80px" />
+                  <SafeImage
+                    src={image || "/placeholder.svg"}
+                    alt={`${product.name} ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
                 </button>
               ))}
             </div>
@@ -348,38 +394,54 @@ export default function ProductPageClient(): ReactElement {
             <nav aria-label="Breadcrumb" className="mb-3 text-sm text-muted-foreground">
               <ol className="flex items-center gap-2">
                 <li>
-                  <AppLink href="/" className="hover:underline">Home</AppLink>
+                  <AppLink href="/" className="hover:underline">
+                    Home
+                  </AppLink>
                 </li>
                 <li aria-hidden="true">/</li>
                 <li>
-                  <AppLink href="/shop" className="hover:underline">Shop</AppLink>
+                  <AppLink href="/shop" className="hover:underline">
+                    Shop
+                  </AppLink>
                 </li>
                 <li aria-hidden="true">/</li>
-                <li className="text-foreground" aria-current="page">{product.name}</li>
+                <li className="text-foreground" aria-current="page">
+                  {product.name}
+                </li>
               </ol>
             </nav>
 
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="outline">{product.category}</Badge>
-              <Badge variant={isDigital ? "default" : "secondary"}>{isDigital ? "Download" : "Shipping"}</Badge>
+              <Badge variant={isDigital ? "default" : "secondary"}>
+                {isDigital ? "Download" : "Shipping"}
+              </Badge>
             </div>
             <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
             <div className="flex items-center gap-3 mb-4">
               <StarRating rating={avgRating} showValue={hasReviews} />
-              <span className="text-sm text-muted-foreground">{hasReviews ? `(${reviewCount} reviews)` : "No reviews yet"}</span>
+              <span className="text-sm text-muted-foreground">
+                {hasReviews ? `(${reviewCount} reviews)` : "No reviews yet"}
+              </span>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <span className="text-3xl font-bold">{formatPrice(product.price)}</span>
             {hasDiscount && (
-              <span className="text-xl text-muted-foreground line-through">{formatPrice(product.originalPrice!)}</span>
+              <span className="text-xl text-muted-foreground line-through">
+                {formatPrice(product.originalPrice!)}
+              </span>
             )}
           </div>
 
           <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${product.inStock ? "bg-green-500" : "bg-red-500"}`} />
-            <span className={product.inStock ? "text-green-600" : "text-red-600"}>{product.inStock ? "In Stock" : "Out of Stock"}</span>
+            <div
+              className={`w-2 h-2 rounded-full ${product.inStock ? "bg-green-500" : "bg-red-500"}`}
+            />
+            <span className={product.inStock ? "text-green-600" : "text-red-600"}>
+              {product.inStock ? "In Stock" : "Out of Stock"}
+            </span>
           </div>
 
           <p className="text-muted-foreground leading-relaxed">{product.description}</p>
@@ -388,28 +450,66 @@ export default function ProductPageClient(): ReactElement {
             <div className="flex items-center gap-4">
               <span className="font-medium">Quantity:</span>
               <div className="flex items-center border rounded-lg h-11">
-                <Button variant="ghost" size="icon" type="button" className="h-11 w-11" onClick={() => setQuantity(Math.max(1, quantity - 1))} disabled={quantity <= 1}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  type="button"
+                  className="h-11 w-11"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                >
                   <Minus className="h-4 w-4" />
                 </Button>
-                <span className="px-4 min-w-12 text-center" role="status" aria-live="polite">{quantity}</span>
-                <Button variant="ghost" size="icon" type="button" className="h-11 w-11" onClick={() => setQuantity(quantity + 1)}>
+                <output className="px-4 min-w-12 text-center" aria-live="polite">
+                  {quantity}
+                </output>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  type="button"
+                  className="h-11 w-11"
+                  onClick={() => setQuantity(quantity + 1)}
+                >
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Button type="button" size="lg" className="h-11 rounded-lg px-6 w-full lg:w-auto" disabled={!product.inStock} onClick={() => addItem(product, quantity)}>
+              <Button
+                type="button"
+                size="lg"
+                className="h-11 rounded-lg px-6 w-full lg:w-auto"
+                disabled={!product.inStock}
+                onClick={() => addItem(product, quantity)}
+              >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Add to Cart
               </Button>
               <div data-testid="pdp-wishlist-toggle" data-ready="true">
-                <Button type="button" size="lg" variant="outline" className={`h-11 rounded-lg px-4 w-auto ${isWishlisted ? "text-red-500" : ""}`} onClick={() => toggleWishlist.mutate()} disabled={toggleWishlist.isPending} aria-pressed={isWishlisted} aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"} data-testid="pdp-wishlist-toggle-button">
+                <Button
+                  type="button"
+                  size="lg"
+                  variant="outline"
+                  className={`h-11 rounded-lg px-4 w-auto ${isWishlisted ? "text-red-500" : ""}`}
+                  onClick={() => toggleWishlist.mutate()}
+                  disabled={toggleWishlist.isPending}
+                  aria-pressed={isWishlisted}
+                  aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                  data-testid="pdp-wishlist-toggle-button"
+                >
                   <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current" : ""}`} />
                   <span className="ml-2">Wishlist</span>
                 </Button>
               </div>
-              <Button type="button" size="lg" variant="outline" aria-label="Share product" className="h-11 rounded-lg px-4 w-auto whitespace-nowrap" onClick={handleShare}>
+              <Button
+                type="button"
+                size="lg"
+                variant="outline"
+                aria-label="Share product"
+                className="h-11 rounded-lg px-4 w-auto whitespace-nowrap"
+                onClick={handleShare}
+              >
                 <Share2 className="h-4 w-4" />
                 <span className="ml-2">Share</span>
               </Button>
@@ -444,16 +544,40 @@ export default function ProductPageClient(): ReactElement {
 
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 p-1 rounded-lg bg-muted/30 mb-4 sm:mb-5">
-          <TabsTrigger value="description" className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2">Description</TabsTrigger>
-          <TabsTrigger value="specifications" className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2">Specifications</TabsTrigger>
-          <TabsTrigger value="reviews" className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2">Reviews ({publishedReviews.length})</TabsTrigger>
-          <TabsTrigger value="faq" className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2">FAQ</TabsTrigger>
+          <TabsTrigger
+            value="description"
+            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+          >
+            Description
+          </TabsTrigger>
+          <TabsTrigger
+            value="specifications"
+            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+          >
+            Specifications
+          </TabsTrigger>
+          <TabsTrigger
+            value="reviews"
+            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+          >
+            Reviews ({publishedReviews.length})
+          </TabsTrigger>
+          <TabsTrigger
+            value="faq"
+            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+          >
+            FAQ
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="description" className="mt-6">
           <div className="prose max-w-none">
             <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-            <p className="text-muted-foreground leading-relaxed mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p className="text-muted-foreground leading-relaxed mt-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
           </div>
         </TabsContent>
 
@@ -471,9 +595,13 @@ export default function ProductPageClient(): ReactElement {
               <div className="flex justify-between py-3 border-b">
                 <span className="font-medium">Availability</span>
                 {isDigital ? (
-                  <span className="text-muted-foreground">Digital item — Instant access/download after purchase.</span>
+                  <span className="text-muted-foreground">
+                    Digital item — Instant access/download after purchase.
+                  </span>
                 ) : (
-                  <span className="text-muted-foreground">{product.inStock ? "In Stock. Ships in 1-2 business days." : "Out of Stock"}</span>
+                  <span className="text-muted-foreground">
+                    {product.inStock ? "In Stock. Ships in 1-2 business days." : "Out of Stock"}
+                  </span>
                 )}
               </div>
             </div>
@@ -496,7 +624,9 @@ export default function ProductPageClient(): ReactElement {
                 </div>
               ))
             ) : (
-              <p className="text-muted-foreground">No reviews yet. Be the first to review this product!</p>
+              <p className="text-muted-foreground">
+                No reviews yet. Be the first to review this product!
+              </p>
             )}
           </div>
         </TabsContent>
@@ -523,9 +653,14 @@ export default function ProductPageClient(): ReactElement {
             {!isAuthenticated && (
               <div className="rounded-md border bg-muted/40 p-3 text-sm">
                 You need an account to write a review. Please
-                <AppLink href="/auth/login" className="underline px-1">Login</AppLink>
+                <AppLink href="/auth/login" className="underline px-1">
+                  Login
+                </AppLink>
                 or
-                <AppLink href="/auth/signup" className="underline px-1">Register</AppLink>.
+                <AppLink href="/auth/signup" className="underline px-1">
+                  Register
+                </AppLink>
+                .
               </div>
             )}
             {reviewSuccess && (
@@ -541,7 +676,11 @@ export default function ProductPageClient(): ReactElement {
                 onValueChange={(v): void => setReviewRating(Number(v))}
                 disabled={!isAuthenticated}
               >
-                <SelectTrigger className="w-24" aria-invalid={!!reviewErrors.rating} aria-describedby={reviewErrors.rating ? "review-rating-error" : undefined}>
+                <SelectTrigger
+                  className="w-24"
+                  aria-invalid={!!reviewErrors.rating}
+                  aria-describedby={reviewErrors.rating ? ratingErrorId : undefined}
+                >
                   <SelectValue placeholder="5" />
                 </SelectTrigger>
                 <SelectContent>
@@ -554,7 +693,9 @@ export default function ProductPageClient(): ReactElement {
               </Select>
             </div>
             {reviewErrors.rating && (
-              <p id="review-rating-error" className="text-xs text-red-600">{reviewErrors.rating}</p>
+              <p id={ratingErrorId} className="text-xs text-red-600">
+                {reviewErrors.rating}
+              </p>
             )}
             <Input
               placeholder="Title (optional)"
@@ -568,16 +709,24 @@ export default function ProductPageClient(): ReactElement {
                 value={reviewContent}
                 onChange={(e): void => setReviewContent(e.target.value)}
                 aria-invalid={!!reviewErrors.content}
-                aria-describedby={reviewErrors.content ? "review-content-error" : undefined}
+                aria-describedby={reviewErrors.content ? contentErrorId : undefined}
                 disabled={!isAuthenticated}
               />
               <div className="mt-1 flex justify-end text-xs">
-                <span className={reviewContent.trim().length > CONTENT_MAX ? "text-red-600" : "text-muted-foreground"}>
+                <span
+                  className={
+                    reviewContent.trim().length > CONTENT_MAX
+                      ? "text-red-600"
+                      : "text-muted-foreground"
+                  }
+                >
                   {reviewContent.trim().length}/{CONTENT_MAX}
                 </span>
               </div>
               {reviewErrors.content && (
-                <p id="review-content-error" className="mt-1 text-xs text-red-600">{reviewErrors.content}</p>
+                <p id={contentErrorId} className="mt-1 text-xs text-red-600">
+                  {reviewErrors.content}
+                </p>
               )}
             </div>
             <div className="flex justify-end gap-2">

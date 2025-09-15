@@ -1,5 +1,8 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { Download, Eye, Package, Search } from "lucide-react"
+import { type JSX, useId, useMemo, useState } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -24,15 +27,12 @@ import {
 } from "@/components/ui/table"
 import { ADMIN_ORDERS_QK } from "@/lib/admin/orders/query-keys"
 import { type AdminOrder, adminApi } from "@/lib/data/admin-api"
-import { useQuery } from "@tanstack/react-query"
-import { Download, Eye, Package, Search } from "lucide-react"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import type { JSX } from "react"
-import { useMemo, useState } from "react"
 
 export default function AdminOrdersPage(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [status, setStatus] = useState<"all" | AdminOrder["status"]>("all")
+  const statusFilterId = useId()
   const { data } = useQuery<Readonly<{ items: readonly AdminOrder[] }>>({
     queryKey: [...ADMIN_ORDERS_QK, status] as const,
     queryFn: () => adminApi.listOrders({ status: status === "all" ? undefined : status }),
@@ -100,11 +100,11 @@ export default function AdminOrdersPage(): JSX.Element {
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="status" className="whitespace-nowrap">
+                  <Label htmlFor={statusFilterId} className="whitespace-nowrap">
                     Status
                   </Label>
                   <Select value={status} onValueChange={(v) => setStatus(v as typeof status)}>
-                    <SelectTrigger id="status" className="w-[160px] capitalize">
+                    <SelectTrigger id={statusFilterId} className="w-[160px] capitalize">
                       <SelectValue placeholder="All" />
                     </SelectTrigger>
                     <SelectContent>

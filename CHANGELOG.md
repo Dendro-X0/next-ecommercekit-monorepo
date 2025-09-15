@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.4] - 2025-09-15
+### Added
+- Auth: centralized typed client helpers at `apps/web/src/lib/auth-client-helpers.ts` covering sign-in (email/username, magic link), sign-up, profile updates, and 2FA (enable/disable/verify/backup codes).
+
+### Changed
+- Auth UX: aligned flows to support username or email for login and sign-up; updated profile and security settings to use the new helpers.
+- A11y & forms: introduced unique field IDs via `useId()` in key forms (shipping, payment, contact, address) and set default `type="button"` on the app `Button` shim; refined semantic elements for status messaging.
+- Branding & copy: updated footer brand to “ModularShop”, refreshed layout description, and minor UI copy improvements.
+
+### Documentation
+- Updated `docs/architecture.md` with an “Auth & Identity” section and “Payments Clients & Hooks” notes.
+- Updated `docs/frontend-architecture.md` with guidance on the auth client helpers, button default type, and accessibility/unique IDs.
+
+### Fixed
+- Corrected `Number.parseInt` usages to include radix where applicable.
+- Resolved assorted a11y violations (unique IDs, semantic elements) and minor lint issues in edited files.
+
 ## [1.1.3] - 2025-09-13
 ### Added
 - Auth: shared root layout for all auth pages at `apps/web/src/app/(shop)/auth/layout.tsx`.

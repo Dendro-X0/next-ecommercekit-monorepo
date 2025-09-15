@@ -1,5 +1,9 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { BarChart3, CheckCircle2, Copy, Link as LinkIcon, RefreshCw } from "lucide-react"
+import type React from "react"
+import { useMemo } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,10 +21,6 @@ import {
 import { AFFILIATE_CLICKS_QK, AFFILIATE_ME_QK } from "@/lib/affiliate/query-keys"
 import { affiliateApi } from "@/lib/data/affiliate"
 import { links } from "@/lib/links"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { BarChart3, CheckCircle2, Copy, Link as LinkIcon, RefreshCw } from "lucide-react"
-import type React from "react"
-import { useMemo } from "react"
 
 /**
  * User → Affiliate page (frontend-only)
@@ -31,7 +31,7 @@ export default function Page(): React.ReactElement {
     queryKey: AFFILIATE_ME_QK,
     queryFn: affiliateApi.getMe,
   })
-  const { data: clicks, isLoading: clicksLoading } = useQuery({
+  const { data: clicks, isLoading: _clicksLoading } = useQuery({
     queryKey: AFFILIATE_CLICKS_QK,
     queryFn: affiliateApi.listClicks,
   })

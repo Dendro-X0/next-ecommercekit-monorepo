@@ -1,9 +1,9 @@
-import type { Product } from "@/types"
-import { ProductCard } from "./product-card"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import * as React from "react"
 import { wishlistApi } from "@/lib/data/wishlist"
 import { WISHLIST_HAS_QK } from "@/lib/wishlist/query-keys"
-import * as React from "react"
+import type { Product } from "@/types"
+import { ProductCard } from "./product-card"
 
 interface ProductGridProps {
   products: Product[]
@@ -11,12 +11,17 @@ interface ProductGridProps {
 
 export function ProductGrid({ products }: ProductGridProps) {
   const queryClient = useQueryClient()
-  const enableWishlist: boolean = (process.env.NEXT_PUBLIC_UI_ENABLE_WISHLIST ?? "false").toLowerCase() === "true"
-  const uiTemplates: boolean = (process.env.NEXT_PUBLIC_USE_UI_TEMPLATES ?? "false").toLowerCase() === "true"
+  const enableWishlist: boolean =
+    (process.env.NEXT_PUBLIC_UI_ENABLE_WISHLIST ?? "false").toLowerCase() === "true"
+  const uiTemplates: boolean =
+    (process.env.NEXT_PUBLIC_USE_UI_TEMPLATES ?? "false").toLowerCase() === "true"
   const wishlistDisabled: boolean = uiTemplates && !enableWishlist
 
   // Prime cache with a single bulk call; components will read from cache
-  const productIds = React.useMemo<string[]>(() => products.map((p) => p.id).filter(Boolean), [products])
+  const productIds = React.useMemo<string[]>(
+    () => products.map((p) => p.id).filter(Boolean),
+    [products],
+  )
   // Build a stable, order-insensitive key to avoid re-fetch loops when product order changes
   const idsKey = React.useMemo<string>(() => {
     if (productIds.length === 0) return ""
@@ -24,24 +29,26 @@ export function ProductGrid({ products }: ProductGridProps) {
     uniq.sort() // order-insensitive
     return uniq.join(",")
   }, [productIds])
-  const { data: wlMap = {}, isPending: bulkPending, isFetching: bulkFetching } = useQuery<Readonly<Record<string, boolean>>>(
-    {
-      queryKey: ["wishlist","has","bulk", idsKey],
-      queryFn: () => wishlistApi.hasBulk(productIds),
-      enabled: !wishlistDisabled && idsKey.length > 0,
-      staleTime: 60_000,
-      retry: 0,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      select: (map) => {
-        // warm per-id caches so ProductCard can read instantly
-        for (const id of Object.keys(map)) {
-          queryClient.setQueryData<boolean>(WISHLIST_HAS_QK(id), map[id])
-        }
-        return map
-      },
+  const {
+    data: wlMap = {},
+    isPending: bulkPending,
+    isFetching: bulkFetching,
+  } = useQuery<Readonly<Record<string, boolean>>>({
+    queryKey: ["wishlist", "has", "bulk", idsKey],
+    queryFn: () => wishlistApi.hasBulk(productIds),
+    enabled: !wishlistDisabled && idsKey.length > 0,
+    staleTime: 60_000,
+    retry: 0,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    select: (map) => {
+      // warm per-id caches so ProductCard can read instantly
+      for (const id of Object.keys(map)) {
+        queryClient.setQueryData<boolean>(WISHLIST_HAS_QK(id), map[id])
+      }
+      return map
     },
-  )
+  })
   const bulkReady = !bulkPending && !bulkFetching
   if (products.length === 0) {
     return (
@@ -54,7 +61,12 @@ export function ProductGrid({ products }: ProductGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} initialWishlist={wlMap[product.id]} bulkReady={bulkReady} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          initialWishlist={wlMap[product.id]}
+          bulkReady={bulkReady}
+        />
       ))}
     </div>
   )

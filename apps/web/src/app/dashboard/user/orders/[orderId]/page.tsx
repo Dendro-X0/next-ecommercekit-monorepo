@@ -1,5 +1,8 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { useParams } from "next/navigation"
+import type { JSX } from "react"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -7,10 +10,7 @@ import { SidebarInset } from "@/components/ui/sidebar"
 import { ordersApi } from "@/lib/data/orders"
 import { ORDER_BY_ID_QK } from "@/lib/orders/query-keys"
 import type { Order } from "@/types/order"
-import { useQuery } from "@tanstack/react-query"
 import { AppLink } from "../../../../../../modules/shared/components/app-link"
-import { useParams } from "next/navigation"
-import type { JSX } from "react"
 
 export default function UserOrderDetailPage(): JSX.Element {
   const { orderId } = useParams<{ orderId: string }>()

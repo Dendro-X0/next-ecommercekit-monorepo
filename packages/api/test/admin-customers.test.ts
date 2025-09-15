@@ -14,6 +14,7 @@ vi.mock("@repo/db", () => {
 
 import { customersRepo } from "@repo/db"
 import adminCustomersRoute from "../src/routes/admin-customers"
+
 type CustomerItem = Readonly<{
   id: string
   name: string
@@ -249,7 +250,7 @@ describe("Admin Customers list validation & guards", () => {
       totalSpentCents: 5000,
       status: "VIP",
     })
-    expect(Object.prototype.hasOwnProperty.call(body.items[0], "imageUrl")).toBe(false)
+    expect(Object.hasOwn(body.items[0], "imageUrl")).toBe(false)
   })
 
   it("returns 400 for too-long query (>200)", async () => {

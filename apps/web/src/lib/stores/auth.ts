@@ -1,8 +1,8 @@
 "use client"
 
-import type { AuthState, LoginCredentials, SignUpData, User } from "@/lib/types/auth"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import type { AuthState, LoginCredentials, SignUpData, User } from "@/lib/types/auth"
 
 interface AuthStore extends AuthState {
   login: (credentials: LoginCredentials) => Promise<void>

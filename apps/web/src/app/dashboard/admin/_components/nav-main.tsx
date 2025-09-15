@@ -1,9 +1,5 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
-import { AppLink } from "../../../../../modules/shared/components/app-link"
-import type React from "react"
-
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@components/ui/collapsible"
 import {
   SidebarGroup,
@@ -15,6 +11,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@components/ui/sidebar"
+import { ChevronRight, type LucideIcon } from "lucide-react"
+import type React from "react"
+import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 /**
  * NavMain renders the main admin sidebar groups.

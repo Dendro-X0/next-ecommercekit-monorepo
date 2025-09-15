@@ -1,19 +1,21 @@
 "use client"
 
-import { useActionState, type ReactElement } from "react"
-import { useFormStatus } from "react-dom"
 import { Mail } from "lucide-react"
+import { type ReactElement, useActionState, useId } from "react"
+import { useFormStatus } from "react-dom"
+import type { ResendVerificationByEmailState } from "@/actions/user/resend-verification-by-email"
+import { resendVerificationByEmailAction } from "@/actions/user/resend-verification-by-email"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { ResendVerificationByEmailState } from "@/actions/user/resend-verification-by-email"
-import { resendVerificationByEmailAction } from "@/actions/user/resend-verification-by-email"
 
 /**
  * Minimal form to resend an email verification link.
  * Appears under the login form. Works even if the user is not signed in.
  */
 export function ResendVerificationForm(): ReactElement {
+  const uid = useId()
+  const fid = (name: string): string => `${uid}-${name}`
   const [state, action] = useActionState<ResendVerificationByEmailState, FormData>(
     resendVerificationByEmailAction,
     {},
@@ -27,11 +29,13 @@ export function ResendVerificationForm(): ReactElement {
       </p>
       <form action={action} className="space-y-3">
         <div className="space-y-2">
-          <Label htmlFor="resend_email">Email</Label>
+          <Label htmlFor={fid("resend_email")}>
+            Email
+          </Label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              id="resend_email"
+              id={fid("resend_email")}
               name="resend_email"
               type="email"
               placeholder="you@example.com"
@@ -42,10 +46,14 @@ export function ResendVerificationForm(): ReactElement {
           </div>
         </div>
         {state?.error && (
-          <p className="text-xs text-destructive" role="alert">{state.error}</p>
+          <p className="text-xs text-destructive" role="alert">
+            {state.error}
+          </p>
         )}
         {state?.success && (
-          <p className="text-xs text-emerald-600" role="status">{state.success}</p>
+          <output className="text-xs text-emerald-600" aria-live="polite">
+            {state.success}
+          </output>
         )}
         <div className="flex justify-end">
           <SubmitButton />

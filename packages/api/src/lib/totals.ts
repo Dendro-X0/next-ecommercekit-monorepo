@@ -37,11 +37,7 @@ async function enrichShippingItems(
       quantity: it.quantity,
       priceCents: it.priceCents,
       shippingRequired:
-        typeof shippingRequired === "boolean"
-          ? shippingRequired
-          : kind === "digital"
-            ? false
-            : true,
+        typeof shippingRequired === "boolean" ? shippingRequired : kind !== "digital",
       weightGrams,
       kind,
     })

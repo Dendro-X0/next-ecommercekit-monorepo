@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, type ReactElement } from "react"
+import { type ReactElement, useEffect, useState } from "react"
 
 /**
  * GlobalCrashOverlay: captures window errors and unhandled rejections and
@@ -24,7 +24,8 @@ export function GlobalCrashOverlay(): ReactElement | null {
           : typeof reason === "string"
             ? reason
             : "Unhandled rejection"
-      const stack = reason instanceof Error && typeof reason.stack === "string" ? reason.stack : undefined
+      const stack =
+        reason instanceof Error && typeof reason.stack === "string" ? reason.stack : undefined
       setErr({ message, stack })
     }
     window.addEventListener("error", onError)

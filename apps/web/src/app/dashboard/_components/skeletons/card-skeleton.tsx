@@ -1,7 +1,7 @@
 "use client"
 
-import { SkeletonCard, type SkeletonCardProps } from "@/components/ui/skeleton-card"
 import type React from "react"
+import { SkeletonCard, type SkeletonCardProps } from "@/components/ui/skeleton-card"
 
 /**
  * CardSkeleton: dashboard-level wrapper for card loading state.

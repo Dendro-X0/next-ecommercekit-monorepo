@@ -1,7 +1,10 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import type React from "react"
-
+import { useId, useMemo, useState } from "react"
+import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -16,10 +19,6 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import type { ShippingAddress } from "@/types/cart"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMemo, useState } from "react"
-import { Controller, type SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
 
 interface ShippingFormProps {
   onNext: (address: ShippingAddress) => void
@@ -32,6 +31,8 @@ interface ShippingFormProps {
  * Checkout step for collecting a shipping address, with support for selecting a saved address.
  */
 export function ShippingForm({ onNext, initialData, savedAddresses = [] }: ShippingFormProps) {
+  const uid = useId()
+  const fieldId = (name: string): string => `${uid}-${name}`
   const [mode, setMode] = useState<"saved" | "manual">(
     savedAddresses.length > 0 ? "saved" : "manual",
   )
@@ -82,7 +83,7 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
     mode: "onBlur",
   })
 
-  const resolvedAddress: ShippingAddress = useMemo(() => {
+  const _resolvedAddress: ShippingAddress = useMemo(() => {
     return mode === "saved" && savedAddresses[selectedSavedIndex]
       ? savedAddresses[selectedSavedIndex]
       : (getValues() as ShippingAddress)
@@ -116,17 +117,17 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
           >
             <div className="flex items-center gap-2 p-3 border rounded-md">
               <RadioGroupItem
-                id="addr_saved"
+                id={fieldId("addr_saved")}
                 value="saved"
                 disabled={savedAddresses.length === 0}
               />
-              <Label htmlFor="addr_saved" className="cursor-pointer">
+              <Label htmlFor={fieldId("addr_saved")} className="cursor-pointer">
                 Use saved address{savedAddresses.length === 0 ? " (none)" : ""}
               </Label>
             </div>
             <div className="flex items-center gap-2 p-3 border rounded-md">
-              <RadioGroupItem id="addr_manual" value="manual" />
-              <Label htmlFor="addr_manual" className="cursor-pointer">
+              <RadioGroupItem id={fieldId("addr_manual")} value="manual" />
+              <Label htmlFor={fieldId("addr_manual")} className="cursor-pointer">
                 Enter new address
               </Label>
             </div>
@@ -134,12 +135,12 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
 
           {mode === "saved" && savedAddresses.length > 0 && (
             <div className="space-y-3">
-              <Label htmlFor="savedAddress">Select an address</Label>
+              <Label htmlFor={fieldId("savedAddress")}>Select an address</Label>
               <Select
                 value={String(selectedSavedIndex)}
-                onValueChange={(v) => setSelectedSavedIndex(Number.parseInt(v))}
+                onValueChange={(v) => setSelectedSavedIndex(Number.parseInt(v, 10))}
               >
-                <SelectTrigger id="savedAddress" className="w-full">
+                <SelectTrigger id={fieldId("savedAddress")} className="w-full">
                   <SelectValue placeholder="Choose saved address" />
                 </SelectTrigger>
                 <SelectContent>
@@ -159,9 +160,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">First Name</Label>
+              <Label htmlFor={fieldId("firstName")}>First Name</Label>
               <Input
-                id="firstName"
+                id={fieldId("firstName")}
                 placeholder="Jane"
                 disabled={mode === "saved"}
                 {...register("firstName")}
@@ -171,9 +172,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
               )}
             </div>
             <div>
-              <Label htmlFor="lastName">Last Name</Label>
+              <Label htmlFor={fieldId("lastName")}>Last Name</Label>
               <Input
-                id="lastName"
+                id={fieldId("lastName")}
                 placeholder="Doe"
                 disabled={mode === "saved"}
                 {...register("lastName")}
@@ -185,9 +186,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
           </div>
 
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor={fieldId("email")}>Email</Label>
             <Input
-              id="email"
+              id={fieldId("email")}
               type="email"
               placeholder="jane@example.com"
               disabled={mode === "saved"}
@@ -197,9 +198,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
           </div>
 
           <div>
-            <Label htmlFor="phone">Phone</Label>
+            <Label htmlFor={fieldId("phone")}>Phone</Label>
             <Input
-              id="phone"
+              id={fieldId("phone")}
               type="tel"
               placeholder="(555) 000-1234"
               disabled={mode === "saved"}
@@ -209,9 +210,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
           </div>
 
           <div>
-            <Label htmlFor="address">Address</Label>
+            <Label htmlFor={fieldId("address")}>Address</Label>
             <Input
-              id="address"
+              id={fieldId("address")}
               placeholder="123 Main St"
               disabled={mode === "saved"}
               {...register("address")}
@@ -221,9 +222,9 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
 
           <div className="flex flex-col md:flex-row gap-2 justify-normal">
             <div className="w-full">
-              <Label htmlFor="city">City</Label>
+              <Label htmlFor={fieldId("city")}>City</Label>
               <Input
-                id="city"
+                id={fieldId("city")}
                 placeholder="San Francisco"
                 disabled={mode === "saved"}
                 {...register("city")}
@@ -231,13 +232,17 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
               {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
             </div>
             <div className="w-full">
-              <Label htmlFor="state">State</Label>
+              <Label htmlFor={fieldId("state")}>State</Label>
               <Controller
                 control={control}
                 name="state"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger disabled={mode === "saved"} className="w-full">
+                    <SelectTrigger
+                      id={fieldId("state")}
+                      disabled={mode === "saved"}
+                      className="w-full"
+                    >
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
                     <SelectContent>
@@ -252,14 +257,18 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
               {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
             </div>
             <div className="w-full">
-              <Label htmlFor="country">Country</Label>
+              <Label htmlFor={fieldId("country")}>Country</Label>
               <Controller
                 control={control}
                 name="country"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger disabled={mode === "saved"} className="w-full">
-                      <SelectValue />
+                    <SelectTrigger
+                      id={fieldId("country")}
+                      disabled={mode === "saved"}
+                      className="w-full"
+                    >
+                      <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="United States">United States</SelectItem>
@@ -273,10 +282,12 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
                 <p className="text-sm text-destructive">{errors.country.message}</p>
               )}
             </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="w-full">
-              <Label htmlFor="zipCode">ZIP Code</Label>
+              <Label htmlFor={fieldId("zipCode")}>ZIP Code</Label>
               <Input
-                id="zipCode"
+                id={fieldId("zipCode")}
                 placeholder="94107"
                 disabled={mode === "saved"}
                 {...register("zipCode")}

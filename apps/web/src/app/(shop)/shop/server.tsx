@@ -1,7 +1,8 @@
-import type { JSX } from "react"
-import { headers } from "next/headers"
 import { getLocaleFromHeaders } from "modules/shared/lib/i18n/config"
 import { formatCurrency } from "modules/shared/lib/i18n/format"
+import { headers } from "next/headers"
+import Image from "next/image"
+import type { JSX } from "react"
 
 /**
  * Minimal SSR fallback for the Shop page.
@@ -68,11 +69,18 @@ function readParamInt(str: string | null, fallback: number, max: number): number
 export default async function ShopPageServer({
   searchParams,
 }: {
-  readonly searchParams: Promise<Record<string, string | string[] | undefined>> | Record<string, string | string[] | undefined>
+  readonly searchParams:
+    | Promise<Record<string, string | string[] | undefined>>
+    | Record<string, string | string[] | undefined>
 }): Promise<JSX.Element> {
   const isPromiseLike = <T,>(v: unknown): v is PromiseLike<T> =>
-    typeof v === "object" && v !== null && "then" in (v as Record<string, unknown>) && typeof (v as PromiseLike<T>).then === "function"
-  const spResolved: Record<string, string | string[] | undefined> = isPromiseLike<Record<string, string | string[] | undefined>>(searchParams)
+    typeof v === "object" &&
+    v !== null &&
+    "then" in (v as Record<string, unknown>) &&
+    typeof (v as PromiseLike<T>).then === "function"
+  const spResolved: Record<string, string | string[] | undefined> = isPromiseLike<
+    Record<string, string | string[] | undefined>
+  >(searchParams)
     ? await searchParams
     : searchParams
   const sp = new URLSearchParams()
@@ -133,7 +141,9 @@ export default async function ShopPageServer({
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Shop All Products</h1>
-        <p className="text-muted-foreground">Server-rendered fallback • Page {page} of {totalPages}</p>
+        <p className="text-muted-foreground">
+          Server-rendered fallback • Page {page} of {totalPages}
+        </p>
       </div>
 
       {items.length === 0 ? (
@@ -141,14 +151,25 @@ export default async function ShopPageServer({
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {items.map((p) => (
-            <a key={p.id} href={`/products/${encodeURIComponent(p.slug)}`} className="group relative bg-card rounded-lg border p-4 transition-all hover:shadow-lg">
+            <a
+              key={p.id}
+              href={`/products/${encodeURIComponent(p.slug)}`}
+              className="group relative bg-card rounded-lg border p-4 transition-all hover:shadow-lg"
+            >
               <div className="relative aspect-square overflow-hidden rounded-md bg-muted">
-                {/* Use plain img to avoid client image hydration costs */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.image} alt={p.name} loading="lazy" decoding="async" className="h-full w-full object-cover transition-all group-hover:scale-105" />
+                <Image
+                  src={p.image}
+                  alt={p.name}
+                  fill
+                  priority={false}
+                  sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-all group-hover:scale-105"
+                />
               </div>
               <div className="mt-3 space-y-1">
-                <div className="font-medium truncate" title={p.name}>{p.name}</div>
+                <div className="font-medium truncate" title={p.name}>
+                  {p.name}
+                </div>
                 <div className="text-sm text-muted-foreground">{formatPrice(p.price)}</div>
               </div>
             </a>

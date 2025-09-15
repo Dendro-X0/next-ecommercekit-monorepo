@@ -1,12 +1,12 @@
 "use client"
 
+import { Bell } from "lucide-react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { preferencesApi } from "@/lib/data/preferences"
-import { Bell } from "lucide-react"
-import { useEffect, useState } from "react"
 
 export default function NotificationsPage() {
   const [newsletter, setNewsletter] = useState<boolean>(false)

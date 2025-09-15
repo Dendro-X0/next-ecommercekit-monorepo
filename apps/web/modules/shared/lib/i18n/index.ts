@@ -1,7 +1,7 @@
 import { defaultLocale, type Locale } from "./config"
-import type { Messages } from "./types"
 import { en } from "./messages/en"
 import { es } from "./messages/es"
+import type { Messages } from "./types"
 
 const registry: Readonly<Record<Locale, Messages>> = {
   en,

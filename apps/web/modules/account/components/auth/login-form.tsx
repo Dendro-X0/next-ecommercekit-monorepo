@@ -1,24 +1,25 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
-import { showToast } from "@/lib/utils/toast"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
-import { AppLink } from "@/modules/shared/components/app-link"
-import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { authClient } from "@/lib/auth-client"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
+import { showToast } from "@/lib/utils/toast"
+import { AppLink } from "@/modules/shared/components/app-link"
 
 const LoginSchema = z.object({
-  email: z.string().email(),
+  identifier: z.string().min(1, "Email or username is required"),
   password: z.string().min(6),
   rememberMe: z.coerce.boolean().default(false),
 })
 
 // Use input type to match zodResolver's expected input (since defaults make fields optional on input)
 type LoginFormValues = z.input<typeof LoginSchema>
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -55,7 +56,7 @@ export function LoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
       rememberMe: false,
     },
@@ -64,22 +65,29 @@ export function LoginForm() {
   useEffect(() => {
     const verified = params.get("verified")
     const email = params.get("email")
-    if (email && form.getValues("email") !== email) {
-      form.setValue("email", email)
+    if (email && form.getValues("identifier") !== email) {
+      form.setValue("identifier", email)
     }
     if (verified === "1") {
       showToast("Email verified. Please sign in to continue.", { type: "success" })
     }
   }, [form, params])
 
+  const isEmail = (value: string): boolean => /.+@.+\..+/.test(value)
+
   async function onSubmit(values: LoginFormValues): Promise<void> {
     try {
-      const { error } = await authClient.signIn.email({
-        email: values.email,
-        password: values.password,
-      })
+      const { error } = isEmail(values.identifier)
+        ? await authClientHelpers.signInEmail({
+            email: values.identifier,
+            password: values.password,
+          })
+        : await authClientHelpers.signInUsername({
+            username: values.identifier,
+            password: values.password,
+          })
       if (error) {
-        form.setError("email", { type: "server", message: error.message })
+        form.setError("identifier", { type: "server", message: error.message })
         return
       }
       showToast("Signed in successfully", { type: "success" })
@@ -146,12 +154,12 @@ export function LoginForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email or Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="john.doe@example.com" {...field} />
+                    <Input placeholder="you@example.com or yourname" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -188,7 +196,10 @@ export function LoginForm() {
                   </FormItem>
                 )}
               />
-              <AppLink href="/auth/forgot-password" className="text-sm text-primary hover:underline">
+              <AppLink
+                href="/auth/forgot-password"
+                className="text-sm text-primary hover:underline"
+              >
                 Forgot password?
               </AppLink>
             </div>

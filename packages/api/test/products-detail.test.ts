@@ -10,6 +10,7 @@ vi.mock("@repo/db", () => {
   }
   return { productsRepo: repo } as const
 })
+
 import { productsRepo } from "@repo/db"
 import productsRoute from "../src/routes/products"
 

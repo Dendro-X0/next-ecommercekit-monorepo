@@ -1,10 +1,10 @@
+import type React from "react"
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
 import { ProductForm } from "@/app/dashboard/admin/_components/product-form"
 import { Button } from "@/components/ui/button"
 import { links } from "@/lib/links"
 import { AppLink } from "../../../../../../../modules/shared/components/app-link"
-import type React from "react"
 
 /**
  * Admin → E-commerce → Products → Create page.

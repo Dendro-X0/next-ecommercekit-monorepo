@@ -1,24 +1,25 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { SidebarInset } from "@/components/ui/sidebar"
-import { links } from "@/lib/links"
-import { ordersApi } from "@/lib/data/orders"
-import { wishlistApi } from "@/lib/data/wishlist"
-import type { Order } from "@/types/order"
-import type { User, UserOrder, UserStats, Wishlist } from "@/types/user"
 import { useQuery } from "@tanstack/react-query"
 import { Heart } from "lucide-react"
-import { AppLink } from "../../../../modules/shared/components/app-link"
 import dynamic from "next/dynamic"
 import type { ReactElement } from "react"
 import { useMemo } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SidebarInset } from "@/components/ui/sidebar"
 import { useSession } from "@/hooks/use-session"
+import { ordersApi } from "@/lib/data/orders"
+import { wishlistApi } from "@/lib/data/wishlist"
+import { links } from "@/lib/links"
+import type { Order } from "@/types/order"
+import type { User, UserOrder, UserStats, Wishlist } from "@/types/user"
+import { AppLink } from "../../../../modules/shared/components/app-link"
 import { DashboardHeader } from "./_components/dashboard-header"
 import { MembershipCard } from "./_components/membership-card"
 import { QuickActions } from "./_components/quick-actions"
 import { RecentOrders } from "./_components/recent-orders"
+
 const SpendingCharts = dynamic(
   () => import("./_components/spending-charts").then((m) => m.SpendingCharts),
   {
@@ -38,8 +39,9 @@ const SpendingCharts = dynamic(
         ))}
       </div>
     ),
-  }
+  },
 )
+
 import { UserStatsCards } from "./_components/user-stats"
 import { WishlistPreview } from "./_components/wishlist-preview"
 
@@ -76,7 +78,7 @@ const LazyRecommendations = dynamic(
         </CardContent>
       </Card>
     ),
-  }
+  },
 )
 
 export default function UserDashboardPage(): ReactElement {
@@ -124,6 +126,24 @@ export default function UserDashboardPage(): ReactElement {
       favoriteCategory: "—",
     }
   }, [orders])
+
+  // Stable keys for loading skeletons
+  const statsSkeletonKeys = useMemo<readonly string[]>(
+    () => Array.from({ length: 5 }, (_v, i) => `usr-stats-skel-${i}`),
+    [],
+  )
+  const chartsSkeletonKeys = useMemo<readonly string[]>(
+    () => ["usr-charts-skel-0", "usr-charts-skel-1"] as const,
+    [],
+  )
+  const recentOrdersSkeletonKeys = useMemo<readonly string[]>(
+    () => Array.from({ length: 5 }, (_v, i) => `usr-recent-skel-${i}`),
+    [],
+  )
+  const wishlistSkeletonKeys = useMemo<readonly string[]>(
+    () => Array.from({ length: 3 }, (_v, i) => `usr-wishlist-skel-${i}`),
+    [],
+  )
 
   // Derive spending trend by month (Jan..Dec) from orders.createdAt
   const spendingData: Array<{ name: string; amount: number }> = useMemo(() => {
@@ -218,9 +238,7 @@ export default function UserDashboardPage(): ReactElement {
       <div className="flex-1 space-y-6 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Welcome back, {userSummary.name}!
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight">Welcome back, {userSummary.name}!</h2>
             <p className="text-muted-foreground">
               Here&apos;s what&apos;s happening with your account today.
             </p>
@@ -230,8 +248,8 @@ export default function UserDashboardPage(): ReactElement {
         {/* User Statistics */}
         {isOrdersLoading ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            {[...Array(5)].map((_, i) => (
-              <Card key={i}>
+            {statsSkeletonKeys.map((k) => (
+              <Card key={k}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <div className="h-4 w-24 bg-muted rounded animate-pulse" />
                   <div className="h-4 w-4 bg-muted rounded animate-pulse" />
@@ -250,7 +268,9 @@ export default function UserDashboardPage(): ReactElement {
               <CardDescription>We could not load your stats. Please try again.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button size="sm" onClick={() => void refetchOrders()}>Retry</Button>
+              <Button size="sm" onClick={() => void refetchOrders()}>
+                Retry
+              </Button>
             </CardContent>
           </Card>
         ) : (
@@ -288,7 +308,9 @@ export default function UserDashboardPage(): ReactElement {
                   <CardDescription>We could not load your membership details.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button size="sm" onClick={() => void refetchOrders()}>Retry</Button>
+                  <Button size="sm" onClick={() => void refetchOrders()}>
+                    Retry
+                  </Button>
                 </CardContent>
               </Card>
             ) : (
@@ -301,8 +323,8 @@ export default function UserDashboardPage(): ReactElement {
         {/* Spending Analytics */}
         {isOrdersLoading ? (
           <div className="grid gap-6 md:grid-cols-2">
-            {[0, 1].map((i) => (
-              <Card key={i}>
+            {chartsSkeletonKeys.map((k) => (
+              <Card key={k}>
                 <CardHeader>
                   <div className="h-5 w-40 bg-muted rounded animate-pulse" />
                   <div className="mt-2 h-4 w-56 bg-muted rounded animate-pulse" />
@@ -320,7 +342,9 @@ export default function UserDashboardPage(): ReactElement {
               <CardDescription>We could not load your spending analytics.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button size="sm" onClick={() => void refetchOrders()}>Retry</Button>
+              <Button size="sm" onClick={() => void refetchOrders()}>
+                Retry
+              </Button>
             </CardContent>
           </Card>
         ) : (
@@ -338,8 +362,8 @@ export default function UserDashboardPage(): ReactElement {
               </CardHeader>
               <CardContent>
                 <div className="h-6 w-full bg-muted rounded animate-pulse mb-2" />
-                {[...Array(5)].map((_, idx) => (
-                  <div key={idx} className="h-10 w-full bg-muted rounded animate-pulse mb-2" />
+                {recentOrdersSkeletonKeys.map((k) => (
+                  <div key={k} className="h-10 w-full bg-muted rounded animate-pulse mb-2" />
                 ))}
               </CardContent>
             </Card>
@@ -350,7 +374,9 @@ export default function UserDashboardPage(): ReactElement {
                 <CardDescription>We couldn&apos;t load your recent orders.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button size="sm" onClick={() => void refetchOrders()}>Retry</Button>
+                <Button size="sm" onClick={() => void refetchOrders()}>
+                  Retry
+                </Button>
               </CardContent>
             </Card>
           ) : recentUserOrders.length === 0 ? (
@@ -377,8 +403,8 @@ export default function UserDashboardPage(): ReactElement {
                 <div className="mt-2 h-4 w-56 bg-muted rounded animate-pulse" />
               </CardHeader>
               <CardContent>
-                {[...Array(3)].map((_, idx) => (
-                  <div key={idx} className="flex items-center gap-3 mb-4">
+                {wishlistSkeletonKeys.map((k) => (
+                  <div key={k} className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-lg bg-muted animate-pulse" />
                     <div className="flex-1">
                       <div className="h-4 w-40 bg-muted rounded animate-pulse mb-2" />
@@ -396,7 +422,9 @@ export default function UserDashboardPage(): ReactElement {
                 <CardDescription>We couldn&apos;t load your wishlist.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button size="sm" onClick={() => void refetchWishlist()}>Retry</Button>
+                <Button size="sm" onClick={() => void refetchWishlist()}>
+                  Retry
+                </Button>
               </CardContent>
             </Card>
           ) : !wishlist || (wishlist.items?.length ?? 0) === 0 ? (

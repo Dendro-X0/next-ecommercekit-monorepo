@@ -1,20 +1,19 @@
 "use client"
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Heart, ShoppingCart } from "lucide-react"
 import * as React from "react"
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { SafeImage } from "@/components/ui/safe-image"
 import { StarRating } from "@/components/ui/star-rating"
 import { isDigitalProduct } from "@/lib/cart/utils"
 import { wishlistApi } from "@/lib/data/wishlist"
+import { productsDisabled, uiTemplates } from "@/lib/safe-mode"
 import { useCartStore } from "@/lib/stores/cart"
 import { WISHLIST_HAS_QK, WISHLIST_QK } from "@/lib/wishlist/query-keys"
 import type { Product } from "@/types"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Heart, ShoppingCart } from "lucide-react"
-import { SafeImage } from "@/components/ui/safe-image"
 import { AppLink } from "../../../shared/components/app-link"
-import { productsDisabled, uiTemplates } from "@/lib/safe-mode"
 
 interface ProductCardProps {
   product: Product
@@ -167,7 +166,9 @@ export function ProductCard({ product, initialWishlist, bulkReady = true }: Prod
       <div className="mt-4 space-y-2">
         <div className="flex items-center justify-between">
           <Badge variant="outline" className="text-xs">
-            {product.category ?? (product as unknown as { categorySlug?: string }).categorySlug ?? "Product"}
+            {product.category ??
+              (product as unknown as { categorySlug?: string }).categorySlug ??
+              "Product"}
           </Badge>
           <StarRating rating={Number.isFinite(product.rating) ? product.rating : 0} size="sm" />
         </div>
@@ -187,8 +188,8 @@ export function ProductCard({ product, initialWishlist, bulkReady = true }: Prod
               <span className="text-sm text-muted-foreground line-through">${safeOriginal}</span>
             )}
           </div>
-          <span className="text-xs text-muted-foreground">(
-            {Number.isFinite(product.reviewCount) ? product.reviewCount : 0} reviews)
+          <span className="text-xs text-muted-foreground">
+            ({Number.isFinite(product.reviewCount) ? product.reviewCount : 0} reviews)
           </span>
         </div>
 

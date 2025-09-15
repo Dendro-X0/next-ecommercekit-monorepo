@@ -1,14 +1,16 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { SidebarInset } from "@/components/ui/sidebar"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
-import { usePathname } from "next/navigation"
 
 export default function SettingsLayout({
   children,
-}: { children: React.ReactNode }): React.ReactElement {
+}: {
+  children: React.ReactNode
+}): React.ReactElement {
   const pathname = usePathname()
 
   const breadcrumbs = [{ label: "Dashboard", href: "/dashboard/user" }, { label: "Settings" }]

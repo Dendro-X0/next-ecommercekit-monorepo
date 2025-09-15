@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto"
-import { type SQL, and, asc, count, desc, eq, ilike } from "drizzle-orm"
+import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm"
 import { db } from "../db"
-import { products } from "../schema/products"
-import { productMedia } from "../schema/product-media"
 import { media as mediaTable } from "../schema/media"
+import { productMedia } from "../schema/product-media"
+import { products } from "../schema/products"
 
 export type ListParams = Readonly<{
   query?: string
@@ -122,9 +122,9 @@ function mapRowToDto(row: typeof products.$inferSelect): ProductDTO {
   } as const
 }
 
-async function listMediaForProduct(productId: string): Promise<
-  ReadonlyArray<Readonly<{ url: string; kind: "image" | "video" }>>
-> {
+async function listMediaForProduct(
+  productId: string,
+): Promise<ReadonlyArray<Readonly<{ url: string; kind: "image" | "video" }>>> {
   const rows = await db
     .select({ url: mediaTable.url, kind: mediaTable.kind, pos: productMedia.position })
     .from(productMedia)
@@ -248,7 +248,11 @@ async function create(input: CreateProductInput): Promise<ProductDTO> {
     for (const m of input.media) {
       // Try to find existing media row by URL, otherwise create a minimal one
       const existing = (
-        await db.select({ id: mediaTable.id }).from(mediaTable).where(eq(mediaTable.url, m.url)).limit(1)
+        await db
+          .select({ id: mediaTable.id })
+          .from(mediaTable)
+          .where(eq(mediaTable.url, m.url))
+          .limit(1)
       )[0]
       const mediaId = existing?.id ?? randomUUID()
       if (!existing) {
@@ -259,7 +263,9 @@ async function create(input: CreateProductInput): Promise<ProductDTO> {
           kind: m.kind,
         } as any)
       }
-      await db.insert(productMedia).values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
+      await db
+        .insert(productMedia)
+        .values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
     }
   }
   return mapRowToDto(row)
@@ -297,13 +303,21 @@ async function update(id: string, patch: UpdateProductInput): Promise<ProductDTO
     let pos = 0
     for (const m of patch.media) {
       const existing = (
-        await db.select({ id: mediaTable.id }).from(mediaTable).where(eq(mediaTable.url, m.url)).limit(1)
+        await db
+          .select({ id: mediaTable.id })
+          .from(mediaTable)
+          .where(eq(mediaTable.url, m.url))
+          .limit(1)
       )[0]
       const mediaId = existing?.id ?? randomUUID()
       if (!existing) {
-        await db.insert(mediaTable).values({ id: mediaId, provider: "external", url: m.url, kind: m.kind } as any)
+        await db
+          .insert(mediaTable)
+          .values({ id: mediaId, provider: "external", url: m.url, kind: m.kind } as any)
       }
-      await db.insert(productMedia).values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
+      await db
+        .insert(productMedia)
+        .values({ id: randomUUID(), productId: id, mediaId, position: pos++ })
     }
   }
   const base = mapRowToDto(row)

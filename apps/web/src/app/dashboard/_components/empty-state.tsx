@@ -1,10 +1,10 @@
 "use client"
 
+import type React from "react"
 import {
   EmptyState as UIEmptyState,
   type EmptyStateProps as UIEmptyStateProps,
 } from "@/components/ui/empty-state"
-import type React from "react"
 
 /**
  * DashboardEmptyState: wrapper over UI EmptyState with variant-driven ARIA roles.

@@ -1,4 +1,5 @@
 import { productsRepo } from "@repo/db"
+import type { Context } from "hono"
 /**
  * Products routes for the Shop API.
  *
@@ -6,7 +7,6 @@ import { productsRepo } from "@repo/db"
  * Later, wire these to Drizzle models.
  */
 import { Hono } from "hono"
-import type { Context } from "hono"
 import { z } from "zod"
 import { AdminGuard } from "../lib/admin-guard"
 import { validate } from "../lib/validate"

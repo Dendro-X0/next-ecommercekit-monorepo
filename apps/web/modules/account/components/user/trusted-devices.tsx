@@ -1,8 +1,8 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
 import type React from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { authClient } from "@/lib/auth-client"
 
 type SessionSummary = {
   readonly token: string

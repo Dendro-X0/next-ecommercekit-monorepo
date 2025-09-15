@@ -1,4 +1,3 @@
-import type { NotificationSettingsSchema, PrivacySettingsSchema } from "@/lib/validations/auth"
 /**
  * User domain types.
  *
@@ -6,6 +5,7 @@ import type { NotificationSettingsSchema, PrivacySettingsSchema } from "@/lib/va
  * It infers settings types from the existing zod schemas to ensure type safety.
  */
 import type { z } from "zod"
+import type { NotificationSettingsSchema, PrivacySettingsSchema } from "@/lib/validations/auth"
 
 /**
  * Notification settings shape, inferred from zod schema.

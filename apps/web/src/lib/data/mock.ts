@@ -1,6 +1,5 @@
 import type { Order } from "@/types/cart"
-import type { User } from "@/types/user"
-import type { AdminStats } from "@/types/user"
+import type { AdminStats, User } from "@/types/user"
 
 export const mockUser: User = {
   id: "1",

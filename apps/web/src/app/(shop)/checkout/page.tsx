@@ -1,5 +1,13 @@
 "use client"
 
+import { usePaypalConfig } from "@repo/payments/hooks/use-paypal-config"
+import { usePaypalCreateOrder } from "@repo/payments/hooks/use-paypal-order"
+import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
+import { useQuery } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { toast } from "sonner"
 import { OrderSummary } from "@/components/checkout/order-summary"
 import { PaymentForm } from "@/components/checkout/payment-form"
 import { ShippingForm } from "@/components/checkout/shipping-form"
@@ -8,24 +16,23 @@ import { Button } from "@/components/ui/button"
 import { isDigitalOnlyCart } from "@/lib/cart/utils"
 import { checkoutApi } from "@/lib/data/checkout"
 import { ordersApi } from "@/lib/data/orders"
-import { usePaypalCreateOrder } from "@repo/payments/hooks/use-paypal-order"
-import { usePaypalConfig } from "@repo/payments/hooks/use-paypal-config"
-import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
 import { useCartStore } from "@/lib/stores/cart"
 import type { PaymentMethod, ShippingAddress } from "@/types/cart"
 import { toOrderItemsFromCart } from "@/types/order"
-import { useQuery } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
-import { useMemo } from "react"
-import { toast } from "sonner"
 
 type CheckoutStep = "shipping" | "payment" | "review"
 type Totals = Readonly<{ subtotal: number; shipping: number; tax: number; total: number }>
 
+export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+
 export default function CheckoutPage() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  if (!mounted) return null
   const { items, subtotal, shipping, tax, total, clearCart } = useCartStore()
   const isDigitalOnly: boolean = isDigitalOnlyCart(items)
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(() =>
@@ -107,8 +114,8 @@ export default function CheckoutPage() {
     setIsPlacing(true)
     try {
       let desiredStatus: "pending" | "paid" = "pending"
-      let paymentProvider: "stripe" | "paypal" | undefined = undefined
-      let paymentRef: string | undefined = undefined
+      let paymentProvider: "stripe" | "paypal" | undefined
+      let paymentRef: string | undefined
       if (paymentMethod?.type === "stripe") {
         const stripeConfigured: boolean | undefined = stripeCfg.data?.configured
         if (stripeConfigured === false) {
@@ -154,7 +161,9 @@ export default function CheckoutPage() {
         } else {
           try {
             const amountForPayPalCents = Math.round((quote?.total ?? total) * 100)
-            const created = await createPaypalOrder.mutateAsync({ amountCents: amountForPayPalCents })
+            const created = await createPaypalOrder.mutateAsync({
+              amountCents: amountForPayPalCents,
+            })
             paymentProvider = "paypal"
             paymentRef = created.id
             desiredStatus = "pending"

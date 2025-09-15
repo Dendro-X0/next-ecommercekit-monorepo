@@ -1,10 +1,9 @@
 "use client"
 
+import { FaGithub, FaGoogle } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
 import { authClient } from "@/lib/auth-client"
 import { showToast } from "@/lib/utils/toast"
-import { FaGoogle } from "react-icons/fa"
-import { FaGithub } from "react-icons/fa"
 
 export function SocialLogin() {
   return (

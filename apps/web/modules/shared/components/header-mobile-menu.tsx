@@ -1,18 +1,18 @@
 "use client"
 
+import { Heart, LayoutGrid, LogIn, LogOut, Menu, ShoppingCart, UserPlus } from "lucide-react"
+import { translate } from "modules/shared/lib/i18n"
+import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
+import { usePathname } from "next/navigation"
 import type { JSX } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, Heart, ShoppingCart, LogIn, UserPlus, LayoutGrid, LogOut } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { AppLink } from "./app-link"
-import { useCartStore } from "@/lib/stores/cart"
 import { useSession } from "@/hooks/use-session"
-import { authClient } from "@/lib/auth-client"
-import { type Role, hasRole } from "@/lib/roles"
 import { isAdminEmail } from "@/lib/admin-allowlist"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
-import { translate } from "modules/shared/lib/i18n"
+import { authClient } from "@/lib/auth-client"
+import { hasRole, type Role } from "@/lib/roles"
+import { useCartStore } from "@/lib/stores/cart"
+import { AppLink } from "./app-link"
 
 export type HeaderMobileNavItem = Readonly<{
   titleKey: string
@@ -26,7 +26,11 @@ export type HeaderMobileNavItem = Readonly<{
 /**
  * Mobile hamburger menu. Includes primary navigation and key actions.
  */
-export function HeaderMobileMenu({ navigationItems }: { readonly navigationItems: readonly HeaderMobileNavItem[] }): JSX.Element {
+export function HeaderMobileMenu({
+  navigationItems,
+}: {
+  readonly navigationItems: readonly HeaderMobileNavItem[]
+}): JSX.Element {
   const pathname = usePathname()
   const locale = getLocaleFromPath(pathname)
   const session = useSession()
@@ -36,7 +40,10 @@ export function HeaderMobileMenu({ navigationItems }: { readonly navigationItems
     user && Array.isArray((user as Record<string, unknown>).roles)
       ? ((user as { readonly roles?: readonly Role[] }).roles as readonly Role[] | undefined)
       : undefined
-  const isAdmin: boolean = (user as { readonly isAdmin?: boolean } | null)?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
+  const isAdmin: boolean =
+    (user as { readonly isAdmin?: boolean } | null)?.isAdmin === true ||
+    hasRole(roles, ["admin"]) ||
+    isAdminEmail(user?.email ?? null)
   return (
     <div className="md:hidden">
       <Sheet>

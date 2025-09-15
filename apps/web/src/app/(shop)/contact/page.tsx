@@ -1,6 +1,5 @@
-import { ContactForm, ContactInfo } from "@/components/contact/contact-form"
 import type { Metadata } from "next"
-import React from "react"
+import { ContactForm, ContactInfo } from "@/components/contact/contact-form"
 
 export const metadata: Metadata = {
   title: "Contact Us | Shop.co",
@@ -19,41 +18,37 @@ export default function ContactPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* JSON-LD: ContactPage and Organization contactPoint */}
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            [
-              {
-                "@context": "https://schema.org",
-                "@type": "ContactPage",
-                name: "Contact Us",
-                url: "/contact",
-                description:
-                  "Have a question or need help? Contact Shop.co customer support for order assistance, product questions, and general inquiries.",
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                name: "Shop.co",
-                url: "/",
-                contactPoint: [
-                  {
-                    "@type": "ContactPoint",
-                    telephone: "+1-555-123-4567",
-                    contactType: "customer support",
-                    areaServed: "US",
-                    availableLanguage: ["English"],
-                  },
-                ],
-              },
-            ],
-            null,
-            2,
-          ),
-        }}
-      />
+      <script type="application/ld+json">
+        {JSON.stringify(
+          [
+            {
+              "@context": "https://schema.org",
+              "@type": "ContactPage",
+              name: "Contact Us",
+              url: "/contact",
+              description:
+                "Have a question or need help? Contact Shop.co customer support for order assistance, product questions, and general inquiries.",
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Shop",
+              url: "/",
+              contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  telephone: "+1-555-123-4567",
+                  contactType: "customer support",
+                  areaServed: "US",
+                  availableLanguage: ["English"],
+                },
+              ],
+            },
+          ],
+          null,
+          2,
+        )}
+      </script>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>

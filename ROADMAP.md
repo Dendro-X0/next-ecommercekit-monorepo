@@ -29,6 +29,16 @@ Track active work in GitHub issues and milestones. This file is a high‑level g
   - Implemented S3‑backed uploads via `/api/uploads` with local disk fallback for dev.
   - Admin Dashboard uploader now persists real image/video URLs and previews.
 
+- Auth client helpers & login UX
+  - Centralized typed Better Auth client helpers in `apps/web/src/lib/auth-client-helpers.ts`; migrated web callsites.
+  - Enabled username-or-email login across login/signup/profile flows; aligned server/client validation.
+- Forms & accessibility polish
+  - Unique field IDs via `useId()` in major forms (shipping, payment, contact, address) and semantic status elements where appropriate.
+  - App `Button` shim now defaults `type="button"` to prevent accidental submissions.
+- Branding & docs
+  - Updated brand copy to “ModularShop” in UI and refreshed app description.
+  - Added documentation on auth helpers and a11y/IDs to `docs/architecture.md` and `docs/frontend-architecture.md`.
+
 ## Near‑Term
 
 - Internationalization (i18n)

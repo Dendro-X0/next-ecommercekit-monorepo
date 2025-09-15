@@ -1,15 +1,15 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import type { JSX } from "react"
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { SafeImage } from "@/components/ui/safe-image"
 import { Skeleton } from "@/components/ui/skeleton"
 import { categoriesApi } from "@/lib/data/categories"
-import type { Category } from "@/types"
-import { useQuery } from "@tanstack/react-query"
-import { AppLink } from "../../../../modules/shared/components/app-link"
-import { useMemo } from "react"
-import type { JSX } from "react"
-import { SafeImage } from "@/components/ui/safe-image"
 import { productsDisabled } from "@/lib/safe-mode"
+import type { Category } from "@/types"
+import { AppLink } from "../../../../modules/shared/components/app-link"
 
 /**
  * Categories index page: lists all categories from the backend.
@@ -71,7 +71,7 @@ export default function CategoriesPageClient(): JSX.Element {
                   <div className="aspect-square w-full overflow-hidden relative">
                     <SafeImage
                       src={`/categories/${c.slug}.jpg`}
-                      fallbackSrc={(c.image || "/placeholder.svg") + "?height=300&width=300"}
+                      fallbackSrc={`${c.image || "/placeholder.svg"}?height=300&width=300`}
                       alt={c.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

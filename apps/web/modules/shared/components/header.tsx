@@ -1,11 +1,11 @@
-import { ThemeToggle } from "@/components/theme/theme-toggle"
 import { X } from "lucide-react"
-import { AppLink } from "./app-link"
 import type { JSX } from "react"
-import { HeaderNavIsland } from "./header-nav-island"
+import { ThemeToggle } from "@/components/theme/theme-toggle"
+import { AppLink } from "./app-link"
 import { HeaderActionsIsland } from "./header-actions-island"
-import { HeaderSearch } from "./header-search"
 import { HeaderMobileMenu } from "./header-mobile-menu"
+import { HeaderNavIsland } from "./header-nav-island"
+import { HeaderSearch } from "./header-search"
 import { LocaleSwitcher } from "./locale-switcher"
 
 type NavItem = {
@@ -23,10 +23,13 @@ const navigationItems: ReadonlyArray<NavItem> = [
 ]
 
 export function Header(): JSX.Element {
-  const disableHeaderInteractions: boolean = (process.env.NEXT_PUBLIC_DISABLE_HEADER_INTERACTIONS ?? "false").toLowerCase() === "true"
+  const disableHeaderInteractions: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_HEADER_INTERACTIONS ?? "false").toLowerCase() === "true"
   // Hide announcement bar by default to reduce CLS; enable via env when desired
-  const disableAnnouncementBar: boolean = (process.env.NEXT_PUBLIC_DISABLE_ANNOUNCEMENT_BAR ?? "false").toLowerCase() === "true"
-  const disableHeaderSearch: boolean = (process.env.NEXT_PUBLIC_DISABLE_HEADER_SEARCH ?? "false").toLowerCase() === "true"
+  const disableAnnouncementBar: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_ANNOUNCEMENT_BAR ?? "false").toLowerCase() === "true"
+  const disableHeaderSearch: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_HEADER_SEARCH ?? "false").toLowerCase() === "true"
   if (disableHeaderInteractions) {
     // Minimal, static header with no data fetching or interactivity
     return (
@@ -36,8 +39,18 @@ export function Header(): JSX.Element {
           <div className="flex items-center gap-3 min-w-0 lg:col-span-4">
             <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
             <nav className="hidden md:flex items-center space-x-1">
-              <AppLink href="/shop" className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200">Shop</AppLink>
-              <AppLink href="/categories" className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200">Categories</AppLink>
+              <AppLink
+                href="/shop"
+                className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
+              >
+                Shop
+              </AppLink>
+              <AppLink
+                href="/categories"
+                className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
+              >
+                Categories
+              </AppLink>
             </nav>
           </div>
           {/* Center: search */}
@@ -70,11 +83,17 @@ export function Header(): JSX.Element {
             Create an account
           </AppLink>
           <span className="px-2">to explore the full UI. See</span>
-          <AppLink href="https://github.com/Dendro-X0/next-ecommerce-starterkit#readme" className="underline hover:no-underline text-white">
+          <AppLink
+            href="https://github.com/Dendro-X0/next-ecommerce-starterkit#readme"
+            className="underline hover:no-underline text-white"
+          >
             README
           </AppLink>
           <span className="px-2">for setup details.</span>
-          <button className="absolute right-4 top-2 hover:opacity-70 transition-opacity" aria-label="Dismiss banner">
+          <button
+            className="absolute right-4 top-2 hover:opacity-70 transition-opacity"
+            aria-label="Dismiss banner"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>

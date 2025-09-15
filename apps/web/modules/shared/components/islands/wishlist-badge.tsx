@@ -1,12 +1,12 @@
 "use client"
 
-import { Heart } from "lucide-react"
-import { AppLink } from "../app-link"
-import { useEffect, useState, type JSX } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { wishlistApi } from "@/lib/data/wishlist"
+import { Heart } from "lucide-react"
+import { type JSX, useEffect, useState } from "react"
 import { useSession } from "@/hooks/use-session"
+import { wishlistApi } from "@/lib/data/wishlist"
 import { WISHLIST_QK } from "@/lib/wishlist/query-keys"
+import { AppLink } from "../app-link"
 
 export function WishlistBadge(): JSX.Element {
   const session = useSession()

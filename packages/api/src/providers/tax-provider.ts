@@ -10,8 +10,6 @@ export type TaxJurisdiction = Readonly<{
   zipCode?: string
 }>
 
-
-
 import type { Currency } from "@repo/i18n"
 
 export type TaxItem = Readonly<{
@@ -20,16 +18,12 @@ export type TaxItem = Readonly<{
   kind?: "digital" | "physical"
 }>
 
-
-
 export type TaxQuoteInput = Readonly<{
   items: readonly TaxItem[]
   subtotalCents: number
   shippingCents: number
   jurisdiction?: TaxJurisdiction
 }>
-
-
 
 export type TaxQuote = Readonly<{ amountCents: number; currency: Currency }>
 

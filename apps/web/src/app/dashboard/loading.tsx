@@ -1,8 +1,8 @@
-import { Spinner } from "@/components/ui/spinner"
 /**
  * Dashboard segment loading UI to smooth transitions after sign-in.
  */
 import type { ReactElement } from "react"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function DashboardLoading(): ReactElement {
   return (

@@ -32,9 +32,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       next: { revalidate: 60 },
     })
     if (res.ok) {
-      const json: Readonly<{ items: readonly ServerCategoryDto[] }> = (await res.json()) as Readonly<{
-        items: readonly ServerCategoryDto[]
-      }>
+      const json: Readonly<{ items: readonly ServerCategoryDto[] }> =
+        (await res.json()) as Readonly<{
+          items: readonly ServerCategoryDto[]
+        }>
       for (const c of json.items ?? []) {
         const path: string = `/categories/${encodeURIComponent(c.slug)}`
         const urlEn: string = new URL(path, BASE).toString()

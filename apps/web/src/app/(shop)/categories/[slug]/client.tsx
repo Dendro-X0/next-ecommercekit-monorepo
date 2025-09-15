@@ -1,5 +1,7 @@
 "use client"
 
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { type JSX, useMemo, useState } from "react"
 import { ProductFilters } from "@/components/product/product-filters"
 import { ProductGrid } from "@/components/product/product-grid"
 import { Button } from "@/components/ui/button"
@@ -11,10 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
-import { productsApi, type ListProductsResponse } from "@/lib/data/products"
+import { type ListProductsResponse, productsApi } from "@/lib/data/products"
 import type { FilterOptions, Product } from "@/types"
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useMemo, useState, type JSX } from "react"
 
 interface CategoryPageClientProps {
   readonly params: Readonly<{ slug: string }>
@@ -49,7 +49,7 @@ export default function CategoryPageClient({ params }: CategoryPageClientProps):
 
   const skeletonKeys: readonly string[] = useMemo(
     () => Array.from({ length: pageSize }, (_, i) => `cat-skel-${i}`),
-    [pageSize],
+    [],
   )
 
   return (
@@ -91,7 +91,10 @@ export default function CategoryPageClient({ params }: CategoryPageClientProps):
             ) : (
               <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
                 <p className="mb-4">No products found in this category.</p>
-                <Button variant="outline" onClick={() => setFilters({ categories: [], priceRange: [0, 500] })}>
+                <Button
+                  variant="outline"
+                  onClick={() => setFilters({ categories: [], priceRange: [0, 500] })}
+                >
                   Reset filters
                 </Button>
               </div>

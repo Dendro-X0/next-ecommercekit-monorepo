@@ -1,7 +1,15 @@
-import { db, media as mediaTable, mediaEvents as mediaEventsTable, and, eq, gt, sql } from "@repo/db"
-import { s3Storage, cloudinaryStorage } from "@repo/storage"
 import { spawn } from "node:child_process"
 import { randomUUID } from "node:crypto"
+import {
+  and,
+  db,
+  eq,
+  gt,
+  mediaEvents as mediaEventsTable,
+  media as mediaTable,
+  sql,
+} from "@repo/db"
+import { cloudinaryStorage, s3Storage } from "@repo/storage"
 
 /**
  * Media worker (stub):
@@ -17,24 +25,6 @@ const WINDOW_MS: number = Number(process.env.MEDIA_WORKER_LOOKBACK_MS || 24 * 60
 const PREVIEW_SECONDS: number = Number(process.env.MEDIA_PREVIEW_SECONDS || 6)
 const FFMPEG_PATH: string = process.env.FFMPEG_PATH || "ffmpeg"
 const STORAGE_PROVIDER: string = (process.env.STORAGE_PROVIDER || "").toLowerCase()
-
-function generatePreviewUrl(url: string): string {
-  try {
-    const u = new URL(url, "http://local")
-    // If absolute, keep origin; otherwise treat as relative
-    if (!/^https?:/i.test(url)) {
-      // Return relative with query to avoid changing host in dev
-      const q = new URLSearchParams(u.search)
-      q.set("preview", "1")
-      return `${u.pathname}?${q.toString()}`
-    }
-    u.searchParams.set("preview", "1")
-    return u.toString()
-  } catch {
-    // Fallback: append ?preview=1
-    return url.includes("?") ? `${url}&preview=1` : `${url}?preview=1`
-  }
-}
 
 function transcodeWithFfmpeg(input: Uint8Array): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
@@ -64,7 +54,9 @@ function transcodeWithFfmpeg(input: Uint8Array): Promise<Uint8Array> {
     const chunks: Uint8Array[] = []
     ff.stdout.on("data", (d: Buffer) => chunks.push(new Uint8Array(d)))
     let stderr = ""
-    ff.stderr.on("data", (d: Buffer) => (stderr += d.toString()))
+    ff.stderr.on("data", (d: Buffer) => {
+      stderr += d.toString()
+    })
     ff.on("close", (code) => {
       if (code === 0) {
         const out = new Uint8Array(chunks.reduce((n, c) => n + c.length, 0))
@@ -88,11 +80,13 @@ async function processQueue(): Promise<void> {
   const queued = await db
     .select({ id: mediaEventsTable.id, mediaId: mediaEventsTable.mediaId })
     .from(mediaEventsTable)
-    .where(and(eq(mediaEventsTable.action, "transcode_queued"), gt(mediaEventsTable.createdAt, since)))
+    .where(
+      and(eq(mediaEventsTable.action, "transcode_queued"), gt(mediaEventsTable.createdAt, since)),
+    )
     .limit(50)
 
   for (const ev of queued) {
-    const mediaId: string | undefined = ev.mediaId as unknown as string
+    const mediaId: string | undefined = typeof ev.mediaId === "string" ? ev.mediaId : undefined
     if (!mediaId) continue
     // Fetch media
     const m = (
@@ -112,7 +106,10 @@ async function processQueue(): Promise<void> {
       if (STORAGE_PROVIDER === "cloudinary" && /res\.cloudinary\.com\//.test(srcUrl)) {
         // Example: append a simple transformation for 6s clip and width 480
         // Cloudinary URLs can be transformed by inserting /c_scale,w_480,du_6/ after /upload/
-        previewUrl = srcUrl.replace(/\/upload\/([^/]+)/, "/upload/c_scale,w_480,du_" + String(PREVIEW_SECONDS) + "/$1")
+        previewUrl = srcUrl.replace(
+          /\/upload\/([^/]+)/,
+          `/upload/c_scale,w_480,du_${String(PREVIEW_SECONDS)}/$1`,
+        )
       } else {
         // Download, transcode with ffmpeg, and upload result to storage if configured
         const res = await fetch(srcUrl)
@@ -121,12 +118,22 @@ async function processQueue(): Promise<void> {
         const key = `previews/${new Date().getUTCFullYear()}/${String(new Date().getUTCMonth() + 1).padStart(2, "0")}/${randomUUID()}.mp4`
         try {
           // Try S3 first
-          const { url } = await s3Storage.upload({ key, body: out, contentType: "video/mp4", acl: "public-read" })
+          const { url } = await s3Storage.upload({
+            key,
+            body: out,
+            contentType: "video/mp4",
+            acl: "public-read",
+          })
           previewUrl = url
         } catch {
           // Fallback to Cloudinary if configured
           try {
-            const { url } = await cloudinaryStorage.upload({ folder: "previews", fileName: key.split("/").pop(), contentType: "video/mp4", body: out })
+            const { url } = await cloudinaryStorage.upload({
+              folder: "previews",
+              fileName: key.split("/").pop(),
+              contentType: "video/mp4",
+              body: out,
+            })
             previewUrl = url
           } catch {
             // Last resort: embed data URL (not ideal)
@@ -145,15 +152,21 @@ async function processQueue(): Promise<void> {
         .update(mediaTable)
         .set({
           // jsonb concatenation using Drizzle sql helper
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          extra: sql<any>`coalesce(${mediaTable.extra}, '{}'::jsonb) || ${JSON.stringify({ previewUrl })}::jsonb`,
+          extra: sql`coalesce(${mediaTable.extra}, '{}'::jsonb) || ${JSON.stringify({ previewUrl })}::jsonb`,
         })
         .where(eq(mediaTable.id, mediaId))
 
       // Insert completion event
-      await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId, action: "transcode_completed" })
+      await db
+        .insert(mediaEventsTable)
+        .values({ id: randomUUID(), mediaId, action: "transcode_completed" })
     } else {
-      await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId, action: "error", message: "Preview generation failed" })
+      await db.insert(mediaEventsTable).values({
+        id: randomUUID(),
+        mediaId,
+        action: "error",
+        message: "Preview generation failed",
+      })
     }
   }
 }

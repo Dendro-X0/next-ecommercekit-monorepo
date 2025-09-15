@@ -1,9 +1,9 @@
 "use client"
 
 import { ChevronDown } from "lucide-react"
-import { AppLink } from "./app-link"
-import { useEffect, useRef, useState } from "react"
 import type { JSX } from "react"
+import { useEffect, useRef, useState } from "react"
+import { AppLink } from "./app-link"
 
 const shopCategories = [
   {

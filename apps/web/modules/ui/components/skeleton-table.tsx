@@ -1,7 +1,7 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import * as React from "react"
+import { cn } from "@/lib/utils"
 
 /**
  * SkeletonTable: grid-like skeleton for loading table content.

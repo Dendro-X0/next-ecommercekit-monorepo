@@ -183,7 +183,12 @@ async function hasItemsBulk(
   const rows = await db
     .select({ productId: wishlistItems.productId })
     .from(wishlistItems)
-    .where(and(eq(wishlistItems.wishlistId, w.id), inArray(wishlistItems.productId, productIds as string[])))
+    .where(
+      and(
+        eq(wishlistItems.wishlistId, w.id),
+        inArray(wishlistItems.productId, productIds as string[]),
+      ),
+    )
   const set = new Set(rows.map((r) => r.productId))
   const result: Record<string, boolean> = {}
   for (const id of productIds) result[id] = set.has(id)

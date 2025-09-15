@@ -47,9 +47,9 @@ export async function GET(): Promise<Response> {
     | undefined
   if (!u) return Response.json({ user: null })
   const roles: readonly string[] | undefined = Array.isArray(u?.roles)
-    ? ((u?.roles as unknown[]).every((x) => typeof x === "string")
-        ? (u?.roles as readonly string[])
-        : undefined)
+    ? (u?.roles as unknown[]).every((x) => typeof x === "string")
+      ? (u?.roles as readonly string[])
+      : undefined
     : undefined
   const email: string | undefined = typeof u?.email === "string" ? (u?.email as string) : undefined
   const allow = getAdminAllowlist()

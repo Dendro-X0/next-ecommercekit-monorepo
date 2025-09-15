@@ -1,7 +1,9 @@
 import { config as dotenvConfig } from "dotenv"
+
 // Load env from web app first (unified env strategy), then fallback to local .env
 dotenvConfig({ path: "../../apps/web/.env.local" })
 dotenvConfig()
+
 import { defineConfig } from "drizzle-kit"
 import path from "path"
 

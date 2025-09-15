@@ -1,0 +1,70 @@
+name: OpenDeploy DB Push (Monorepo)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Vercel environment to target
+        required: true
+        default: production
+        type: choice
+        options:
+          - production
+          - preview
+
+jobs:
+  db-push:
+    name: Drizzle DB Push
+    runs-on: ubuntu-latest
+    concurrency:
+      group: opendeploy-db-push-${{ github.ref }}
+      cancel-in-progress: false
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate pnpm
+        run: corepack prepare pnpm@10.13.1 --activate
+
+      - name: Install dependencies (workspace)
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull env from Vercel
+        working-directory: apps/web
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            vercel env pull .env.production.local --environment production
+          else
+            vercel env pull .env.preview.local --environment preview
+          fi
+
+      - name: DB Push (Drizzle)
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            set -a
+            source apps/web/.env.production.local
+            set +a
+          else
+            set -a
+            source apps/web/.env.preview.local
+            set +a
+          fi
+          pnpm -w --filter @repo/db db:push

@@ -1,10 +1,10 @@
 "use client"
 
+import type React from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { uploadsApi } from "@/lib/data/uploads"
-import type React from "react"
-import { useEffect, useRef, useState } from "react"
 
 type MediaUploaderResult = Readonly<{ url: string; kind: "image" | "video" }>
 
@@ -39,6 +39,7 @@ export function MediaUploader({
   const [error, setError] = useState<string | null>(null)
   const [progressText, setProgressText] = useState<string>("")
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const inputId = useId()
   const [previews, setPreviews] = useState<readonly { file: File; url: string }[]>([])
 
   const MAX_BYTES: number = 25 * 1024 * 1024 // 25MB (aligned with server)
@@ -50,7 +51,9 @@ export function MediaUploader({
     if (!list) {
       setFiles([])
       setPreviews((prev) => {
-        prev.forEach((p) => URL.revokeObjectURL(p.url))
+        prev.forEach((p) => {
+          URL.revokeObjectURL(p.url)
+        })
         return []
       })
       return
@@ -70,7 +73,9 @@ export function MediaUploader({
     setFiles(valid)
     setPreviews((prev) => {
       // Cleanup previous previews
-      prev.forEach((p) => URL.revokeObjectURL(p.url))
+      prev.forEach((p) => {
+        URL.revokeObjectURL(p.url)
+      })
       return valid.map((f) => ({ file: f, url: URL.createObjectURL(f) }))
     })
   }
@@ -81,13 +86,13 @@ export function MediaUploader({
   }
 
   /** Drag-over handler to allow drop. */
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
+  const handleDragOver = (e: React.DragEvent<HTMLElement>): void => {
     e.preventDefault()
     e.stopPropagation()
   }
 
   /** Drop handler to accept files from drag-and-drop. */
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
+  const handleDrop = (e: React.DragEvent<HTMLElement>): void => {
     e.preventDefault()
     e.stopPropagation()
     setError(null)
@@ -107,7 +112,9 @@ export function MediaUploader({
     const chosen = multiple ? valid : valid.slice(0, 1)
     setFiles(chosen)
     setPreviews((prev) => {
-      prev.forEach((p) => URL.revokeObjectURL(p.url))
+      prev.forEach((p) => {
+        URL.revokeObjectURL(p.url)
+      })
       return chosen.map((f) => ({ file: f, url: URL.createObjectURL(f) }))
     })
   }
@@ -142,7 +149,9 @@ export function MediaUploader({
       else if (results[0]) onUploaded(results[0]!)
       setFiles([])
       setPreviews((prev) => {
-        prev.forEach((p) => URL.revokeObjectURL(p.url))
+        prev.forEach((p) => {
+          URL.revokeObjectURL(p.url)
+        })
         return []
       })
       setProgressText("Done")
@@ -159,34 +168,23 @@ export function MediaUploader({
   // Cleanup previews on unmount
   useEffect(() => {
     return () => {
-      previews.forEach((p) => URL.revokeObjectURL(p.url))
+      previews.forEach((p) => {
+        URL.revokeObjectURL(p.url)
+      })
     }
   }, [previews])
 
   return (
     <div className="grid gap-2">
-      <Label htmlFor="media-uploader-input">{label}</Label>
-      <div
+      <Label htmlFor={inputId}>{label}</Label>
+      <section
         className="relative rounded-md border border-dashed p-4 text-sm text-muted-foreground hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        role="button"
-        tabIndex={0}
-        onClick={() => {
-          if (!disabled && !isUploading) openPicker()
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault()
-            if (!disabled && !isUploading) openPicker()
-          }
-        }}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         aria-label="Select or drop files to upload"
       >
         <div className="flex flex-col items-center gap-2">
-          <p className="text-center">
-            Drag and drop files here, or click Select files
-          </p>
+          <p className="text-center">Drag and drop files here, or click Select files</p>
           <div className="flex items-center gap-2">
             <Button
               type="button"
@@ -216,7 +214,8 @@ export function MediaUploader({
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Accepted: {accept.replace(",", ", ")} • Max size: {(MAX_BYTES / (1024 * 1024)).toFixed(0)}MB
+            Accepted: {accept.replace(",", ", ")} • Max size:{" "}
+            {(MAX_BYTES / (1024 * 1024)).toFixed(0)}MB
           </p>
           {files.length > 0 && !isUploading && (
             <p className="text-xs text-muted-foreground" aria-live="polite">
@@ -225,7 +224,7 @@ export function MediaUploader({
           )}
         </div>
         <input
-          id="media-uploader-input"
+          id={inputId}
           ref={inputRef}
           type="file"
           className="sr-only"
@@ -234,7 +233,8 @@ export function MediaUploader({
           disabled={disabled || isUploading}
           onChange={handleChange}
         />
-      </div>
+      </section>
+      {/* keep previews and error inside the container */}
       {previews.length > 0 && (
         <div className="mt-2">
           <Label>Selected files</Label>
@@ -242,19 +242,10 @@ export function MediaUploader({
             {previews.map((p, idx) => (
               <div key={`${p.url}-${idx}`} className="relative rounded border p-2">
                 {p.file.type.startsWith("image/") ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.url}
-                    alt={p.file.name}
-                    className="h-28 w-full rounded object-cover"
-                  />
+                  // biome-ignore lint/performance/noImgElement: blob preview URLs are not supported by next/image
+                  <img src={p.url} alt={p.file.name} className="h-28 w-full rounded object-cover" />
                 ) : (
-                  <video
-                    className="h-28 w-full rounded object-cover"
-                    src={p.url}
-                    muted
-                    aria-hidden="true"
-                  />
+                  <video className="h-28 w-full rounded object-cover" src={p.url} muted />
                 )}
                 <div className="mt-2 flex items-center justify-between gap-2">
                   <span className="truncate text-xs" title={p.file.name}>

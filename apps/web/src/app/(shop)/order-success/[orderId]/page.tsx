@@ -1,13 +1,13 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { CheckCircle, Download, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ordersApi } from "@/lib/data/orders"
 import { ORDER_BY_ID_QK } from "@/lib/orders/query-keys"
 import type { Order } from "@/types/order"
-import { useQuery } from "@tanstack/react-query"
-import { CheckCircle, Download, Truck } from "lucide-react"
 import { AppLink } from "../../../../../modules/shared/components/app-link"
 
 interface OrderSuccessPageProps {

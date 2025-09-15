@@ -42,3 +42,102 @@ Configure Better Auth cookies for your domain(s):
 3. Deploy. The app should build without payment keys; related endpoints remain disabled with warnings.
 
 Troubleshooting: see `docs/troubleshooting.md`.
+
+---
+
+## Vercel Project Settings (Monorepo)
+
+Recommended settings for this repository structure:
+
+- Framework Preset: `Next.js`
+- Build Command: `pnpm -w --filter web build`
+- Output Directory: `.next`
+- Install Command: `corepack enable && pnpm install --frozen-lockfile`
+- Root Directory: `apps/web`
+- Include files outside root directory: Enabled
+
+Note: The above matches the screenshot in our README and ensures the `apps/web` workspace builds against the monorepo lockfile with pnpm.
+
+---
+
+## Deploy with OpenDeploy CLI (optional but recommended)
+
+You can automate env validation, syncing, and deploys using the OpenDeploy CLI that ships alongside these starter kits. The examples below assume you run from the monorepo root.
+
+### 1) Doctor
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" doctor --json
+```
+
+Confirms Node/pnpm/CLIs, Vercel/Netlify auth, and monorepo link state. It also reports which `apps/*` sub‑apps are linked and the chosen deploy cwd (so deploys run from the correct directory).
+
+### 2) Validate env (composition)
+
+Use builtin schemas to quickly ensure required keys exist in your `.env` files.
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" env validate \
+  --file ./apps/web/.env.local \
+  --schema builtin:better-auth,builtin:email-basic,builtin:admin-emails,builtin:stripe,builtin:paypal,builtin:s3-compat \
+  --json --ci
+```
+
+### 3) Diff and Sync env
+
+Compare local to Vercel (CI guardrails):
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" env diff vercel \
+  --file ./apps/web/.env.production.local \
+  --env prod \
+  --project-id <VERCEL_PROJECT_ID> --org-id <VERCEL_ORG_ID> \
+  --ignore NEXT_PUBLIC_* \
+  --fail-on-add --fail-on-remove \
+  --json --ci
+```
+
+Apply changes (preview/prod as desired):
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" env sync vercel \
+  --file ./apps/web/.env.production.local \
+  --env prod \
+  --project-id <VERCEL_PROJECT_ID> --org-id <VERCEL_ORG_ID> \
+  --only NEXT_PUBLIC_*,DATABASE_URL \
+  --yes --json
+``;
+
+### 4) Deploy (Vercel)
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" deploy vercel \
+  --env prod \
+  --path apps/web \
+  --project <VERCEL_PROJECT_ID> --org <VERCEL_ORG_ID> \
+  --json
+```
+
+If something fails:
+
+```bash
+# Open Vercel dashboard for the chosen cwd
+node "./OpenDeploy CLI/dist/index.js" open vercel --path apps/web --project <VERCEL_PROJECT_ID> --org <VERCEL_ORG_ID>
+
+# Fetch logs for a deployment URL (from the deploy JSON output)
+node "./OpenDeploy CLI/dist/index.js" logs vercel --url https://your-deploy.vercel.app --path apps/web
+```
+
+### Netlify (parity)
+
+You can also deploy to Netlify with parity commands:
+
+```bash
+node "./OpenDeploy CLI/dist/index.js" deploy netlify \
+  --env prod \
+  --path apps/web \
+  --project <NETLIFY_SITE_ID> \
+  --json
+```
+
+`env pull|diff` support `--context production|branch|deploy-preview` for context‑specific values on Netlify.

@@ -1,19 +1,19 @@
 "use client"
 
+import { useQuery } from "@tanstack/react-query"
+import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
+import { formatCurrency } from "modules/shared/lib/i18n/format"
+import { usePathname } from "next/navigation"
+import { useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { SafeImage } from "@/components/ui/safe-image"
 import { Skeleton } from "@/components/ui/skeleton"
 import { StarRating } from "@/components/ui/star-rating"
 import { productsApi } from "@/lib/data/products"
 import { showToast } from "@/lib/utils/toast"
 import type { Product } from "@/types"
-import { useQuery } from "@tanstack/react-query"
 import { AppLink } from "../../shared/components/app-link"
-import { SafeImage } from "@/components/ui/safe-image"
-import { useEffect, useMemo } from "react"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
-import { formatCurrency } from "modules/shared/lib/i18n/format"
 
 export function FeaturedProducts() {
   const pathname = usePathname()

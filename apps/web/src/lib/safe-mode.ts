@@ -22,11 +22,12 @@ export const animationsDisabled: boolean =
  */
 const RAW_MIN_BOOT: string | undefined = process.env.NEXT_PUBLIC_BOOT_MINIMAL
 // In production, minimal boot is always disabled regardless of the env flag.
-export const minimalBoot: boolean = RAW_ENV === "production"
-  ? false
-  : RAW_MIN_BOOT !== undefined
-    ? RAW_MIN_BOOT.toLowerCase() === "true"
-    : true
+export const minimalBoot: boolean =
+  RAW_ENV === "production"
+    ? false
+    : RAW_MIN_BOOT !== undefined
+      ? RAW_MIN_BOOT.toLowerCase() === "true"
+      : true
 
 /**
  * Prefer rendering local UI templates (no API/data fetching) when true.

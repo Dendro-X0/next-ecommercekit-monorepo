@@ -1,13 +1,21 @@
-import { NextResponse } from "next/server"
-import { s3Storage, cloudinaryStorage } from "@repo/storage"
-import { db, media as mediaTable, mediaEvents as mediaEventsTable, and, eq, gt, sql } from "@repo/db"
 import { randomUUID } from "node:crypto"
-import { createWriteStream } from "fs"
+import { createWriteStream } from "node:fs"
+import { mkdir } from "node:fs/promises"
+import path from "node:path"
 import { Readable } from "node:stream"
 import { pipeline } from "node:stream/promises"
 import type { ReadableStream as WebReadableStream } from "node:stream/web"
-import path from "path"
-import { mkdir } from "fs/promises"
+import {
+  and,
+  db,
+  eq,
+  gt,
+  mediaEvents as mediaEventsTable,
+  media as mediaTable,
+  sql,
+} from "@repo/db"
+import { cloudinaryStorage, s3Storage } from "@repo/storage"
+import { NextResponse } from "next/server"
 
 export const runtime = "nodejs"
 
@@ -21,11 +29,11 @@ function serverError(message: string): NextResponse<Json> {
   return NextResponse.json({ error: message }, { status: 500 })
 }
 
-function serviceUnavailable(message: string): NextResponse<Json> {
+function _serviceUnavailable(message: string): NextResponse<Json> {
   return NextResponse.json({ error: message }, { status: 503 })
 }
 
-function envOrThrow(name: string): string {
+function _envOrThrow(name: string): string {
   const v = process.env[name]
   if (!v) throw new Error(`${name} is not set`)
   return v
@@ -56,10 +64,12 @@ function getS3Config(): Readonly<{
   }
 }
 
-function publicUrl(cfg: NonNullable<ReturnType<typeof getS3Config>>, key: string): string {
+function _publicUrl(cfg: NonNullable<ReturnType<typeof getS3Config>>, key: string): string {
   if (cfg.publicBaseUrl) return `${cfg.publicBaseUrl.replace(/\/$/, "")}/${key}`
   if (cfg.endpoint) {
-    const base = cfg.forcePathStyle ? `${cfg.endpoint.replace(/\/$/, "")}/${cfg.bucket}` : cfg.endpoint.replace(/\/$/, "")
+    const base = cfg.forcePathStyle
+      ? `${cfg.endpoint.replace(/\/$/, "")}/${cfg.bucket}`
+      : cfg.endpoint.replace(/\/$/, "")
     return `${base}/${key}`
   }
   return `https://${cfg.bucket}.s3.${cfg.region}.amazonaws.com/${key}`
@@ -80,12 +90,13 @@ function inferExtFromType(type: string): string | null {
   return map[type] || null
 }
 
-function generateKey(prefix: string, fileName?: string, contentType?: string): string {
+function _generateKey(prefix: string, fileName?: string, contentType?: string): string {
   const now = new Date()
   const yyyy = String(now.getUTCFullYear())
   const mm = String(now.getUTCMonth() + 1).padStart(2, "0")
-  const uuid = (globalThis.crypto?.randomUUID?.() ?? `${now.getTime()}-${Math.random().toString(16).slice(2)}`)
-  const safePrefix = prefix.replace(/[^a-zA-Z0-9!_\-\.\/*]/g, "-")
+  const uuid =
+    globalThis.crypto?.randomUUID?.() ?? `${now.getTime()}-${Math.random().toString(16).slice(2)}`
+  const safePrefix = prefix.replace(/[^a-zA-Z0-9!_\-./*]/g, "-")
   const extFromName = fileName?.split(".").pop()
   const extFromType = inferExtFromType(contentType || "")
   const ext = (extFromType || extFromName || "bin").replace(/^\./, "")
@@ -100,7 +111,8 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
   if (!(file instanceof File)) return badRequest("Missing file")
 
   const MAX_UPLOAD_MB = Number(process.env.MAX_UPLOAD_MB || 25)
-  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) return badRequest(`File too large. Max ${MAX_UPLOAD_MB}MB`)
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024)
+    return badRequest(`File too large. Max ${MAX_UPLOAD_MB}MB`)
 
   const kind: "image" | "video" = (file.type || "").startsWith("video/") ? "video" : "image"
   // Basic quota: limit uploads per IP per 24h window
@@ -117,7 +129,10 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
         .limit(1)
       const used = rows[0]?.c ?? 0
       if (used >= limit) {
-        return NextResponse.json({ error: "Upload limit reached. Try again later." }, { status: 429 })
+        return NextResponse.json(
+          { error: "Upload limit reached. Try again later." },
+          { status: 429 },
+        )
       }
     } catch (_e) {
       // If quota check fails, proceed (fail-open) to avoid blocking uploads unnecessarily
@@ -149,9 +164,17 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
           bytes: Number(file.size),
           uploaderIp: uploaderIp || null,
         })
-        await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
+        await db
+          .insert(mediaEventsTable)
+          .values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
         if (kind === "video") {
-          await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "transcode_queued", ip: uploaderIp || null, message: "Preview transcode requested" })
+          await db.insert(mediaEventsTable).values({
+            id: randomUUID(),
+            mediaId: newId,
+            action: "transcode_queued",
+            ip: uploaderIp || null,
+            message: "Preview transcode requested",
+          })
         }
       } catch {}
       return NextResponse.json({ url, kind } as const, { status: 200 })
@@ -167,7 +190,11 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
       const arrayBuffer = await file.arrayBuffer()
       const body = new Uint8Array(arrayBuffer)
       const key = s3Storage.generateKey({ prefix: "uploads", fileName: file.name })
-      const { url } = await s3Storage.upload({ key, body, contentType: file.type || "application/octet-stream" })
+      const { url } = await s3Storage.upload({
+        key,
+        body,
+        contentType: file.type || "application/octet-stream",
+      })
       // Capture uploader IP (best-effort)
       // Persist media metadata (optional, non-blocking if desired)
       try {
@@ -184,9 +211,17 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
           uploaderIp: uploaderIp || null,
         })
         // Audit event
-        await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
+        await db
+          .insert(mediaEventsTable)
+          .values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
         if (kind === "video") {
-          await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "transcode_queued", ip: uploaderIp || null, message: "Preview transcode requested" })
+          await db.insert(mediaEventsTable).values({
+            id: randomUUID(),
+            mediaId: newId,
+            action: "transcode_queued",
+            ip: uploaderIp || null,
+            message: "Preview transcode requested",
+          })
         }
       } catch (_e) {
         // Ignore DB errors to not fail the upload path
@@ -229,9 +264,17 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
         bytes: Number(file.size),
         uploaderIp: uploaderIp || null,
       })
-      await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
+      await db
+        .insert(mediaEventsTable)
+        .values({ id: randomUUID(), mediaId: newId, action: "upload", ip: uploaderIp || null })
       if (kind === "video") {
-        await db.insert(mediaEventsTable).values({ id: randomUUID(), mediaId: newId, action: "transcode_queued", ip: uploaderIp || null, message: "Preview transcode requested" })
+        await db.insert(mediaEventsTable).values({
+          id: randomUUID(),
+          mediaId: newId,
+          action: "transcode_queued",
+          ip: uploaderIp || null,
+          message: "Preview transcode requested",
+        })
       }
     } catch (_e) {
       // ignore
@@ -242,5 +285,3 @@ export async function POST(req: Request): Promise<NextResponse<Json>> {
     return serverError(message)
   }
 }
-
-

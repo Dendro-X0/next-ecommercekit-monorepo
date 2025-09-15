@@ -1,5 +1,7 @@
 "use client"
 
+import { LayoutGrid, LogOut, Settings, UserRound } from "lucide-react"
+import type { JSX } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,12 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useSession } from "@/hooks/use-session"
-import { authClient } from "@/lib/auth-client"
-import { type Role, hasRole } from "@/lib/roles"
 import { isAdminEmail } from "@/lib/admin-allowlist"
-import { LayoutGrid, Settings, UserRound, LogOut } from "lucide-react"
+import { authClient } from "@/lib/auth-client"
+import { hasRole, type Role } from "@/lib/roles"
 import { AppLink } from "../app-link"
-import type { JSX } from "react"
 
 /**
  * AuthMenu renders login/register when signed out, and an avatar dropdown when signed in.
@@ -38,7 +38,8 @@ export function AuthMenu(): JSX.Element {
   }
 
   const roles = user?.roles as readonly Role[] | undefined
-  const isAdmin: boolean = user?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
+  const isAdmin: boolean =
+    user?.isAdmin === true || hasRole(roles, ["admin"]) || isAdminEmail(user?.email ?? null)
 
   return (
     <DropdownMenu>
@@ -46,9 +47,7 @@ export function AuthMenu(): JSX.Element {
         <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white">
           <Avatar>
             <AvatarImage src={user.image ?? undefined} alt={user.name ?? "User"} />
-            <AvatarFallback>
-              {(user.name ?? "U").slice(0, 2).toUpperCase()}
-            </AvatarFallback>
+            <AvatarFallback>{(user.name ?? "U").slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>

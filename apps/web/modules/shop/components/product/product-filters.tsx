@@ -1,16 +1,16 @@
 "use client"
 
+import type { JSX } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
-import type { FilterOptions } from "@/types"
-import { useEffect, useState } from "react"
-import type { JSX } from "react"
-import { uiTemplates } from "@/lib/safe-mode"
 import { categories as mockCategories } from "@/lib/data"
+import { uiTemplates } from "@/lib/safe-mode"
+import type { FilterOptions } from "@/types"
 
 type CategoryItem = Readonly<{
   id: string

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useMemo, useState, type ReactElement } from "react"
+import { type ReactElement, useMemo, useState } from "react"
 
 /**
  * SafeImage renders a resilient image element for product cards and grids.
@@ -49,7 +49,10 @@ export function SafeImage(props: SafeImageProps): ReactElement {
   //   responsive sizes and better loading.
   // - Use plain <img> for external hosts during development to avoid dev-only
   //   bundler issues and domain allowlist friction. In production, always use Next/Image.
-  const isLocalPath: boolean = useMemo(() => typeof resolvedSrc === "string" && resolvedSrc.startsWith("/"), [resolvedSrc])
+  const isLocalPath: boolean = useMemo(
+    () => typeof resolvedSrc === "string" && resolvedSrc.startsWith("/"),
+    [resolvedSrc],
+  )
   const usePlainImg: boolean = process.env.NODE_ENV !== "production" && !isLocalPath
 
   if (usePlainImg) {

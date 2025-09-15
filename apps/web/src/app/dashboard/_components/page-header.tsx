@@ -1,10 +1,10 @@
 "use client"
 
+import type React from "react"
 import {
   PageHeader as UIPageHeader,
   type PageHeaderProps as UIPageHeaderProps,
 } from "@/components/ui/page-header"
-import type React from "react"
 
 /**
  * PageHeader: dashboard-level wrapper over UI PageHeader.

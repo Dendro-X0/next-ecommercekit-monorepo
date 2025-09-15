@@ -1,12 +1,12 @@
-export type { Locale } from "./locale"
 export type { Currency } from "./format"
-export { formatCurrency, formatCents, formatDate } from "./format"
-export type { Messages, Translations, TFunc, TParams } from "./types"
+export { formatCents, formatCurrency, formatDate } from "./format"
+export type { Locale } from "./locale"
+export type { Messages, TFunc, TParams, Translations } from "./types"
 
 import type { Locale } from "./locale"
-import type { Messages, Translations, TFunc, TParams } from "./types"
 import { en } from "./messages/en"
 import { es } from "./messages/es"
+import type { Messages, TFunc, TParams, Translations } from "./types"
 
 const translations: Translations = {
   en,
@@ -29,7 +29,8 @@ export function createT(locale: Locale): TFunc {
     const parts = key.split(".")
     let cur: unknown = messages
     for (const p of parts) {
-      if (typeof cur !== "object" || cur === null || !(p in (cur as Record<string, unknown>))) return key
+      if (typeof cur !== "object" || cur === null || !(p in (cur as Record<string, unknown>)))
+        return key
       cur = (cur as Record<string, unknown>)[p]
     }
     return typeof cur === "string" ? interpolate(cur, params) : key

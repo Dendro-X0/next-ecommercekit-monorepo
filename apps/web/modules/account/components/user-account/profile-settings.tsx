@@ -1,5 +1,7 @@
 "use client"
 
+import { Camera, Plus, Save, Trash2 } from "lucide-react"
+import { useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,8 +19,6 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { useAuthStore } from "@/lib/stores/auth"
 import type { Address, User } from "@/lib/types/auth"
-import { Camera, Plus, Save, Trash2 } from "lucide-react"
-import { useState } from "react"
 
 export function ProfileSettings() {
   const { user, updateUser } = useAuthStore()

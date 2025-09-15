@@ -1,8 +1,8 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import * as React from "react"
 import type { JSX } from "react"
+import * as React from "react"
+import { Button } from "@/components/ui/button"
 
 export type ConfirmDialogProps = Readonly<{
   open: boolean
@@ -63,7 +63,11 @@ export default function ConfirmDialog(props: ConfirmDialogProps): JSX.Element | 
         className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
         onClick={onOverlayClick}
       />
-      <div className="relative w-full max-w-sm rounded-lg border bg-background p-6 shadow-xl" role="dialog" aria-modal="true">
+      <div
+        className="relative w-full max-w-sm rounded-lg border bg-background p-6 shadow-xl"
+        role="dialog"
+        aria-modal="true"
+      >
         <h2 className="text-lg font-semibold">{title}</h2>
         {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
         <div className="mt-5 flex items-center justify-end gap-2">

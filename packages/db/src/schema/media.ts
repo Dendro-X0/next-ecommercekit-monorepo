@@ -1,4 +1,4 @@
-import { integer, jsonb, pgTable, text, timestamp, varchar, index } from "drizzle-orm/pg-core"
+import { index, integer, jsonb, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core"
 
 /**
  * Media table: stores uploaded media metadata and public URL.

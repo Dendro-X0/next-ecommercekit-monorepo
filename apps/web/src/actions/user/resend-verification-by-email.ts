@@ -1,8 +1,8 @@
 "use server"
 
-import { z } from "zod"
-import { headers } from "next/headers"
 import { auth } from "@repo/auth"
+import { headers } from "next/headers"
+import { z } from "zod"
 
 export type ResendVerificationByEmailState = Readonly<{
   success?: string

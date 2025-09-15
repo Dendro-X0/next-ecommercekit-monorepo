@@ -1,10 +1,10 @@
 "use client"
 
+import { PieChartIcon, TrendingUp } from "lucide-react"
+import { type ReactElement, useId } from "react"
+import { Area, AreaChart, Cell, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { PieChartIcon, TrendingUp } from "lucide-react"
-import type { ReactElement } from "react"
-import { Area, AreaChart, Cell, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 interface SpendingChartsProps {
   spendingData: Array<{ name: string; amount: number }>
@@ -21,6 +21,7 @@ const getCategoryColorVar = (index: number): string =>
  * User dashboard charts with accessible colors and responsive sizing.
  */
 export function SpendingCharts({ spendingData, categoryData }: SpendingChartsProps): ReactElement {
+  const gradientId: string = useId()
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {/* Monthly Spending Trend */}
@@ -36,8 +37,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
           {/* SR-only summary for screen readers */}
           <p className="sr-only">
             Monthly spending total: $
-            {spendingData.reduce((sum, it) => sum + it.amount, 0).toFixed(2)} across
-            {" "}
+            {spendingData.reduce((sum, it) => sum + it.amount, 0).toFixed(2)} across{" "}
             {spendingData.length} months.
           </p>
           <ChartContainer
@@ -54,7 +54,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={spendingData} margin={{ top: 12, right: 16, left: 8, bottom: 8 }}>
                 <defs>
-                  <linearGradient id="spendingGradient" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={0.8} />
                     <stop offset="95%" stopColor="var(--color-amount)" stopOpacity={0.1} />
                   </linearGradient>
@@ -80,7 +80,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
                   dataKey="amount"
                   stroke="var(--color-amount)"
                   fillOpacity={1}
-                  fill="url(#spendingGradient)"
+                  fill={`url(#${gradientId})`}
                   strokeWidth={3}
                 />
               </AreaChart>
@@ -101,9 +101,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
         <CardContent>
           {/* SR-only summary for category breakdown */}
           <div className="sr-only">
-            <p>
-              Spending by category summary:
-            </p>
+            <p>Spending by category summary:</p>
             <ul>
               {categoryData.map((c) => (
                 <li key={c.name}>
@@ -137,8 +135,8 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
                   paddingAngle={5}
                   dataKey="amount"
                 >
-                  {categoryData.map((_entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getCategoryColorVar(index)} />
+                  {categoryData.map((entry, index) => (
+                    <Cell key={`cell-${entry.name}`} fill={getCategoryColorVar(index)} />
                   ))}
                 </Pie>
                 <ChartTooltip

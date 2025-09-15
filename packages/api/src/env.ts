@@ -27,7 +27,9 @@ export const apiEnv = (() => {
   }
   const raw = {
     WEB_ORIGIN:
-      process.env.WEB_ORIGIN || process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.WEB_ORIGIN ||
+      process.env.APP_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
       "http://localhost:3000",
     ADMIN_EMAILS: process.env.ADMIN_EMAILS ?? "",
     AFFILIATE_COMMISSION_PCT: process.env.AFFILIATE_COMMISSION_PCT ?? "10",
@@ -51,8 +53,10 @@ export const apiEnv = (() => {
   } as const
 
   const schema = z.object({
-    WEB_ORIGIN: z
-      .preprocess(sanitizeUrlLike, z.string().url("WEB_ORIGIN must be a valid URL").default("http://localhost:3000")),
+    WEB_ORIGIN: z.preprocess(
+      sanitizeUrlLike,
+      z.string().url("WEB_ORIGIN must be a valid URL").default("http://localhost:3000"),
+    ),
     ADMIN_EMAILS: z.string().optional().default(""),
     AFFILIATE_COMMISSION_PCT: z.preprocess((v) => {
       if (typeof v !== "string") return v

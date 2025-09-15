@@ -1,14 +1,14 @@
 "use client"
 
+import { ShoppingCart } from "lucide-react"
+import type React from "react"
+import { useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useCartStore } from "@/lib/stores/cart"
 import { cn } from "@/lib/utils"
-import { ShoppingCart } from "lucide-react"
 import { AppLink } from "../../../shared/components/app-link"
-import { useMemo } from "react"
-import type React from "react"
 import { CartItem } from "./cart-item"
 import { CartSummary } from "./cart-summary"
 
@@ -29,7 +29,11 @@ type CartDrawerProps = {
  * - By default renders an icon-only trigger suitable for headers.
  * - Provide `label` and `fullWidth` to render a mobile-friendly, full-width trigger.
  */
-export function CartDrawer({ label, fullWidth = false, className }: CartDrawerProps): React.ReactElement {
+export function CartDrawer({
+  label,
+  fullWidth = false,
+  className,
+}: CartDrawerProps): React.ReactElement {
   const { items } = useCartStore()
   const itemCount: number = useMemo(() => items.reduce((acc, it) => acc + it.quantity, 0), [items])
 

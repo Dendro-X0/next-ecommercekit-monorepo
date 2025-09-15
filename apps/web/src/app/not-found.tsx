@@ -1,8 +1,8 @@
-import { AppLink } from "../../modules/shared/components/app-link"
 /**
  * Global 404 page.
  */
 import type { ReactElement } from "react"
+import { AppLink } from "../../modules/shared/components/app-link"
 
 export default function NotFound(): ReactElement {
   return (

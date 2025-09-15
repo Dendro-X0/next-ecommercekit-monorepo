@@ -1,9 +1,9 @@
 "use client"
 
-import { affiliateApi } from "@/lib/data/affiliate"
 import { useMutation } from "@tanstack/react-query"
 import type React from "react"
 import { useEffect } from "react"
+import { affiliateApi } from "@/lib/data/affiliate"
 
 /**
  * Tracks an affiliate click once per session when AFF_REF cookie is present.

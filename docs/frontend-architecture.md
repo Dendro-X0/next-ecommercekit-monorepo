@@ -46,6 +46,16 @@ apps/web/
 - The `Button` shim preserves legacy `asChild` by mapping it to a polymorphic `as` prop and merges className safely.
 - Dev-only warnings surface if `asChild` receives multiple children or a Fragment, helping prevent `React.Children.only` errors.
 
+### Button defaults
+- The app `Button` shim sets `type="button"` by default to prevent accidental form submission. For submit buttons inside forms, pass `type="submit"` explicitly.
+
+### Auth Client Helpers
+- Use the centralized helpers in `apps/web/src/lib/auth-client-helpers.ts` for all auth calls (sign in via email/username, magic link, sign up, profile updates, TOTP 2FA, backup codes). This avoids scattered casts and ensures consistent typings.
+
+### Accessibility & IDs
+- Avoid static `id` strings that can repeat across component instances. Use React’s `useId()` to generate stable, unique IDs and pair them with `htmlFor`/`aria-describedby` as needed.
+- Prefer semantic elements over ARIA roles when possible (e.g., use `<button>` instead of clickable `<div>`, use `<output>` for status messages instead of `<p role="status">`).
+
 ## Maintenance Scripts
 ```bash
 # List any direct Radix imports in app code

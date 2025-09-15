@@ -1,3 +1,5 @@
+import { Search } from "lucide-react"
+import type React from "react"
 import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
@@ -11,8 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search } from "lucide-react"
-import type React from "react"
 
 /**
  * Admin → Marketing → Ads

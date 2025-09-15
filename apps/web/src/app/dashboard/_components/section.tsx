@@ -1,7 +1,7 @@
 "use client"
 
-import { Section as UISection, type SectionProps as UISectionProps } from "@/components/ui/section"
 import type React from "react"
+import { Section as UISection, type SectionProps as UISectionProps } from "@/components/ui/section"
 
 /**
  * Section: dashboard-level wrapper over UI Section.

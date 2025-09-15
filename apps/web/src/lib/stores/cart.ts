@@ -1,13 +1,13 @@
 "use client"
 
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import { FLAT_SHIPPING_FEE, FREE_SHIPPING_THRESHOLD, TAX_RATE } from "@/lib/cart/constants"
 import { CART_QK } from "@/lib/cart/query-keys"
 import { cartApi } from "@/lib/data/cart"
 import { queryClient } from "@/lib/query-client"
 import type { Product } from "@/types"
 import type { Cart, CartItem } from "@/types/cart"
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
 
 /**
  * Compare two arrays of cart items for shallow equality by id, product.id and quantity.

@@ -1,14 +1,11 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AppLink } from "@/modules/shared/components/app-link"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 import type { ReactElement } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -29,13 +26,21 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 import { showToast } from "@/lib/utils/toast"
+import { AppLink } from "@/modules/shared/components/app-link"
 import { SocialLogin } from "./social-login"
 
+const usernamePattern = /^[a-zA-Z0-9._-]{3,30}$/
 const SignupSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email(),
+    username: z
+      .string()
+      .min(3, "Username must be at least 3 characters")
+      .max(30, "Username must be at most 30 characters")
+      .regex(usernamePattern, "Use letters, numbers, dot, underscore or hyphen"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6),
     agreeToTerms: z.boolean().refine((v) => v === true, { message: "You must agree to the terms" }),
@@ -63,11 +68,16 @@ function SubmitButton(props: { readonly loading: boolean }): ReactElement {
  */
 export function SignUpForm() {
   const router = useRouter()
+  const [usernameStatus, setUsernameStatus] = useState<{
+    readonly status: "idle" | "checking" | "available" | "unavailable"
+    readonly message?: string
+  }>({ status: "idle" })
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
       name: "",
       email: "",
+      username: "",
       password: "",
       confirmPassword: "",
       agreeToTerms: false,
@@ -78,14 +88,48 @@ export function SignUpForm() {
     // No side-effects on mount
   }, [])
 
+  const checkUsername = async (username: string): Promise<void> => {
+    const u: string = username.trim()
+    if (!u || !usernamePattern.test(u)) {
+      setUsernameStatus({ status: "idle" })
+      return
+    }
+    setUsernameStatus({ status: "checking" })
+    const { data, error } = await authClientHelpers.isUsernameAvailable({ username: u })
+    if (error) {
+      setUsernameStatus({
+        status: "unavailable",
+        message: error.message || "Username check failed",
+      })
+      return
+    }
+    setUsernameStatus({
+      status: data?.available ? "available" : "unavailable",
+      message: data?.available ? "Username is available" : "Username is taken",
+    })
+  }
+
   async function onSubmit(values: SignupFormValues): Promise<void> {
-    const { error } = await authClient.signUp.email({
+    if (usernameStatus.status === "unavailable") {
+      form.setError("username", {
+        type: "server",
+        message: usernameStatus.message || "Username is taken",
+      })
+      return
+    }
+    const { error } = await authClientHelpers.signUpEmail({
       name: values.name,
       email: values.email,
+      username: values.username,
       password: values.password,
     })
     if (error) {
-      form.setError("email", { type: "server", message: error.message })
+      const msg = error.message || "Signup failed"
+      if (msg.toLowerCase().includes("username")) {
+        form.setError("username", { type: "server", message: msg })
+      } else {
+        form.setError("email", { type: "server", message: msg })
+      }
       return
     }
     showToast("Account created successfully. Please verify your email.", { type: "success" })
@@ -110,6 +154,39 @@ export function SignUpForm() {
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="yourname"
+                      {...field}
+                      onBlur={async (e) => {
+                        field.onBlur()
+                        await checkUsername(e.target.value)
+                      }}
+                      onChange={async (e) => {
+                        field.onChange(e)
+                        setUsernameStatus({ status: "idle" })
+                      }}
+                    />
+                  </FormControl>
+                  {usernameStatus.status === "checking" && (
+                    <p className="text-xs text-muted-foreground">Checking availability...</p>
+                  )}
+                  {usernameStatus.status === "available" && (
+                    <p className="text-xs text-green-600">{usernameStatus.message}</p>
+                  )}
+                  {usernameStatus.status === "unavailable" && (
+                    <p className="text-xs text-destructive">{usernameStatus.message}</p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}

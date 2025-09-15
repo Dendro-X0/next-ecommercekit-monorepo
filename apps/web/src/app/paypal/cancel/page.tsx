@@ -1,9 +1,9 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { XCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import type { JSX } from "react"
+import { Button } from "@/components/ui/button"
 
 /**
  * Shown when the user cancels PayPal checkout.

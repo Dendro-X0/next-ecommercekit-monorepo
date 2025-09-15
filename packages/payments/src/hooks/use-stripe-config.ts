@@ -2,7 +2,7 @@
  * useStripeConfig
  * Fetches Stripe configuration state from the server.
  */
-import { useQuery, type UseQueryResult } from "@tanstack/react-query"
+import { type UseQueryResult, useQuery } from "@tanstack/react-query"
 import { paymentsStripeApi } from "../client/stripe"
 
 /**

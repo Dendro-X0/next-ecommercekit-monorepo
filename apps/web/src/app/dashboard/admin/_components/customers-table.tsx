@@ -1,8 +1,5 @@
 "use client"
 
-import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
-import { ADMIN_CUSTOMERS_QK, ADMIN_CUSTOMERS_SEARCH_QK } from "@/lib/admin/customers/query-keys"
-import { type AdminCustomer, adminApi } from "@/lib/data/admin-api"
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar"
 import { Badge } from "@components/ui/badge"
 import { Button } from "@components/ui/button"
@@ -19,8 +16,11 @@ import { Input } from "@components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@components/ui/table"
 import { useQuery } from "@tanstack/react-query"
 import { Filter, MoreHorizontal, Search, UserPlus } from "lucide-react"
-import { useMemo, useState } from "react"
 import type React from "react"
+import { useMemo, useState } from "react"
+import { DashboardEmptyState } from "@/app/dashboard/_components/empty-state"
+import { ADMIN_CUSTOMERS_QK, ADMIN_CUSTOMERS_SEARCH_QK } from "@/lib/admin/customers/query-keys"
+import { type AdminCustomer, adminApi } from "@/lib/data/admin-api"
 
 export function CustomersTable(): React.ReactElement {
   const [searchTerm, setSearchTerm] = useState("")
@@ -30,7 +30,7 @@ export function CustomersTable(): React.ReactElement {
     searchTerm.trim().length > 0 ? ADMIN_CUSTOMERS_SEARCH_QK(searchTerm.trim()) : ADMIN_CUSTOMERS_QK
   const queryKey = useMemo(
     () => [...baseKey, "page", page, "limit", limit] as const,
-    [baseKey, page, limit],
+    [baseKey, page],
   )
   const { data, isLoading, isError, error } = useQuery<
     Readonly<{ items: readonly AdminCustomer[] }>

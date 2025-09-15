@@ -1,6 +1,6 @@
 # Release Notes
 
-## v1.2.0 (2025-09-12)
+## v1.1.2 (2025-09-12)
 - Storage & Media: Implemented S3-backed uploads at `POST /api/uploads` with local disk fallback in dev.
 - Admin Dashboard: Media uploader now persists real image/video URLs and previews; primary image selection works with persisted media.
 - i18n & SEO: Language alternates in metadata and localized sitemap with real category URLs; JSON-LD for PDP and Category pages; locale-aware currency/date formatting utilities.

@@ -1,10 +1,10 @@
+import { Heart, ShoppingCart } from "lucide-react"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { StarRating } from "@/components/ui/star-rating"
 import { products } from "@/lib/data"
-import { Heart, ShoppingCart } from "lucide-react"
-import Image from "next/image"
 import { AppLink } from "../../../shared/components/app-link"
 
 interface RelatedProductsProps {

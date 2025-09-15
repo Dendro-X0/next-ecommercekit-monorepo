@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "*",
-    "cloudinary": "^1.41.2"
+    "cloudinary": "^2.7.0"
   },
   "devDependencies": {
-    "@types/node": "^24.2.1",
-    "typescript": "^5.9.2"
+    "@types/node": "*",
+    "typescript": "*"
   }
 }

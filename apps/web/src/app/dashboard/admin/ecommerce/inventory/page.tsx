@@ -1,9 +1,9 @@
+import type React from "react"
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
 import { EcommerceInventory } from "@/app/dashboard/admin/_components/ecommerce-inventory"
 import { InventoryCsvImport } from "@/app/dashboard/admin/_components/inventory-csv-import"
 import { LowStockWidget } from "@/app/dashboard/admin/_components/low-stock-widget"
-import type React from "react"
 
 /**
  * Admin → E-commerce → Inventory page.

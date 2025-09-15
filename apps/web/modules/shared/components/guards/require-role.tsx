@@ -1,9 +1,9 @@
 "use client"
 
-import { authClient } from "@/lib/auth-client"
-import { type Role, hasRole } from "@/lib/roles"
 import { useRouter } from "next/navigation"
 import { type ReactElement, useEffect, useState } from "react"
+import { authClient } from "@/lib/auth-client"
+import { hasRole, type Role } from "@/lib/roles"
 
 /**
  * RequireRole ensures a user session exists and the user has one of the required roles.

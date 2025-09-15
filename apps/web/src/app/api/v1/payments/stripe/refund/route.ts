@@ -1,8 +1,6 @@
-import { Hono } from "hono"
-import { handle } from "hono/vercel"
 import { paymentsStripeRoute } from "@repo/api"
+import { DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT } from "../../../../[[...rest]]/route"
 
 export const runtime = "nodejs"
 
-const app = new Hono().route("/api/v1/payments/stripe", paymentsStripeRoute)
-export const POST = handle(app)
+export { GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD }

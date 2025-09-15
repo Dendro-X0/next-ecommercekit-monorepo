@@ -1,6 +1,6 @@
 import { affiliateRepo, productsRepo } from "@repo/db"
-import { Hono } from "hono"
 import type { Context } from "hono"
+import { Hono } from "hono"
 
 /**
  * Dev-only test utilities. Do not mount in production.

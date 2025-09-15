@@ -1,13 +1,13 @@
 "use client"
 
-import { ChevronRight, BookOpen, Code2, Music, Image as ImageIcon } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { SafeImage } from "@/components/ui/safe-image"
-import { AppLink } from "../../shared/components/app-link"
+import { BookOpen, ChevronRight, Code2, Image as ImageIcon, Music } from "lucide-react"
 import type React from "react"
 import { useEffect, useMemo, useState } from "react"
+import { SafeImage } from "@/components/ui/safe-image"
 import { categoriesApi } from "@/lib/data/categories"
 import type { Category as ApiCategory } from "@/types"
+import { AppLink } from "../../shared/components/app-link"
 
 /**
  * Category card model for Browse Categories section.
@@ -102,7 +102,11 @@ export function BrowseCategories(): React.JSX.Element {
             Loading categories…
           </div>
         ) : error ? (
-          <div role="status" aria-live="polite" className="rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950 p-4 text-sm text-red-700 dark:text-red-300">
+          <div
+            role="status"
+            aria-live="polite"
+            className="rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950 p-4 text-sm text-red-700 dark:text-red-300"
+          >
             Failed to load categories: {error}
           </div>
         ) : cards.length === 0 ? (
@@ -111,48 +115,51 @@ export function BrowseCategories(): React.JSX.Element {
           </div>
         ) : (
           <>
-            <ul id="browse-categories-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ul
+              id="browse-categories-grid"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
               {visibleCards.map((category: CategoryCard) => (
-              <li key={category.id} className="list-none">
-                <AppLink
-                  href={category.href}
-                  className="group relative block overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900"
-                  aria-label={`Browse category: ${category.name}`}
-                >
-                  <div className="relative aspect-[4/3]">
-                    <SafeImage
-                      src={`/categories/${category.slug}.jpg`}
-                      fallbackSrc={category.image}
-                      alt={category.name}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+                <li key={category.id} className="list-none">
+                  <AppLink
+                    href={category.href}
+                    className="group relative block overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900"
+                    aria-label={`Browse category: ${category.name}`}
+                  >
+                    <div className="relative aspect-[4/3]">
+                      <SafeImage
+                        src={`/categories/${category.slug}.jpg`}
+                        fallbackSrc={category.image}
+                        alt={category.name}
+                        fill
+                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
 
-                    {category.icon && (
-                      <span className="absolute left-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur">
-                        <category.icon className="h-4 w-4" aria-hidden />
-                      </span>
-                    )}
+                      {category.icon && (
+                        <span className="absolute left-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur">
+                          <category.icon className="h-4 w-4" aria-hidden />
+                        </span>
+                      )}
 
-                    <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
-                      <div>
-                        <p className="text-white font-semibold tracking-tight">{category.name}</p>
-                        <p className="text-white/80 text-sm">{category.itemCount} items</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {category.badge && (
-                          <span className="inline-flex items-center rounded-full bg-white/90 px-2 py-0.5 text-xs font-medium text-gray-900 shadow-sm backdrop-blur">
-                            {category.badge}
-                          </span>
-                        )}
-                        <ChevronRight className="h-5 w-5 text-white/90 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-white font-semibold tracking-tight">{category.name}</p>
+                          <p className="text-white/80 text-sm">{category.itemCount} items</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {category.badge && (
+                            <span className="inline-flex items-center rounded-full bg-white/90 px-2 py-0.5 text-xs font-medium text-gray-900 shadow-sm backdrop-blur">
+                              {category.badge}
+                            </span>
+                          )}
+                          <ChevronRight className="h-5 w-5 text-white/90 transition-transform duration-300 group-hover:translate-x-0.5" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </AppLink>
-              </li>
+                  </AppLink>
+                </li>
               ))}
             </ul>
             {cards.length > DEFAULT_VISIBLE && (

@@ -15,7 +15,7 @@
     "@repo/storage": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.9.2",
-    "@types/node": "^24.2.1"
+    "typescript": "*",
+    "@types/node": "*"
   }
 }

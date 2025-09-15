@@ -1,12 +1,12 @@
 "use client"
 
+import { translate } from "modules/shared/lib/i18n"
+import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
 import dynamic from "next/dynamic"
+import { usePathname } from "next/navigation"
 import type { JSX } from "react"
 import { useEffect, useState } from "react"
 import { AppLink } from "./app-link"
-import { usePathname } from "next/navigation"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
-import { translate } from "modules/shared/lib/i18n"
 
 export type HeaderNavItem = Readonly<{
   titleKey: string
@@ -14,10 +14,13 @@ export type HeaderNavItem = Readonly<{
   hasDropdown?: boolean
 }>
 
-const NavigationDropdown = dynamic(async () => (await import("./navigation-dropdown")).NavigationDropdown, {
-  ssr: false,
-  loading: () => null,
-})
+const NavigationDropdown = dynamic(
+  async () => (await import("./navigation-dropdown")).NavigationDropdown,
+  {
+    ssr: false,
+    loading: () => null,
+  },
+)
 
 function useEnableOnFirstInteraction(): boolean {
   const [enabled, setEnabled] = useState<boolean>(false)
@@ -37,7 +40,11 @@ function useEnableOnFirstInteraction(): boolean {
       window.removeEventListener("touchstart", onAny)
       window.removeEventListener("focusin", onAny)
       if ((window as any).cancelIdleCallback) {
-        try { (window as any).cancelIdleCallback(idler) } catch { /* no-op */ }
+        try {
+          ;(window as any).cancelIdleCallback(idler)
+        } catch {
+          /* no-op */
+        }
       } else {
         window.clearTimeout(idler as number)
       }
@@ -46,11 +53,16 @@ function useEnableOnFirstInteraction(): boolean {
   return enabled
 }
 
-export function HeaderNavIsland({ navigationItems }: { readonly navigationItems: readonly HeaderNavItem[] }): JSX.Element {
+export function HeaderNavIsland({
+  navigationItems,
+}: {
+  readonly navigationItems: readonly HeaderNavItem[]
+}): JSX.Element {
   const pathname = usePathname()
   const locale = getLocaleFromPath(pathname)
   const enabled: boolean = useEnableOnFirstInteraction()
-  const disableDropdown: boolean = (process.env.NEXT_PUBLIC_DISABLE_NAV_DROPDOWN ?? "false").toLowerCase() === "true"
+  const disableDropdown: boolean =
+    (process.env.NEXT_PUBLIC_DISABLE_NAV_DROPDOWN ?? "false").toLowerCase() === "true"
 
   return (
     <>

@@ -1,5 +1,8 @@
 "use client"
 
+import { Key, Shield, Smartphone } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useCallback, useMemo, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,10 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { authClient } from "@/lib/auth-client"
-import { Key, Shield, Smartphone } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { useCallback, useMemo, useState } from "react"
+import { authClientHelpers } from "@/lib/auth-client-helpers"
 import { PasswordForm } from "../user/password-form"
 import { TrustedDevices } from "../user/trusted-devices"
 
@@ -91,14 +91,14 @@ export function SecuritySettings(): React.ReactElement {
     setBusy(true)
     setError(null)
     try {
-      const { data, error: err } = (await authClient.twoFactor.generateBackupCodes({
+      const { data, error: err } = await authClientHelpers.twoFactorGenerateBackupCodes({
         password,
-      })) as { data: readonly string[] | null; error?: { readonly message?: string } | null }
+      })
       if (err) {
         setError(err.message ?? "Failed to regenerate codes.")
         setCodes(null)
       } else {
-        setCodes((data ?? []) as readonly string[])
+        setCodes(((data ?? []) as readonly string[]).slice() as string[])
         setPassword("")
       }
     } catch (e) {
@@ -313,7 +313,7 @@ export function SecuritySettings(): React.ReactElement {
                   setError(null)
                   setEnabling(true)
                   try {
-                    const { error: err } = await authClient.twoFactor.enable({
+                    const { error: err } = await authClientHelpers.twoFactorEnable({
                       password: enablePassword,
                     })
                     if (err) {
@@ -368,7 +368,7 @@ export function SecuritySettings(): React.ReactElement {
                   setError(null)
                   setDisabling(true)
                   try {
-                    const { error: err } = await authClient.twoFactor.disable({
+                    const { error: err } = await authClientHelpers.twoFactorDisable({
                       password: disablePassword,
                     })
                     if (err) {

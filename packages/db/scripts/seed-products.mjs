@@ -128,12 +128,12 @@ async function main() {
 
   // Migrate legacy slug before upsert to avoid unique conflicts
   // 1) Retarget products that referenced the old slug
-  await sql`update products set category_slug = 'software' where category_slug = 'codebases'`;
+  await sql`update products set category_slug = 'software' where category_slug = 'codebases'`
   // 2) Drop the legacy category row so upsert for 'software' is unambiguous
-  await sql`delete from categories where slug = 'codebases'`;
+  await sql`delete from categories where slug = 'codebases'`
 
   // Upsert categories (ensures new categories are added even if table already has data)
-  let insertedCats = 0
+  const insertedCats = 0
   for (const c of categories) {
     await sql`
       insert into categories (id, slug, name, image_url)

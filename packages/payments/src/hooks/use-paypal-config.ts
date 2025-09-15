@@ -2,8 +2,8 @@
  * usePaypalConfig
  * Fetches PayPal configuration state from the server.
  */
-import { useQuery, type UseQueryResult } from "@tanstack/react-query"
-import { paymentsPaypalApi, type PaypalConfig } from "../client/paypal"
+import { type UseQueryResult, useQuery } from "@tanstack/react-query"
+import { type PaypalConfig, paymentsPaypalApi } from "../client/paypal"
 
 export function usePaypalConfig(): UseQueryResult<PaypalConfig, Error> {
   return useQuery<PaypalConfig, Error>({

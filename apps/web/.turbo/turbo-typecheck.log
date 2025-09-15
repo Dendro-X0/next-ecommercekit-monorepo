@@ -1,4 +1,4 @@
 
-> web@1.0.0 typecheck E:\Codebase\ecommerce-workspace\next-ecommerce-starterkit\apps\web
+> web@1.1.3 typecheck E:\Codebase\my-workspace\next-ecommercekit-monorepo\apps\web
 > tsc -p tsconfig.json --noEmit
 

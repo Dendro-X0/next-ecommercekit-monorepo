@@ -1,9 +1,9 @@
 import { addressesRepo } from "@repo/db"
+import type { Context } from "hono"
 /**
  * Account Addresses routes.
  */
 import { Hono } from "hono"
-import type { Context } from "hono"
 import { z } from "zod"
 import { AdminGuard } from "../lib/admin-guard"
 import { validate } from "../lib/validate"

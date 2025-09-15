@@ -1,14 +1,14 @@
 "use client"
 
+import type { LucideIcon } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight, Github, Star } from "lucide-react"
+import { animate, motion, useMotionValue } from "motion/react"
+import { useEffect, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { ArrowRight, ChevronLeft, ChevronRight, Github, Star } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
-import { animate, motion, useMotionValue } from "motion/react"
 import { SafeImage } from "@/components/ui/safe-image"
+import { cn } from "@/lib/utils"
 import { AppLink } from "../../shared/components/app-link"
-import { useEffect, useState } from "react"
 
 type HeroStat = Readonly<{ label: string; value: string }>
 type Slide = Readonly<{
@@ -34,7 +34,11 @@ const heroSlides: readonly Slide[] = [
       "A comprehensive, production‑ready foundation: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and launch with.",
     image: "/shop1.png",
     cta: {
-      primary: { text: "Star on GitHub", href: "https://github.com/Dendro-X0/next-ecommerce-starterkit", icon: Github },
+      primary: {
+        text: "Star on GitHub",
+        href: "https://github.com/Dendro-X0/next-ecommerce-starterkit",
+        icon: Github,
+      },
       secondary: { text: "Explore the demo", href: "/shop" },
     },
     stats: [],
@@ -45,11 +49,14 @@ const heroSlides: readonly Slide[] = [
     title: "Modern stack, real features",
     subtitle: "Performance, a11y, and DX",
     description:
-      "SSR/ISR, routing, forms, state, and UI primitives that scale. Payments, auth, and an admin dashboard included so you can focus on your product.",
+      "SSR/ISR, routing, forms, state, and UI primitives that scale. Payments, auth, and an RBAC dashboard included so you can focus on your product.",
     image: "/admin_dashboard1.png",
     cta: {
       primary: { text: "Explore the demo", href: "/shop" },
-      secondary: { text: "Read the README", href: "https://github.com/Dendro-X0/next-ecommerce-starterkit#readme" },
+      secondary: {
+        text: "Read the README",
+        href: "https://github.com/Dendro-X0/next-ecommerce-starterkit#readme",
+      },
     },
     stats: [],
     badge: "Production Ready",
@@ -59,11 +66,14 @@ const heroSlides: readonly Slide[] = [
     title: "Learn or launch today",
     subtitle: "Educational & commercial use",
     description:
-      "Built for deep learning and real shipping. Clean structure, typed clients, and pragmatic patterns across auth, admin, payments, and more.",
+      "Built for deep learning and real shipping. Clean structure, typed clients, and pragmatic patterns across auth, RBAC, payments, and more.",
     image: "/user_dashboard1.png",
     cta: {
       primary: { text: "Get started", href: "/getting-started" },
-      secondary: { text: "Browse code", href: "https://github.com/Dendro-X0/next-ecommerce-starterkit" },
+      secondary: {
+        text: "Browse code",
+        href: "https://github.com/Dendro-X0/next-ecommerce-starterkit",
+      },
     },
     stats: [],
     badge: "Educational",
@@ -217,7 +227,7 @@ export function HeroCarousel() {
       </motion.div>
 
       {/* Controls: arrows + pagination */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 mt-12">
         <div className="flex items-center gap-2 bg-background/80 backdrop-blur border rounded-full px-3 py-2 shadow-md">
           <Button
             variant="outline"
