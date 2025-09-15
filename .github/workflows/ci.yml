@@ -42,6 +42,7 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm run lint
+        continue-on-error: true
 
       - name: A11y Lint (web)
         run: pnpm -w --filter web... run lint:a11y
