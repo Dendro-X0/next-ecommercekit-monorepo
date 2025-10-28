@@ -1,0 +1,50 @@
+{
+  "name": "next-ecommercekit-monorepo",
+  "version": "1.1.6",
+  "private": true,
+  "packageManager": "pnpm@10.16.1",
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=10.16.1"
+  },
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "dev:safe": "cross-env NEXT_PUBLIC_SAFE_HOME=true pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "lint": "turbo run lint",
+    "format": "biome check --write apps/ packages/ docs/ --reporter=summary",
+    "format:check": "biome check apps/ packages/ docs/ --reporter=summary",
+    "lint:biome": "biome lint apps/ packages/ docs/ --reporter=summary",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "db:generate": "pnpm --filter @repo/db db:generate",
+    "db:migrate": "pnpm --filter @repo/db db:migrate",
+    "db:push": "pnpm --filter @repo/db db:push",
+    "db:seed": "pnpm --filter @repo/db db:seed"
+  },
+  "overrides": {
+    "@types/node": "^20.19.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "@next/bundle-analyzer": "^16.0.0",
+    "cross-env": "^10.0.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@stripe/react-stripe-js": "^4.0.2",
+    "@stripe/stripe-js": "^7.9.0",
+    "stripe": "^18.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dendro-X0/next-ecommercekit-monorepo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dendro-X0/next-ecommercekit-monorepo/issues"
+  },
+  "homepage": "https://github.com/Dendro-X0/next-ecommercekit-monorepo#readme"
+}

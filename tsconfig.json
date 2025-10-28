@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@repo/*": ["./packages/*"],
+      "@tanstack/react-query": [
+        "./node_modules/@tanstack/react-query/build/modern",
+        "./node_modules/.pnpm/@tanstack+react-query@*/node_modules/@tanstack/react-query/build/modern"
+      ]
+    }
+  }
+}

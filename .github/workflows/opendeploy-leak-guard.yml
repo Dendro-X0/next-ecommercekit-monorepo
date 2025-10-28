@@ -1,0 +1,52 @@
+name: Security - OpenDeploy Secret Cache Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  leak-guard:
+    name: Block .opendeploy/OpenDeploy cache files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute diff range
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_ref="${{ github.base_ref }}"
+            git fetch origin "$base_ref" --depth=1
+            echo "range=origin/$base_ref...HEAD" >> "$GITHUB_OUTPUT"
+          else
+            echo "range=${{ github.event.before }}...${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: List changed files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "${{ steps.diff.outputs.range }}" > changed.txt || true
+          echo "Changed files:"; cat changed.txt || true
+
+      - name: Enforce guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Forbidden patterns (case-insensitive)
+          deny_re='(^|/)\.opendeploy(/|$)|(^|/)OpenDeploy(/|$)'
+          deny_files_re='(^|/)\.opendeploy/cache\.json$'
+          if grep -Ei "$deny_re|$deny_files_re" changed.txt; then
+            echo "::error::Blocked: .opendeploy/ or OpenDeploy/ files detected in changes (or cache.json within)."
+            echo "Add .opendeploy/ to .gitignore and remove any cache files from commits."
+            exit 1
+          else
+            echo "No forbidden files in this change set."
+          fi

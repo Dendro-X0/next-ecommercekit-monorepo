@@ -1,0 +1,186 @@
+import type { Category, Product, Review } from "@/types"
+
+export const categories: Category[] = [
+  {
+    id: "1",
+    name: "Electronics",
+    slug: "electronics",
+    image: "/placeholder.svg?height=200&width=300",
+    productCount: 45,
+  },
+  {
+    id: "2",
+    name: "Clothing",
+    slug: "clothing",
+    image: "/placeholder.svg?height=200&width=300",
+    productCount: 128,
+  },
+  {
+    id: "3",
+    name: "Home & Garden",
+    slug: "home-garden",
+    image: "/placeholder.svg?height=200&width=300",
+    productCount: 67,
+  },
+  {
+    id: "4",
+    name: "Sports",
+    slug: "sports",
+    image: "/placeholder.svg?height=200&width=300",
+    productCount: 89,
+  },
+]
+
+export const products: Product[] = [
+  {
+    id: "1",
+    name: "Wireless Bluetooth Headphones",
+    price: 99.99,
+    originalPrice: 129.99,
+    description:
+      "Premium wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.",
+    images: [
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+    ],
+    category: "Electronics",
+    slug: "wireless-bluetooth-headphones",
+    inStock: true,
+    rating: 4.5,
+    reviewCount: 128,
+    tags: ["wireless", "bluetooth", "noise-cancelling"],
+  },
+  {
+    id: "2",
+    name: "Organic Cotton T-Shirt",
+    price: 29.99,
+    description:
+      "Comfortable and sustainable organic cotton t-shirt. Available in multiple colors and sizes.",
+    images: ["/placeholder.svg?height=400&width=400", "/placeholder.svg?height=400&width=400"],
+    category: "Clothing",
+    slug: "organic-cotton-t-shirt",
+    inStock: true,
+    rating: 4.2,
+    reviewCount: 67,
+    tags: ["organic", "cotton", "sustainable"],
+  },
+  {
+    id: "3",
+    name: "Smart Home Security Camera",
+    price: 149.99,
+    originalPrice: 199.99,
+    description:
+      "HD security camera with night vision, motion detection, and smartphone app integration.",
+    images: [
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+    ],
+    category: "Electronics",
+    slug: "smart-home-security-camera",
+    inStock: false,
+    rating: 4.7,
+    reviewCount: 89,
+    tags: ["smart-home", "security", "hd"],
+  },
+  {
+    id: "4",
+    name: "Yoga Mat Premium",
+    price: 49.99,
+    description:
+      "Non-slip premium yoga mat with excellent grip and cushioning. Perfect for all yoga practices.",
+    images: ["/placeholder.svg?height=400&width=400", "/placeholder.svg?height=400&width=400"],
+    category: "Sports",
+    slug: "yoga-mat-premium",
+    inStock: true,
+    rating: 4.4,
+    reviewCount: 156,
+    tags: ["yoga", "fitness", "non-slip"],
+  },
+  {
+    id: "5",
+    name: "Ceramic Plant Pot Set",
+    price: 34.99,
+    description:
+      "Beautiful set of 3 ceramic plant pots with drainage holes. Perfect for indoor plants.",
+    images: ["/placeholder.svg?height=400&width=400", "/placeholder.svg?height=400&width=400"],
+    category: "Home & Garden",
+    slug: "ceramic-plant-pot-set",
+    inStock: true,
+    rating: 4.3,
+    reviewCount: 45,
+    tags: ["ceramic", "plants", "home-decor"],
+  },
+  {
+    id: "6",
+    name: "Running Shoes Pro",
+    price: 119.99,
+    originalPrice: 149.99,
+    description: "Professional running shoes with advanced cushioning and breathable mesh upper.",
+    images: [
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+      "/placeholder.svg?height=400&width=400",
+    ],
+    category: "Sports",
+    slug: "running-shoes-pro",
+    inStock: true,
+    rating: 4.6,
+    reviewCount: 234,
+    tags: ["running", "shoes", "sports"],
+  },
+  {
+    id: "7",
+    name: "Antivirus Software License",
+    price: 59.99,
+    description: "Annual subscription license with instant digital delivery.",
+    images: ["/placeholder.svg?height=400&width=400"],
+    category: "Electronics",
+    slug: "antivirus-software-license",
+    inStock: true,
+    rating: 4.1,
+    reviewCount: 32,
+    tags: ["software", "security", "digital"],
+    kind: "digital",
+    digital: {
+      version: "2025",
+      files: [{ name: "installer.exe", size: "120 MB", type: "application/x-msdownload" }],
+    },
+  },
+]
+
+export const reviews: Review[] = [
+  {
+    id: "1",
+    productId: "1",
+    userName: "John D.",
+    rating: 5,
+    comment: "Amazing sound quality and battery life. Highly recommended!",
+    date: "2024-01-15",
+  },
+  {
+    id: "2",
+    productId: "1",
+    userName: "Sarah M.",
+    rating: 4,
+    comment: "Great headphones, but could be more comfortable for long sessions.",
+    date: "2024-01-10",
+  },
+  {
+    id: "3",
+    productId: "2",
+    userName: "Mike R.",
+    rating: 5,
+    comment: "Super soft and fits perfectly. Love the organic material!",
+    date: "2024-01-12",
+  },
+]
+
+export const sortOptions = [
+  { value: "newest", label: "Newest" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "popularity", label: "Most Popular" },
+  { value: "rating", label: "Highest Rated" },
+]

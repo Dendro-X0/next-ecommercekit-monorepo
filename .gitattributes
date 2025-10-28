@@ -1,0 +1,7 @@
+# Normalize line endings
+* text=auto eol=lf
+
+# Linguist overrides (treat generated build artifacts as vendored)
+apps/web/.next/** linguist-vendored
+**/dist/** linguist-vendored
+**/build/** linguist-vendored

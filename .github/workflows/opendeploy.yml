@@ -1,0 +1,129 @@
+name: OpenDeploy DB Push (Monorepo)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Vercel environment to target
+        required: true
+        default: production
+        type: choice
+        options:
+          - production
+          - preview
+
+jobs:
+  db-push:
+    name: Drizzle DB Push
+    runs-on: ubuntu-latest
+    concurrency:
+      group: opendeploy-db-push-${{ github.ref }}
+      cancel-in-progress: false
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+
+      - name: Install dependencies (workspace)
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Prepare artifacts directory
+        run: mkdir -p ./.artifacts
+
+      - name: Doctor (annotate)
+        continue-on-error: true
+        run: |
+          node "./OpenDeploy CLI/dist/index.js" doctor --ci
+
+      - name: Doctor (JSON sink)
+        continue-on-error: true
+        run: |
+          node "./OpenDeploy CLI/dist/index.js" doctor \
+            --json --summary-only \
+            --json-file ./.artifacts/doctor.json
+
+      - name: Env Diff (annotate)
+        shell: bash
+        continue-on-error: true
+        run: |
+          ENV_FLAG=preview
+          if [ "${{ inputs.environment }}" = "production" ]; then ENV_FLAG=prod; fi
+          node "./OpenDeploy CLI/dist/index.js" env diff vercel \
+            --file ./apps/web/.env.production.local \
+            --env "$ENV_FLAG" \
+            --project-id "$VERCEL_PROJECT_ID" --org-id "$VERCEL_ORG_ID" \
+            --ignore NEXT_PUBLIC_* --fail-on-add --fail-on-remove --ci
+          echo $? > ./.artifacts/env-diff.status || true
+
+      - name: Env Diff (JSON sink)
+        shell: bash
+        continue-on-error: true
+        run: |
+          ENV_FLAG=preview
+          if [ "${{ inputs.environment }}" = "production" ]; then ENV_FLAG=prod; fi
+          node "./OpenDeploy CLI/dist/index.js" env diff vercel \
+            --file ./apps/web/.env.production.local \
+            --env "$ENV_FLAG" \
+            --project-id "$VERCEL_PROJECT_ID" --org-id "$VERCEL_ORG_ID" \
+            --ignore NEXT_PUBLIC_* --fail-on-add --fail-on-remove \
+            --json --summary-only \
+            --json-file ./.artifacts/env-diff.json
+
+      - name: Upload OpenDeploy artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opendeploy-artifacts
+          path: ./.artifacts
+          if-no-files-found: ignore
+
+      - name: Fail if env diff violated policy
+        shell: bash
+        run: |
+          if [ -f ./.artifacts/env-diff.status ]; then \
+            code=$(cat ./.artifacts/env-diff.status); \
+            if [ "$code" != "0" ]; then \
+              echo "Env diff failed with code $code"; \
+              exit "$code"; \
+            fi; \
+          fi
+
+      - name: Pull env from Vercel
+        working-directory: apps/web
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            vercel env pull .env.production.local --environment production
+          else
+            vercel env pull .env.preview.local --environment preview
+          fi
+
+      - name: DB Push (Drizzle)
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            set -a
+            source apps/web/.env.production.local
+            set +a
+          else
+            set -a
+            source apps/web/.env.preview.local
+            set +a
+          fi
+          pnpm -w --filter @repo/db db:push

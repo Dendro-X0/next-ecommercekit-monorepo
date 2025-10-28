@@ -1,0 +1,49 @@
+{
+  "extends": ["next/core-web-vitals", "@repo/eslint-config"],
+  "rules": {
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": ["@radix-ui/*"],
+            "message": "Import Radix primitives only from @repo/ui."
+          }
+        ]
+      }
+    ],
+    "import-x/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./modules/shared/**",
+            "from": "./modules/ui/**",
+            "message": "modules/shared must not import from modules/ui"
+          },
+          {
+            "target": "./modules/*/**",
+            "from": "./modules/*/**",
+            "except": [
+              "./shared/**",
+              "../shared/**",
+              "../../shared/**",
+              "./ui/**",
+              "../ui/**",
+              "../../ui/**"
+            ],
+            "message": "Domain modules must not import other domain modules. Only import from modules/shared or modules/ui."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/components/ui/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
+}

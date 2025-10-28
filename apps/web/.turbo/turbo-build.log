@@ -1,0 +1,90 @@
+
+> web@1.0.0 build E:\Codebase\ecommerce-workspace\next-ecommerce-starterkit\apps\web
+> next build
+
+   ▲ Next.js 15.4.6
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 15.0s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+[api/env] RESEND not configured (RESEND_API_KEY/EMAIL_FROM). Transactional emails will be skipped.
+[api/env] No payment provider configured. Stripe/PayPal endpoints will be disabled.
+   Generating static pages (0/49) ...
+   Generating static pages (12/49) 
+   Generating static pages (24/49) 
+   Generating static pages (36/49) 
+ ✓ Generating static pages (49/49)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                  Size  First Load JS
+┌ ○ /                                                     51.9 kB         224 kB
+├ ○ /_not-found                                             170 B         101 kB
+├ ○ /403                                                    316 B         105 kB
+├ ƒ /api/[[...rest]]                                        170 B         101 kB
+├ ƒ /api/account/recovery-codes                             170 B         101 kB
+├ ƒ /api/auth/[...all]                                      170 B         101 kB
+├ ƒ /api/uploads                                            170 B         101 kB
+├ ○ /auth/forgot-password                                 1.34 kB         158 kB
+├ ○ /auth/login                                            1.8 kB         165 kB
+├ ○ /auth/magic-link                                      4.79 kB         148 kB
+├ ƒ /auth/reset-password                                  5.13 kB         154 kB
+├ ○ /auth/signup                                          1.98 kB         165 kB
+├ ○ /auth/two-factor                                      6.71 kB         149 kB
+├ ○ /auth/verify-email                                    1.92 kB         149 kB
+├ ○ /cart                                                 8.59 kB         134 kB
+├ ○ /categories                                           2.62 kB         128 kB
+├ ƒ /categories/[slug]                                    18.5 kB         182 kB
+├ ○ /checkout                                             19.1 kB         210 kB
+├ ○ /contact                                              10.9 kB         159 kB
+├ ƒ /dashboard/admin                                        170 B         101 kB
+├ ƒ /dashboard/admin/customers                            7.63 kB         153 kB
+├ ƒ /dashboard/admin/customers/reviews                    8.07 kB         157 kB
+├ ƒ /dashboard/admin/dashboard                              170 B         101 kB
+├ ƒ /dashboard/admin/dashboard/analytics                  1.83 kB         111 kB
+├ ƒ /dashboard/admin/dashboard/overview                   4.12 kB         126 kB
+├ ƒ /dashboard/admin/dashboard/reports                    1.82 kB         111 kB
+├ ƒ /dashboard/admin/ecommerce                              170 B         101 kB
+├ ƒ /dashboard/admin/ecommerce/inventory                  7.21 kB         116 kB
+├ ƒ /dashboard/admin/ecommerce/orders                     9.04 kB         147 kB
+├ ƒ /dashboard/admin/ecommerce/orders/[id]                2.49 kB         120 kB
+├ ƒ /dashboard/admin/ecommerce/products                   12.3 kB         176 kB
+├ ƒ /dashboard/admin/ecommerce/products/[productId]/edit    160 B         201 kB
+├ ƒ /dashboard/admin/ecommerce/products/create              160 B         201 kB
+├ ƒ /dashboard/admin/finance/refunds                       9.1 kB         127 kB
+├ ƒ /dashboard/admin/marketing/ads                        2.75 kB         141 kB
+├ ƒ /dashboard/admin/marketing/affiliate                  8.65 kB         171 kB
+├ ƒ /dashboard/admin/marketing/email                      2.75 kB         141 kB
+├ ƒ /dashboard/admin/orders                               3.01 kB         184 kB
+├ ƒ /dashboard/admin/orders/[orderId]                     2.36 kB         184 kB
+├ ƒ /dashboard/user                                       12.3 kB         185 kB
+├ ƒ /dashboard/user/affiliate                             7.16 kB         175 kB
+├ ƒ /dashboard/user/orders                                6.48 kB         183 kB
+├ ƒ /dashboard/user/orders/[orderId]                      4.11 kB         172 kB
+├ ƒ /dashboard/user/reviews                               6.63 kB         187 kB
+├ ƒ /dashboard/user/settings                                170 B         101 kB
+├ ƒ /dashboard/user/settings/addresses                     9.4 kB         159 kB
+├ ƒ /dashboard/user/settings/notifications                 4.1 kB         116 kB
+├ ƒ /dashboard/user/settings/profile                      8.34 kB         148 kB
+├ ƒ /dashboard/user/settings/security                     4.79 kB         144 kB
+├ ƒ /dashboard/user/wishlist                              9.17 kB         182 kB
+├ ƒ /order-success/[orderId]                              5.18 kB         125 kB
+├ ○ /paypal/cancel                                        2.56 kB         111 kB
+├ ○ /paypal/return                                         7.2 kB         125 kB
+├ ƒ /products/[slug]                                      18.1 kB         201 kB
+├ ○ /safe                                                   316 B         105 kB
+└ ○ /shop                                                 9.38 kB         168 kB
++ First Load JS shared by all                              101 kB
+  ├ chunks/1844-1393aa101dc95e08.js                       44.2 kB
+  ├ chunks/c0fcd55f-4a20fbc75871e6a1.js                   54.1 kB
+  └ other shared chunks (total)                           2.57 kB
+
+
+ƒ Middleware                                              33.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

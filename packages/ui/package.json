@@ -1,0 +1,58 @@
+{
+  "name": "@repo/ui",
+  "version": "0.1.0",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "exports": {
+    "./button": "./src/button.tsx",
+    "./i18n": "./src/i18n.ts",
+    "./next/link": "./src/next/link.tsx",
+    "./next/button-link": "./src/next/button-link.tsx",
+    "./collapsible-root": "./src/collapsible-root.tsx",
+    "./collapsible-trigger": "./src/collapsible-trigger.tsx",
+    "./collapsible-content": "./src/collapsible-content.tsx",
+    "./tooltip-provider": "./src/tooltip-provider.tsx",
+    "./tooltip-root": "./src/tooltip-root.tsx",
+    "./tooltip-trigger": "./src/tooltip-trigger.tsx",
+    "./tooltip-content": "./src/tooltip-content.tsx",
+    "./dialog-root": "./src/dialog-root.tsx",
+    "./dialog-trigger": "./src/dialog-trigger.tsx",
+    "./dialog-content": "./src/dialog-content.tsx",
+    "./dialog-overlay": "./src/dialog-overlay.tsx",
+    "./dialog-portal": "./src/dialog-portal.tsx",
+    "./dialog-close": "./src/dialog-close.tsx",
+    "./dialog-title": "./src/dialog-title.tsx",
+    "./dialog-description": "./src/dialog-description.tsx",
+    "./popover-root": "./src/popover-root.tsx",
+    "./popover-trigger": "./src/popover-trigger.tsx",
+    "./popover-content": "./src/popover-content.tsx",
+    "./popover-portal": "./src/popover-portal.tsx",
+    "./popover-arrow": "./src/popover-arrow.tsx",
+    "./popover-anchor": "./src/popover-anchor.tsx",
+    "./popover-close": "./src/popover-close.tsx"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0 <20",
+    "react-dom": ">=18.2.0 <20",
+    "next": ">=15.0.0 <16"
+  },
+  "dependencies": {
+    "@repo/i18n": "workspace:*",
+    "@radix-ui/react-collapsible": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-tooltip": "^1.2.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "typescript": "*"
+  }
+}

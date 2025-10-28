@@ -1,0 +1,75 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "files": {
+    "includes": [
+      "apps/*/src/**/*.{ts,tsx,js,jsx,json,jsonc,md,mdx,css}",
+      "apps/*/modules/**/*.{ts,tsx,js,jsx,json,jsonc,md,mdx,css}",
+      "packages/*/src/**/*.{ts,tsx,js,jsx,json,jsonc,md,mdx,css}",
+      "docs/**/*.{md,mdx,json,jsonc}"
+    ],
+    "ignoreUnknown": true,
+    "experimentalScannerIgnores": [
+      "**/node_modules/**",
+      "**/.turbo/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/.git/**",
+      "**/.vercel/**"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useBlockStatements": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "asNeeded"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.ts", "**/*.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "error"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.json", "**/*.jsonc"],
+      "formatter": {
+        "enabled": true
+      }
+    }
+  ]
+}

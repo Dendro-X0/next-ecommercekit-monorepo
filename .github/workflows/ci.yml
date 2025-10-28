@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Lint · Typecheck · Build (web)
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      BETTER_AUTH_SECRET: ci-only-dummy-secret
+      WEB_ORIGIN: http://localhost:3000
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies (workspace root)
+        run: pnpm -w install --frozen-lockfile
+
+      # Safety: ensure package-level node_modules links exist for web
+      # Some runners mis-detect workspace links during turbo steps.
+      - name: Install dependencies (web)
+        run: pnpm -w --filter web... install --frozen-lockfile
+
+      - name: Lint (web)
+        working-directory: apps/web
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run lint
+        continue-on-error: true
+
+      - name: A11y Lint (web)
+        run: pnpm -w --filter web... run lint:a11y
+        continue-on-error: true
+
+      - name: Typecheck (web)
+        run: pnpm -w turbo run typecheck --filter=web...
+
+      - name: Build upstream emails (ensure subpath export types)
+        run: pnpm -w turbo run build --filter=@repo/emails...
+
+      - name: Build web app
+        run: pnpm -w turbo run build --filter=web...

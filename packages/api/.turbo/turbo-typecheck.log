@@ -1,0 +1,4 @@
+
+> @repo/api@0.1.0 typecheck E:\Codebase\my-workspace\next-ecommercekit-monorepo\packages\api
+> tsc -p tsconfig.json --noEmit
+
