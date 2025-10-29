@@ -8,6 +8,8 @@ import type { ListProductsResponse } from "@/lib/data/products"
 import { unstable_cache } from "next/cache"
 
 export const revalidate = 60
+// Avoid build-time DB requirement in CI by disabling SSG for this route.
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Shop All Products",

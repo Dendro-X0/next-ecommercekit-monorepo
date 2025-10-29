@@ -18,6 +18,8 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://user:pass@127.0.0.1:5432/db' }}
       APP_URL: ${{ secrets.APP_URL || 'http://localhost:3000' }}
       NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL || 'http://localhost:3000' }}
+      NEXT_PUBLIC_DISABLE_DATA_FETCH: "true"
+      NEXT_PUBLIC_DISABLE_PRODUCTS: "true"
 
     steps:
       - name: Checkout
