@@ -37,6 +37,19 @@ jobs:
       - name: Install dependencies (web)
         run: pnpm -w --filter web... install --frozen-lockfile
 
+      - name: CI defaults (env)
+        run: |
+          : "${DATABASE_URL:=postgresql://user:pass@127.0.0.1:5432/db}"
+          : "${APP_URL:=http://localhost:3000}"
+          : "${NEXT_PUBLIC_APP_URL:=http://localhost:3000}"
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
+          echo "APP_URL=$APP_URL" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL" >> $GITHUB_ENV
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          APP_URL: ${{ secrets.APP_URL }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+
       - name: Lint (web)
         working-directory: apps/web
         run: |
@@ -56,3 +69,8 @@ jobs:
 
       - name: Build web app
         run: pnpm -w turbo run build --filter=web...
+        env:
+          NODE_ENV: production
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          APP_URL: ${{ env.APP_URL }}
+          NEXT_PUBLIC_APP_URL: ${{ env.NEXT_PUBLIC_APP_URL }}
