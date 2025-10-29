@@ -15,6 +15,9 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
       BETTER_AUTH_SECRET: ci-only-dummy-secret
       WEB_ORIGIN: http://localhost:3000
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://user:pass@127.0.0.1:5432/db' }}
+      APP_URL: ${{ secrets.APP_URL || 'http://localhost:3000' }}
+      NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL || 'http://localhost:3000' }}
 
     steps:
       - name: Checkout

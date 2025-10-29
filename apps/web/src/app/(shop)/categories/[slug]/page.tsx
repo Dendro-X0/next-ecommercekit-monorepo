@@ -7,6 +7,10 @@ import type { Product } from "@/types"
 import { env } from "~/env"
 
 export const revalidate = 60
+// This page queries products from the database. To avoid build-time env
+// requirements in CI (DATABASE_URL), mark it as dynamic so Next.js skips SSG
+// data collection. Runtime fetching remains unchanged in production.
+export const dynamic = "force-dynamic"
 
 export default async function CategoryPage({
   params,
