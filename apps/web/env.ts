@@ -4,7 +4,10 @@ import { z } from "zod"
 export const env = createEnv({
   server: {
     STORAGE_PROVIDER: z.enum(["s3", "cloudinary"]).optional(),
-    DATABASE_URL: z.string().url(),
+    // DATABASE_URL is validated at runtime by @repo/db when an actual DB
+    // operation occurs. Mark as optional here to avoid build-time failures
+    // when pages import `~/env` only for public URL config.
+    DATABASE_URL: z.string().url().optional(),
     BETTER_AUTH_SECRET: z.string().min(1).optional(),
     EMAIL_FROM: z.string().email().optional(),
     GOOGLE_CLIENT_ID: z.string().min(1).optional(),
