@@ -3,6 +3,9 @@ import { unstable_cache } from "next/cache"
 import { productsDisabled } from "@/lib/safe-mode"
 import { categoriesRepo } from "@repo/db"
 export const revalidate = 300
+// Avoid build-time DB requirement in CI by disabling SSG for this route.
+// Runtime fetch still occurs on request.
+export const dynamic = "force-dynamic"
 
 export default async function CategoriesPage(): Promise<JSX.Element> {
   if (productsDisabled) {

@@ -4,7 +4,6 @@ import type { JSX } from "react"
 import { productsDisabled } from "@/lib/safe-mode"
 import { productsRepo } from "@repo/db"
 import type { Product } from "@/types"
-import { env } from "~/env"
 
 export const revalidate = 60
 // This page queries products from the database. To avoid build-time env
@@ -27,7 +26,7 @@ export default async function CategoryPage({
   }
   // Minimal JSON-LD for Category collection page
   const base: string = (() => {
-    const v = env.NEXT_PUBLIC_APP_URL
+    const v = process.env.NEXT_PUBLIC_APP_URL
     if (typeof v === "string" && v.length > 0) return v
     return "http://localhost:3000"
   })()
