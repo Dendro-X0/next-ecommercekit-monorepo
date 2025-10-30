@@ -1,0 +1,56 @@
+name: Deploy to Vercel (Production)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Build and Deploy (apps/web)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      VERCEL_PROJECT: next-ecommercekit-web
+      VERCEL_SCOPE: fictionalforges-projects
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.16.1
+
+      - name: Install workspace dependencies
+        run: |
+          corepack enable
+          pnpm -w install --frozen-lockfile
+
+      - name: Build with Vercel (prebuild)
+        run: |
+          npx vercel@latest build \
+            --cwd apps/web \
+            --project "$VERCEL_PROJECT" \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          NEXT_PUBLIC_DISABLE_DATA_FETCH: "true"
+
+      - name: Deploy prebuilt to Production
+        run: |
+          npx vercel@latest deploy --prebuilt --prod \
+            --cwd apps/web \
+            --project "$VERCEL_PROJECT" \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
