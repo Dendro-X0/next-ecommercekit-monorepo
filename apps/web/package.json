@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "dev:webpack": "next dev",
     "build": "next build",
+    "vercel-build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:a11y": "eslint . --ext .ts,.tsx --max-warnings=0",

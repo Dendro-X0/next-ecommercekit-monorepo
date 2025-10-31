@@ -41,21 +41,32 @@ jobs:
           corepack enable
           pnpm -w install --frozen-lockfile
 
-      - name: Build with Vercel (prebuild)
+      - name: Write Vercel project link file
         run: |
-          npx vercel@latest build \
-            --cwd apps/web \
-            --project "$VERCEL_PROJECT" \
-            -t "$VERCEL_TOKEN"
+          mkdir -p apps/web/.vercel
+          cat > apps/web/.vercel/project.json << JSON
+          {
+            "projectId": "${VERCEL_PROJECT_ID}",
+            "orgId": "${VERCEL_ORG_ID}"
+          }
+          JSON
+        env:
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Link project and pull env from Vercel
+        run: |
+          npx vercel@latest pull --yes --environment=production -t "$VERCEL_TOKEN" --cwd apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_DISABLE_DATA_FETCH: "true"
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
-      - name: Deploy prebuilt to Production
+      - name: Deploy to Production (remote build)
         run: |
-          npx vercel@latest deploy --prebuilt --prod \
+          npx vercel@latest deploy --prod \
             --cwd apps/web \
-            --project "$VERCEL_PROJECT" \
+            --yes \
             -t "$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

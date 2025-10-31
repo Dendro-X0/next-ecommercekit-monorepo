@@ -55,6 +55,9 @@ const nextConfig: NextConfig = {
       ...(config.resolve.alias || {}),
       ...alias,
     }
+    if (process.platform === "win32") {
+      config.cache = { type: "memory" }
+    }
     return config
   },
   // Note: lucide-react already tree-shakes well; per-icon subpath imports are not portable across versions.
