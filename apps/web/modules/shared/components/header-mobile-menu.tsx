@@ -31,7 +31,7 @@ export function HeaderMobileMenu({
 }: {
   readonly navigationItems: readonly HeaderMobileNavItem[]
 }): JSX.Element {
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const locale = getLocaleFromPath(pathname)
   const session = useSession()
   const user = session?.user ?? null

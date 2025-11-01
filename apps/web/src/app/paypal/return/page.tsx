@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 export default function PaypalReturnPage(): JSX.Element {
   const router = useRouter()
   const search = useSearchParams()
-  const token: string | null = useMemo(() => search.get("token"), [search])
+  const token: string | null = useMemo(() => (search ? search.get("token") : null), [search])
   const ORDERS_PATH: string = "/dashboard/user/orders"
   const captureMut = usePaypalCapture()
 

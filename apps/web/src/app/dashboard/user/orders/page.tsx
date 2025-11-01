@@ -184,7 +184,7 @@ export default function OrdersPage() {
                     <TableCell>
                       <OrderStatusBadge status={order.status} />
                     </TableCell>
-                    <TableCell>{(order.items?.length ?? 0)} items</TableCell>
+                    <TableCell>{order.items?.length ?? 0} items</TableCell>
                     <TableCell>{formatProvider(order.paymentProvider)}</TableCell>
                     <TableCell className="font-mono text-xs">
                       {previewRef(order.paymentRef)}

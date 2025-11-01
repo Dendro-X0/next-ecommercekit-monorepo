@@ -1,4 +1,4 @@
 
-> @repo/media-worker@0.1.0 typecheck E:\Codebase\my-workspace\next-ecommercekit-monorepo\packages\media-worker
+> @repo/media-worker@0.1.0 typecheck G:\Web Development Project\Codebase-X0\my-workspace\next-ecommercekit-monorepo\packages\media-worker
 > tsc -p tsconfig.json --noEmit
 

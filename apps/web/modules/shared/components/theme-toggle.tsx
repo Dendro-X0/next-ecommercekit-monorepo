@@ -1,8 +1,8 @@
 "use client"
 
+import { Laptop, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import React from "react"
-import { Laptop, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 

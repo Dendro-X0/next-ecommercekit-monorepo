@@ -213,7 +213,12 @@ export function PaymentForm({
                 </div>
                 <div>
                   <Label htmlFor={fid("cvv")}>CVV</Label>
-                  <Input id={fid("cvv")} placeholder="123" inputMode="numeric" {...register("cvv")} />
+                  <Input
+                    id={fid("cvv")}
+                    placeholder="123"
+                    inputMode="numeric"
+                    {...register("cvv")}
+                  />
                   {errors.cvv && <p className="text-sm text-destructive">{errors.cvv.message}</p>}
                 </div>
               </div>

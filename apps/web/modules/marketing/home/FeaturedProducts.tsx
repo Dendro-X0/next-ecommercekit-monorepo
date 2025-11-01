@@ -22,7 +22,7 @@ type FeaturedProductsProps = Readonly<{
 type FeaturedResponse = Readonly<{ items: readonly Product[] }>
 
 export function FeaturedProducts({ initialData }: FeaturedProductsProps) {
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const locale = getLocaleFromPath(pathname)
   const { data, isLoading, error } = useQuery<FeaturedResponse, Error, FeaturedResponse>({
     queryKey: ["products", "featured", 4],

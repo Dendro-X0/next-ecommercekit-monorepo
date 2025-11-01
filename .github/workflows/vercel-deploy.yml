@@ -12,7 +12,8 @@ jobs:
     permissions:
       contents: read
     env:
-      VERCEL_PROJECT: next-ecommercekit-web
+      VERCEL_PROJECT: ${{ secrets.VERCEL_PROJECT || 'next-ecommercekit-web' }}
+      VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,29 +37,39 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
+      - name: Verify Vercel auth
+        run: |
+          npx vercel@latest whoami -t "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
       - name: Install workspace dependencies
         run: |
           corepack enable
           pnpm -w install --frozen-lockfile
 
-      - name: Write Vercel project link file
-        run: |
-          mkdir -p apps/web/.vercel
-          cat > apps/web/.vercel/project.json << JSON
-          {
-            "projectId": "${VERCEL_PROJECT_ID}",
-            "orgId": "${VERCEL_ORG_ID}"
-          }
-          JSON
-        env:
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-
       - name: Link project and pull env from Vercel
         run: |
+          if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_ORG_ID" ]; then
+            echo "Linking by IDs (.vercel/project.json)"
+            mkdir -p apps/web/.vercel
+            cat > apps/web/.vercel/project.json << JSON
+            {
+              "projectId": "$VERCEL_PROJECT_ID",
+              "orgId": "$VERCEL_ORG_ID"
+            }
+            JSON
+          else
+            echo "Linking by project name (vercel link)"
+            SCOPE_ARG=""
+            if [ -n "$VERCEL_SCOPE" ]; then SCOPE_ARG="--scope $VERCEL_SCOPE"; fi
+            npx vercel@latest link --yes --project "$VERCEL_PROJECT" $SCOPE_ARG -t "$VERCEL_TOKEN" --cwd apps/web
+          fi
           npx vercel@latest pull --yes --environment=production -t "$VERCEL_TOKEN" --cwd apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT: ${{ env.VERCEL_PROJECT }}
+          VERCEL_SCOPE: ${{ env.VERCEL_SCOPE }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 

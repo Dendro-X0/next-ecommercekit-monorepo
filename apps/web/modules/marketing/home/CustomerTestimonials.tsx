@@ -96,6 +96,10 @@ export function CustomerTestimonials(): JSX.Element {
   const enabled: boolean = !animationsDisabled || ready
   // Hooks MUST be called unconditionally and in the same order each render
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const isDraggingRef = useRef<boolean>(false)
+  const startXRef = useRef<number>(0)
+  const startScrollLeftRef = useRef<number>(0)
+  const draggedRef = useRef<boolean>(false)
   const headingId = useId()
   const [slidesPerView, setSlidesPerView] = useState<number>(1)
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -152,6 +156,38 @@ export function CustomerTestimonials(): JSX.Element {
     [slidesPerView],
   )
 
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>): void => {
+    const el = containerRef.current
+    if (!el) return
+    isDraggingRef.current = true
+    draggedRef.current = false
+    startXRef.current = e.clientX
+    startScrollLeftRef.current = el.scrollLeft
+    try {
+      el.setPointerCapture(e.pointerId)
+    } catch {}
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>): void => {
+    if (!isDraggingRef.current) return
+    const el = containerRef.current
+    if (!el) return
+    const dx = e.clientX - startXRef.current
+    if (Math.abs(dx) > 3) draggedRef.current = true
+    el.scrollLeft = startScrollLeftRef.current - dx
+  }
+
+  const endDrag = (e?: React.PointerEvent<HTMLDivElement>): void => {
+    if (!isDraggingRef.current) return
+    isDraggingRef.current = false
+    try {
+      if (e && e.pointerId != null) containerRef.current?.releasePointerCapture(e.pointerId)
+    } catch {}
+    setTimeout(() => {
+      draggedRef.current = false
+    }, 0)
+  }
+
   // Derived arrays to avoid relying on map index as React keys
   const pages: readonly number[] = useMemo<number[]>(() => {
     return Array.from({ length: pageCount }, (_, i) => i)
@@ -170,7 +206,9 @@ export function CustomerTestimonials(): JSX.Element {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
-            <h2 id={headingId} className="section-title text-black dark:text-white">OUR HAPPY CUSTOMERS</h2>
+            <h2 id={headingId} className="section-title text-black dark:text-white">
+              OUR HAPPY CUSTOMERS
+            </h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {testimonials.map((t) => (
@@ -220,7 +258,9 @@ export function CustomerTestimonials(): JSX.Element {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
-          <h2 id={headingId} className="section-title text-black dark:text-white">OUR HAPPY CUSTOMERS</h2>
+          <h2 id={headingId} className="section-title text-black dark:text-white">
+            OUR HAPPY CUSTOMERS
+          </h2>
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -248,8 +288,18 @@ export function CustomerTestimonials(): JSX.Element {
         <div className="relative">
           <div
             ref={containerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
+            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing select-none"
             onScroll={handleScroll}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerLeave={endDrag}
+            onClickCapture={(e) => {
+              if (draggedRef.current) {
+                e.preventDefault()
+                e.stopPropagation()
+              }
+            }}
           >
             {testimonials.map((t) => (
               <div key={t.id} className="shrink-0 px-2 basis-full lg:basis-1/3 snap-start">

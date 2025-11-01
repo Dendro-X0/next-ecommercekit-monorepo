@@ -93,10 +93,7 @@ export function BrowseCategories(): React.JSX.Element {
       style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 900px" }}
     >
       <div className="container mx-auto px-4">
-        <h2
-          id={headingId}
-          className="section-title mb-12 text-black dark:text-white"
-        >
+        <h2 id={headingId} className="section-title mb-12 text-black dark:text-white">
           BROWSE BY CATEGORY
         </h2>
 
@@ -117,10 +114,7 @@ export function BrowseCategories(): React.JSX.Element {
           </div>
         ) : (
           <>
-            <ul
-              id={gridId}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
+            <ul id={gridId} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {visibleCards.map((category: CategoryCard) => (
                 <li key={category.id} className="list-none">
                   <AppLink

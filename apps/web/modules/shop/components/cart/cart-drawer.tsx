@@ -59,7 +59,9 @@ export function CartDrawer({
   return (
     <Sheet>
       {/* Screen reader live region announcing cart changes */}
-      <output className="sr-only" aria-live="polite" aria-atomic="true">{srMessage}</output>
+      <output className="sr-only" aria-live="polite" aria-atomic="true">
+        {srMessage}
+      </output>
       <SheetTrigger asChild>
         <Button
           variant={label ? "default" : "ghost"}

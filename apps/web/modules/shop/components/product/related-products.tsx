@@ -74,7 +74,13 @@ export function RelatedProducts({ currentProductId, category, limit = 4 }: Relat
 
               {/* Quick Actions */}
               <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button size="icon" variant="secondary" className="h-8 w-8" aria-label="Add to wishlist" title="Add to wishlist">
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8"
+                  aria-label="Add to wishlist"
+                  title="Add to wishlist"
+                >
                   <Heart className="h-4 w-4" />
                 </Button>
               </div>

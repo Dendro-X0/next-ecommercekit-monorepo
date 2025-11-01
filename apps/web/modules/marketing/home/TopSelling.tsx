@@ -24,14 +24,21 @@ type TopSellingProps = Readonly<{
 }>
 
 export function TopSelling({ initialData }: TopSellingProps): ReactElement {
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const locale = getLocaleFromPath(pathname)
   const { data, isLoading, error } = useQuery<ListProductsResponse>({
     queryKey: ["products", "top-selling"],
     queryFn: () => productsApi.list({ page: 1, pageSize: 12 }),
     staleTime: 60_000,
     initialData:
-      initialData && Array.isArray(initialData.items) ? { items: initialData.items, total: initialData.items.length, page: 1, pageSize: initialData.items.length } as ListProductsResponse : undefined,
+      initialData && Array.isArray(initialData.items)
+        ? ({
+            items: initialData.items,
+            total: initialData.items.length,
+            page: 1,
+            pageSize: initialData.items.length,
+          } as ListProductsResponse)
+        : undefined,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

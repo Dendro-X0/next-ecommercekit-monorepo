@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { useId, type ChangeEvent, type JSX } from "react"
+import { type ChangeEvent, type JSX, useId } from "react"
 import { LOCALES_CONFIG } from "@/modules/shared/config/locales"
 
 /**
@@ -10,7 +10,7 @@ import { LOCALES_CONFIG } from "@/modules/shared/config/locales"
  */
 export function LocaleSwitcher(): JSX.Element {
   const router = useRouter()
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const describedById = useId()
   // Only navigate to locales that are both enabled in config and supported by current routing (en/es).
   const enabledCodes: readonly string[] = LOCALES_CONFIG.options
@@ -37,12 +37,12 @@ export function LocaleSwitcher(): JSX.Element {
         onChange={handleChange}
         aria-describedby={describedById}
       >
-        {LOCALES_CONFIG.options.map((opt) => (
+        {LOCALES_CONFIG.options.filter((opt) => opt.enabled).map((opt) => (
           <option
             key={opt.code}
             value={opt.code}
-            disabled={!opt.enabled}
-            aria-disabled={!opt.enabled}
+            disabled={false}
+            aria-disabled={false}
           >
             {opt.label}
           </option>

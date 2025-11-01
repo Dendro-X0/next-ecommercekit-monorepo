@@ -42,7 +42,11 @@ function CalendarRoot({ className, rootRef, ...props }: RootProps): React.ReactE
   )
 }
 
-function CalendarChevron({ className, orientation, ...props }: {
+function CalendarChevron({
+  className,
+  orientation,
+  ...props
+}: {
   readonly className?: string
   readonly orientation?: "left" | "right" | "down"
 } & React.SVGProps<SVGSVGElement>): React.ReactElement {
@@ -55,7 +59,10 @@ function CalendarChevron({ className, orientation, ...props }: {
   return <ChevronDownIcon className={cn("size-4", className)} {...props} />
 }
 
-function CalendarWeekNumber({ children, ...props }: React.ComponentProps<"td">): React.ReactElement {
+function CalendarWeekNumber({
+  children,
+  ...props
+}: React.ComponentProps<"td">): React.ReactElement {
   return (
     <td {...props}>
       <div className="flex size-(--cell-size) items-center justify-center text-center">
@@ -164,9 +171,13 @@ function Calendar({
       }}
       components={{
         Root: CalendarRoot,
-        Chevron: CalendarChevron as unknown as NonNullable<React.ComponentProps<typeof DayPicker>["components"]>["Chevron"],
+        Chevron: CalendarChevron as unknown as NonNullable<
+          React.ComponentProps<typeof DayPicker>["components"]
+        >["Chevron"],
         DayButton: CalendarDayButton,
-        WeekNumber: CalendarWeekNumber as unknown as NonNullable<React.ComponentProps<typeof DayPicker>["components"]>["WeekNumber"],
+        WeekNumber: CalendarWeekNumber as unknown as NonNullable<
+          React.ComponentProps<typeof DayPicker>["components"]
+        >["WeekNumber"],
         ...components,
       }}
       {...props}

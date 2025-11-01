@@ -1,7 +1,7 @@
 "use client"
 
-import * as React from "react"
 import { ShoppingCart } from "lucide-react"
+import * as React from "react"
 import { ThemeToggle } from "@/components/theme/theme-toggle"
 import {
   Breadcrumb,
@@ -46,7 +46,12 @@ export function DashboardHeader({ title, breadcrumbs }: DashboardHeaderProps) {
             <BreadcrumbList>
               {breadcrumbs.map((breadcrumb, index) => (
                 <React.Fragment key={`${breadcrumb.label}-${breadcrumb.href ?? "root"}`}>
-                  {index > 0 && <BreadcrumbSeparator key={`sep-${breadcrumb.label}`} className="hidden md:block" />}
+                  {index > 0 && (
+                    <BreadcrumbSeparator
+                      key={`sep-${breadcrumb.label}`}
+                      className="hidden md:block"
+                    />
+                  )}
                   <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
                     {breadcrumb.href ? (
                       <BreadcrumbLink href={breadcrumb.href}>{breadcrumb.label}</BreadcrumbLink>

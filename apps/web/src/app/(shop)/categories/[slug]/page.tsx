@@ -1,8 +1,8 @@
+import { productsRepo } from "@repo/db"
 import { unstable_cache } from "next/cache"
 import Image from "next/image"
 import type { JSX } from "react"
 import { productsDisabled } from "@/lib/safe-mode"
-import { productsRepo } from "@repo/db"
 import type { Product } from "@/types"
 
 export const revalidate = 60
@@ -55,8 +55,10 @@ export default async function CategoryPage({
         description: dto.description ?? "Product description coming soon.",
         images: dto.imageUrl ? [dto.imageUrl] : ["/placeholder.svg"],
         category:
-          (dto.categorySlug?.trim().replaceAll("-", " ").replace(/\b\w/g, (m) => m.toUpperCase())) ??
-          "General",
+          dto.categorySlug
+            ?.trim()
+            .replaceAll("-", " ")
+            .replace(/\b\w/g, (m) => m.toUpperCase()) ?? "General",
         slug: dto.slug,
         inStock: true,
         rating: 4.5,

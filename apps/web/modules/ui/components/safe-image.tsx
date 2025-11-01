@@ -36,18 +36,8 @@ export type SafeImageProps = Readonly<{
 const PLACEHOLDER = "/placeholder.svg" as const
 
 export function SafeImage(props: SafeImageProps): ReactElement {
-  const {
-    src,
-    fallbackSrc,
-    alt,
-    className,
-    fill,
-    sizes,
-    width,
-    height,
-    priority,
-    fetchPriority,
-  } = props
+  const { src, fallbackSrc, alt, className, fill, sizes, width, height, priority, fetchPriority } =
+    props
   const [failedPrimary, setFailedPrimary] = useState<boolean>(false)
   const [failedFallback, setFailedFallback] = useState<boolean>(false)
 

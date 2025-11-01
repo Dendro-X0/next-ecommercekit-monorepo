@@ -13,10 +13,12 @@ import type { Order } from "@/types/order"
 import { AppLink } from "../../../../../../modules/shared/components/app-link"
 
 export default function UserOrderDetailPage(): JSX.Element {
-  const { orderId } = useParams<{ orderId: string }>()
+  const p = useParams<{ orderId: string }>() as { readonly orderId?: string } | null
+  const orderId: string = p?.orderId ?? ""
   const { data } = useQuery<Order>({
     queryKey: ORDER_BY_ID_QK(orderId),
     queryFn: () => ordersApi.byId(orderId),
+    enabled: orderId.length > 0,
   })
   const order = data
   const breadcrumbs = [

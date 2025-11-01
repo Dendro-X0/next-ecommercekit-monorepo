@@ -78,10 +78,20 @@ function SidebarProvider({
       }
 
       // Persist sidebar state using Cookie Store API when available; fallback to document.cookie
-      type CookieStoreSet = (init: { readonly name: string; readonly value: string; readonly path?: string; readonly maxAge?: number }) => Promise<void>
+      type CookieStoreSet = (init: {
+        readonly name: string
+        readonly value: string
+        readonly path?: string
+        readonly maxAge?: number
+      }) => Promise<void>
       const w = window as unknown as { cookieStore?: { set?: CookieStoreSet } }
       if (w.cookieStore?.set) {
-        void w.cookieStore.set({ name: SIDEBAR_COOKIE_NAME, value: String(openState), path: "/", maxAge: SIDEBAR_COOKIE_MAX_AGE })
+        void w.cookieStore.set({
+          name: SIDEBAR_COOKIE_NAME,
+          value: String(openState),
+          path: "/",
+          maxAge: SIDEBAR_COOKIE_MAX_AGE,
+        })
       } else {
         // biome-ignore lint/suspicious/noDocumentCookie: Fallback for older browsers; limited to a UI preference cookie.
         document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`

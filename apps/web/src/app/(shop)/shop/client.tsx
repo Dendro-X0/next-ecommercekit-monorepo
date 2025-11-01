@@ -72,8 +72,9 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
   )
 
   const router = useRouter()
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/shop"
   const searchParams = useSearchParams()
+  const safeSearch = searchParams ?? new URLSearchParams()
   const uid = useId()
   const sortSelectId = `${uid}-sort-select`
 
@@ -81,8 +82,8 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
     const n = Number(v)
     return Number.isFinite(n) && n > 0 ? n : fallback
   }
-  const initialSort: string = searchParams.get("sort") ?? "newest"
-  const initialPage: number = getInt(searchParams.get("page"), 1)
+  const initialSort: string = safeSearch.get("sort") ?? "newest"
+  const initialPage: number = getInt(safeSearch.get("page"), 1)
 
   const [filters, setFilters] = useState<FilterOptions>({
     categories: [],
@@ -94,7 +95,7 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
   const [currentPage, setCurrentPage] = useState<number>(initialPage)
 
   const updateUrl = (next: Readonly<{ page?: number; sort?: string }>): void => {
-    const usp = new URLSearchParams(searchParams.toString())
+    const usp = new URLSearchParams(safeSearch.toString())
     if (typeof next.page === "number") usp.set("page", String(next.page))
     if (typeof next.sort === "string") usp.set("sort", next.sort)
     if (typeof next.sort === "string" && !("page" in next)) usp.set("page", "1")
@@ -123,10 +124,7 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
     enabled: !isDisabled,
     // Use initial server-rendered data only for the default view (page 1, newest, no category)
     initialData:
-      initialData &&
-      currentPage === 1 &&
-      apiSort === "newest" &&
-      (serverCategory ?? "") === ""
+      initialData && currentPage === 1 && apiSort === "newest" && (serverCategory ?? "") === ""
         ? initialData
         : undefined,
   })
@@ -233,7 +231,9 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
 
             <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
               <SlidersHorizontal className="h-4 w-4" />
-              <label htmlFor={sortSelectId} className="sr-only">Sort products</label>
+              <label htmlFor={sortSelectId} className="sr-only">
+                Sort products
+              </label>
               <Select
                 value={sortBy}
                 onValueChange={(v) => {
@@ -242,7 +242,12 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
                   updateUrl({ sort: v, page: 1 })
                 }}
               >
-                <SelectTrigger id={sortSelectId} aria-label="Sort products" title="Sort products" className="w-full sm:w-48">
+                <SelectTrigger
+                  id={sortSelectId}
+                  aria-label="Sort products"
+                  title="Sort products"
+                  className="w-full sm:w-48"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -260,7 +265,9 @@ export default function ShopPageClient({ initialData }: ShopPageClientProps): JS
             paginatedProducts.length > 0 ? (
               <ProductGrid
                 products={paginatedProducts}
-                priorityFirst={currentPage === 1 && (serverCategory ?? "") === "" && apiSort === "newest"}
+                priorityFirst={
+                  currentPage === 1 && (serverCategory ?? "") === "" && apiSort === "newest"
+                }
               />
             ) : (
               <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">

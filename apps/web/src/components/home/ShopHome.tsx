@@ -1,10 +1,10 @@
-import type { JSX } from "react"
-import dynamic from "next/dynamic"
-import { FeaturedProducts as FeaturedProductsSSR } from "@/components/home/FeaturedProducts"
-import { TopSelling as TopSellingSSR } from "@/components/home/TopSelling"
-import { unstable_cache } from "next/cache"
-import { HeroSection } from "@/components/home/HeroSection"
 import { productsRepo } from "@repo/db"
+import { unstable_cache } from "next/cache"
+import dynamic from "next/dynamic"
+import type { JSX } from "react"
+import { FeaturedProducts as FeaturedProductsSSR } from "@/components/home/FeaturedProducts"
+import { HeroSection } from "@/components/home/HeroSection"
+import { TopSelling as TopSellingSSR } from "@/components/home/TopSelling"
 import type { Product } from "@/types"
 
 // Keep below-the-fold sections client-only; SSR the first product sections to avoid CLS.
@@ -13,7 +13,10 @@ const BrowseCategoriesLazy = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section className="py-16" style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 700px" }} />
+      <section
+        className="py-16"
+        style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 700px" }}
+      />
     ),
   },
 )
@@ -22,7 +25,10 @@ const CustomerTestimonialsLazy = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section className="py-16" style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 600px" }} />
+      <section
+        className="py-16"
+        style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 600px" }}
+      />
     ),
   },
 )
@@ -31,7 +37,10 @@ const NewsletterSignupLazy = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section className="py-16" style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 400px" }} />
+      <section
+        className="py-16"
+        style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 400px" }}
+      />
     ),
   },
 )
@@ -53,8 +62,10 @@ export async function ShopHome(): Promise<JSX.Element> {
         description: dto.description ?? "Product description coming soon.",
         images: dto.imageUrl ? [dto.imageUrl] : ["/placeholder.svg"],
         category:
-          (dto.categorySlug?.trim().replaceAll("-", " ").replace(/\b\w/g, (m) => m.toUpperCase())) ??
-          "General",
+          dto.categorySlug
+            ?.trim()
+            .replaceAll("-", " ")
+            .replace(/\b\w/g, (m) => m.toUpperCase()) ?? "General",
         slug: dto.slug,
         inStock: true,
         rating: 4.5,
@@ -80,8 +91,10 @@ export async function ShopHome(): Promise<JSX.Element> {
         description: dto.description ?? "Product description coming soon.",
         images: dto.imageUrl ? [dto.imageUrl] : ["/placeholder.svg"],
         category:
-          (dto.categorySlug?.trim().replaceAll("-", " ").replace(/\b\w/g, (m) => m.toUpperCase())) ??
-          "General",
+          dto.categorySlug
+            ?.trim()
+            .replaceAll("-", " ")
+            .replace(/\b\w/g, (m) => m.toUpperCase()) ?? "General",
         slug: dto.slug,
         inStock: true,
         rating: 4.5,

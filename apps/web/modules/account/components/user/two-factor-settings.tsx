@@ -1,7 +1,7 @@
 "use client"
 
-import Image from "next/image"
 import { AlertTriangle, Download, Shield, ShieldCheck } from "lucide-react"
+import Image from "next/image"
 import { type ReactElement, useId, useState } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"

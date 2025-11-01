@@ -18,7 +18,9 @@ type CategoriesPageClientProps = Readonly<{
   initialData?: Readonly<{ items: readonly Category[] }>
 }>
 
-export default function CategoriesPageClient({ initialData }: CategoriesPageClientProps): JSX.Element {
+export default function CategoriesPageClient({
+  initialData,
+}: CategoriesPageClientProps): JSX.Element {
   const isDisabled: boolean = productsDisabled
   const { data, isLoading, error } = useQuery<{ items: readonly Category[] }>({
     queryKey: ["categories"],

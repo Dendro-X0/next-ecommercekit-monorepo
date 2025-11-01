@@ -29,9 +29,7 @@ export function ResendVerificationForm(): ReactElement {
       </p>
       <form action={action} className="space-y-3">
         <div className="space-y-2">
-          <Label htmlFor={fid("resend_email")}>
-            Email
-          </Label>
+          <Label htmlFor={fid("resend_email")}>Email</Label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input

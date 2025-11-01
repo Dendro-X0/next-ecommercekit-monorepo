@@ -1,7 +1,7 @@
-import type { JSX } from "react"
-import { unstable_cache } from "next/cache"
-import { productsDisabled } from "@/lib/safe-mode"
 import { categoriesRepo } from "@repo/db"
+import { unstable_cache } from "next/cache"
+import type { JSX } from "react"
+import { productsDisabled } from "@/lib/safe-mode"
 export const revalidate = 300
 // Avoid build-time DB requirement in CI by disabling SSG for this route.
 // Runtime fetch still occurs on request.
@@ -17,7 +17,11 @@ export default async function CategoriesPage(): Promise<JSX.Element> {
     )
   }
   const getCategories = unstable_cache(
-    async (): Promise<ReadonlyArray<Readonly<{ id: string; slug: string; name: string; image: string; productCount: number }>>> => {
+    async (): Promise<
+      ReadonlyArray<
+        Readonly<{ id: string; slug: string; name: string; image: string; productCount: number }>
+      >
+    > => {
       const rows = await categoriesRepo.list()
       return rows.map((c) => ({
         id: c.id,

@@ -1,4 +1,4 @@
 
-> @repo/i18n@0.1.0 build E:\Codebase\my-workspace\next-ecommercekit-monorepo\packages\i18n
+> @repo/i18n@0.1.0 build G:\Web Development Project\Codebase-X0\my-workspace\next-ecommercekit-monorepo\packages\i18n
 > tsc -p tsconfig.json
 

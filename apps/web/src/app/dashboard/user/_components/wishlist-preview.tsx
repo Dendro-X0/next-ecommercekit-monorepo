@@ -65,7 +65,7 @@ export function WishlistPreview({
             </div>
           ))}
 
-          {((wishlist?.items?.length ?? 0) === 0) && (
+          {(wishlist?.items?.length ?? 0) === 0 && (
             <div className="text-center py-8 text-muted-foreground">
               <Heart className="mx-auto h-12 w-12 mb-4 opacity-50" />
               <p>Your wishlist is empty</p>

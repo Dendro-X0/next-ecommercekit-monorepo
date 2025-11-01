@@ -25,7 +25,5 @@ export function middleware(req: NextRequest): NextResponse {
 
 // Avoid running on static assets, images, API routes, and well-known files
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.well-known|api).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.well-known|api).*)"],
 }

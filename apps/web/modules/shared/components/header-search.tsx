@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
  */
 export function HeaderSearch(): JSX.Element {
   const router = useRouter()
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const ref = useRef<HTMLInputElement | null>(null)
   const locale = getLocaleFromPath(pathname)
 

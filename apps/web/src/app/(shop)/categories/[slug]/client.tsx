@@ -25,7 +25,10 @@ interface CategoryPageClientProps {
  * Category detail client page. Fetches products for the given category slug
  * and renders filters, sort, and a product grid.
  */
-export default function CategoryPageClient({ params, initialData }: CategoryPageClientProps): JSX.Element {
+export default function CategoryPageClient({
+  params,
+  initialData,
+}: CategoryPageClientProps): JSX.Element {
   const categorySlug: string = (params?.slug ?? "").toLowerCase()
   const [filters, setFilters] = useState<FilterOptions>({ categories: [], priceRange: [0, 500] })
   const [sortBy, setSortBy] = useState<string>("newest")

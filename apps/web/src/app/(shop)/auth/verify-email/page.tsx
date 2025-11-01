@@ -57,6 +57,7 @@ export default function VerifyEmailPage(): ReactElement {
 
   // Prefill email from query param if present
   useEffect(() => {
+    if (!params) return
     const q = params.get("email")
     if (q && form.getValues("email") !== q) {
       form.reset({ email: q })

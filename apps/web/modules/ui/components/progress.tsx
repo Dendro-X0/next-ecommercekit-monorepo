@@ -5,7 +5,11 @@ import type * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-function Progress({ className, value = 0, ...rest }: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+function Progress({
+  className,
+  value = 0,
+  ...rest
+}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
   const labelledBy = (rest as Record<string, unknown>)["aria-labelledby"] as string | undefined
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"] as string | undefined
   return (

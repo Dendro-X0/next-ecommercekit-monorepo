@@ -61,11 +61,14 @@ function InnerButton<E extends React.ElementType = "button">(
     try {
       const p = props as Record<string, unknown>
       const isIconSize = size === "icon"
-      const hasName = typeof p["aria-label"] === "string" || typeof p.title === "string" || typeof p["aria-labelledby"] === "string"
+      const hasName =
+        typeof p["aria-label"] === "string" ||
+        typeof p.title === "string" ||
+        typeof p["aria-labelledby"] === "string"
       if (isIconSize && !hasName) {
         // eslint-disable-next-line no-console
         console.warn(
-          "[a11y] <Button size=\"icon\"> is missing an accessible name. Add aria-label, title, or aria-labelledby.",
+          '[a11y] <Button size="icon"> is missing an accessible name. Add aria-label, title, or aria-labelledby.',
         )
       }
     } catch {

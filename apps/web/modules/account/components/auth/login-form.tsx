@@ -63,6 +63,7 @@ export function LoginForm() {
   })
 
   useEffect(() => {
+    if (!params) return
     const verified = params.get("verified")
     const email = params.get("email")
     if (email && form.getValues("identifier") !== email) {

@@ -15,15 +15,10 @@ const nextConfig: NextConfig = {
     // We are running in a Safe Mode and will address lint issues separately.
     ignoreDuringBuilds: true,
   },
-  // Emit source maps for client code in production so errors map to source.
-  // Note: This exposes source maps publicly. If you prefer private maps,
-  // set devtool to "hidden-source-map" below and upload maps to your APM.
-  productionBrowserSourceMaps: true,
+  // Keep production builds lean and avoid extra artifacts on disk
+  productionBrowserSourceMaps: false,
   webpack: (config, { dev, isServer }) => {
-    // Ensure client bundles emit full source maps with proper mappings in prod.
-    if (!dev && !isServer) {
-      config.devtool = "source-map"
-    }
+    // Do not override devtool in production to minimize artifact generation
     // Force singletons for React and TanStack Query across monorepo packages.
     // This avoids duplicate module instances that break context lookups
     // (e.g., "No QueryClient set" when providers/hooks resolve to different copies).

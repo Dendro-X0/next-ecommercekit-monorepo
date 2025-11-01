@@ -49,7 +49,9 @@ export function StarRating({
           )
         })}
       </div>
-      <span className="sr-only">Rating: {rating} out of {maxRating}</span>
+      <span className="sr-only">
+        Rating: {rating} out of {maxRating}
+      </span>
       {showValue && (
         <span className="text-sm text-muted-foreground ml-1">({rating.toFixed(1)})</span>
       )}

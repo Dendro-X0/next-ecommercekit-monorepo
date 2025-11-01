@@ -6,7 +6,7 @@ import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
 import { QueryClientProvider, useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useMemo, useRef, useState, type JSX } from "react"
+import { type JSX, useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
 import { OrderSummary } from "@/components/checkout/order-summary"
 import { PaymentForm } from "@/components/checkout/payment-form"
@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button"
 import { isDigitalOnlyCart } from "@/lib/cart/utils"
 import { checkoutApi } from "@/lib/data/checkout"
 import { ordersApi } from "@/lib/data/orders"
+import { queryClient } from "@/lib/query-client"
 import { useCartStore } from "@/lib/stores/cart"
 import type { PaymentMethod, ShippingAddress } from "@/types/cart"
 import { toOrderItemsFromCart } from "@/types/order"
-import { queryClient } from "@/lib/query-client"
 
 export type CheckoutStep = "shipping" | "payment" | "review"
 export type Totals = Readonly<{ subtotal: number; shipping: number; tax: number; total: number }>
@@ -254,7 +254,9 @@ function CheckoutContent(): JSX.Element | null {
             <PaymentForm
               onNext={handlePaymentNext}
               {...(!isDigitalOnly ? { onBack: () => setCurrentStep("shipping") } : {})}
-              providers={isDigitalOnly ? ["stripe", "paypal", "card"] : ["card", "stripe", "paypal"]}
+              providers={
+                isDigitalOnly ? ["stripe", "paypal", "card"] : ["card", "stripe", "paypal"]
+              }
               backLabel={!isDigitalOnly ? "Back to Shipping" : undefined}
             />
           )}
@@ -274,10 +276,19 @@ function CheckoutContent(): JSX.Element | null {
                   totalsOverride={displayTotals}
                 />
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <Button variant="outline" onClick={() => setCurrentStep("payment")} className="w-full sm:flex-1">
+                  <Button
+                    variant="outline"
+                    onClick={() => setCurrentStep("payment")}
+                    className="w-full sm:flex-1"
+                  >
                     Back to Payment
                   </Button>
-                  <Button onClick={handlePlaceOrder} className="w-full sm:flex-1" disabled={isPlacing} aria-busy={isPlacing}>
+                  <Button
+                    onClick={handlePlaceOrder}
+                    className="w-full sm:flex-1"
+                    disabled={isPlacing}
+                    aria-busy={isPlacing}
+                  >
                     {isPlacing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {isPlacing ? "Placing..." : "Place Order"}
                   </Button>

@@ -3,9 +3,9 @@
 import dynamic from "next/dynamic"
 import type { JSX } from "react"
 import { useEffect, useState } from "react"
+import { SafeImage } from "@/components/ui/safe-image"
 import { animationsDisabled } from "@/lib/safe-mode"
 import { AppLink } from "../../shared/components/app-link"
-import { SafeImage } from "@/components/ui/safe-image"
 
 const HeroCarouselDynamic = dynamic(() => import("./HeroCarousel").then((m) => m.HeroCarousel), {
   ssr: false,
@@ -51,7 +51,7 @@ function useIdleOrFirstInteraction(timeoutMs: number = 1500): boolean {
 }
 
 export function HeroSection(): JSX.Element {
-  const ready: boolean = useIdleOrFirstInteraction(1500)
+  const ready: boolean = true
 
   // Always SSR a static hero with the same fixed height as the carousel
   // to prevent a large CLS when the client-only carousel mounts.
@@ -59,7 +59,9 @@ export function HeroSection(): JSX.Element {
     <section className="relative w-full h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       {/* Background image with high priority for LCP */}
       <div className="absolute inset-0">
-        <AppLink href="/shop" className="sr-only">Explore the demo</AppLink>
+        <AppLink href="/shop" className="sr-only">
+          Explore the demo
+        </AppLink>
         <div className="absolute inset-0">
           <div className="relative w-full h-full">
             <AppLink href="#" aria-hidden="true">
@@ -88,16 +90,36 @@ export function HeroSection(): JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           <div className="space-y-6 text-center lg:text-left">
             <div className="space-y-4">
-              <span className="inline-flex items-center rounded border px-2 py-0.5 text-xs">Open Source</span>
+              <span className="inline-flex items-center rounded border px-2 py-0.5 text-xs">
+                Open Source
+              </span>
               <div className="space-y-2">
-                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">Next.js Ecommerce Starterkit</h1>
-                <h2 className="text-xl lg:text-2xl text-primary font-semibold">Ship faster with best practices</h2>
+                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+                  Next.js Ecommerce Starterkit
+                </h1>
+                <h2 className="text-xl lg:text-2xl text-primary font-semibold">
+                  Ship faster with best practices
+                </h2>
               </div>
-              <p className="text-lg text-muted-foreground max-w-2xl">A comprehensive, production‑ready foundation: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and launch with.</p>
+              <p className="text-lg text-muted-foreground max-w-2xl">
+                A comprehensive, production‑ready foundation: Next.js 15, TypeScript, Tailwind CSS,
+                shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and
+                launch with.
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <AppLink href="https://github.com/Dendro-X0/next-ecommerce-starterkit" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-white">Star on GitHub</AppLink>
-              <AppLink href="/shop" className="inline-flex items-center justify-center rounded-md border px-4 py-2">Explore the demo</AppLink>
+              <AppLink
+                href="https://github.com/Dendro-X0/next-ecommerce-starterkit"
+                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-white"
+              >
+                Star on GitHub
+              </AppLink>
+              <AppLink
+                href="/shop"
+                className="inline-flex items-center justify-center rounded-md border px-4 py-2"
+              >
+                Explore the demo
+              </AppLink>
             </div>
           </div>
           <div className="relative hidden lg:block">
@@ -109,7 +131,5 @@ export function HeroSection(): JSX.Element {
   )
 
   if (disableHero) return StaticHero
-  if (!ready) return StaticHero
-  if (animationsDisabled && !ready) return StaticHero
   return <HeroCarouselDynamic />
 }

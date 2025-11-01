@@ -1,11 +1,11 @@
-import type { JSX } from "react"
+import { productsRepo } from "@repo/db"
 import type { Metadata } from "next"
+import { unstable_cache } from "next/cache"
 import Image from "next/image"
+import type { JSX } from "react"
+import type { ListProductsResponse } from "@/lib/data/products"
 import { productsDisabled } from "@/lib/safe-mode"
 import ShopPageClient from "./client"
-import { productsRepo } from "@repo/db"
-import type { ListProductsResponse } from "@/lib/data/products"
-import { unstable_cache } from "next/cache"
 
 export const revalidate = 60
 // Avoid build-time DB requirement in CI by disabling SSG for this route.
@@ -75,8 +75,10 @@ export default async function ShopPage({
     description: dto.description ?? "Product description coming soon.",
     images: dto.imageUrl ? [dto.imageUrl] : ["/placeholder.svg"],
     category:
-      (dto.categorySlug?.trim().replaceAll("-", " ").replace(/\b\w/g, (m) => m.toUpperCase())) ??
-      "General",
+      dto.categorySlug
+        ?.trim()
+        .replaceAll("-", " ")
+        .replace(/\b\w/g, (m) => m.toUpperCase()) ?? "General",
     slug: dto.slug,
     inStock: true,
     rating: 4.5,

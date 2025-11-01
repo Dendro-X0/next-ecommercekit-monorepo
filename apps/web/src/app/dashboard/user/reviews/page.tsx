@@ -147,11 +147,13 @@ export default function Page(): React.ReactElement {
   const breadcrumbs = [{ label: "Dashboard", href: "/dashboard/user" }, { label: "Reviews" }]
 
   useEffect(() => {
-    const shouldOpen: boolean = searchParams.get("create") === "1"
+    const sp = searchParams
+    if (!sp) return
+    const shouldOpen: boolean = sp.get("create") === "1"
     if (!shouldOpen || prefilledOnce) return
-    const productIdParam: string = searchParams.get("productId") ?? ""
-    const productNameParam: string = searchParams.get("productName") ?? ""
-    const ratingRaw: number = Number(searchParams.get("rating") ?? "5")
+    const productIdParam: string = sp.get("productId") ?? ""
+    const productNameParam: string = sp.get("productName") ?? ""
+    const ratingRaw: number = Number(sp.get("rating") ?? "5")
     const rating: number = Math.min(
       5,
       Math.max(1, Number.isFinite(ratingRaw) ? Math.round(ratingRaw) : 5),

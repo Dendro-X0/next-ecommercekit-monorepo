@@ -234,9 +234,7 @@ export function ContactForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor={fid("phone")}>
-                Phone (optional)
-              </Label>
+              <Label htmlFor={fid("phone")}>Phone (optional)</Label>
               <Input
                 id={fid("phone")}
                 type="tel"
@@ -256,9 +254,7 @@ export function ContactForm() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor={fid("subject")}>
-                Subject *
-              </Label>
+              <Label htmlFor={fid("subject")}>Subject *</Label>
               <Select
                 value={formData.subject}
                 onValueChange={(value) => handleChange("subject", value)}
@@ -289,9 +285,7 @@ export function ContactForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor={fid("message")}>
-              Message *
-            </Label>
+            <Label htmlFor={fid("message")}>Message *</Label>
             <Textarea
               id={fid("message")}
               placeholder="Tell us how we can help you..."

@@ -1,5 +1,5 @@
-import Image from "next/image"
 import { Facebook, Instagram, Twitter } from "lucide-react"
+import Image from "next/image"
 import { AppLink } from "./app-link"
 
 const footerSections = [
@@ -94,7 +94,14 @@ export function Footer() {
                 title="GitHub"
                 className="w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
               >
-                <Image src="/icons/github.svg" alt="" width={20} height={20} aria-hidden className="opacity-80" />
+                <Image
+                  src="/icons/github.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  aria-hidden
+                  className="opacity-80"
+                />
               </AppLink>
             </div>
           </div>

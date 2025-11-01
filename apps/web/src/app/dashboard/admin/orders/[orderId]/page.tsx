@@ -20,12 +20,14 @@ import { type AdminOrder, adminApi } from "@/lib/data/admin-api"
 import { AppLink } from "../../../../../../modules/shared/components/app-link"
 
 export default function AdminOrderDetailPage(): JSX.Element {
-  const { orderId } = useParams<{ orderId: string }>()
+  const p = useParams<{ orderId: string }>() as { readonly orderId?: string } | null
+  const orderId: string = p?.orderId ?? ""
   const statusId = useId()
   const qc = useQueryClient()
   const { data } = useQuery<AdminOrder>({
     queryKey: ADMIN_ORDER_BY_ID_QK(orderId),
     queryFn: () => adminApi.getOrder(orderId),
+    enabled: orderId.length > 0,
   })
   const order = data
 

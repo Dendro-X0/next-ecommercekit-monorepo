@@ -28,10 +28,7 @@ function useEnableOnFirstInteraction(): boolean {
     if (enabled) return
     const onAny = (): void => setEnabled(true)
     type ExtendedWindow = Window & {
-      readonly requestIdleCallback?: (
-        cb: () => void,
-        opts?: { readonly timeout: number },
-      ) => number
+      readonly requestIdleCallback?: (cb: () => void, opts?: { readonly timeout: number }) => number
       readonly cancelIdleCallback?: (id: number) => void
     }
     const w = window as ExtendedWindow
@@ -66,7 +63,7 @@ export function HeaderNavIsland({
 }: {
   readonly navigationItems: readonly HeaderNavItem[]
 }): JSX.Element {
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/"
   const locale = getLocaleFromPath(pathname)
   const enabled: boolean = useEnableOnFirstInteraction()
   const disableDropdown: boolean =

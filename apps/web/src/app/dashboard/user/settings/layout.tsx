@@ -11,7 +11,7 @@ export default function SettingsLayout({
 }: {
   children: React.ReactNode
 }): React.ReactElement {
-  const pathname = usePathname()
+  const pathname: string = usePathname() ?? "/dashboard/user/settings"
 
   const breadcrumbs = [{ label: "Dashboard", href: "/dashboard/user" }, { label: "Settings" }]
 

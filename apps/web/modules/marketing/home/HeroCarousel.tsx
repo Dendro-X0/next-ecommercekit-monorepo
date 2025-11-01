@@ -82,6 +82,10 @@ export function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState<number>(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true)
   const trackRef = useRef<HTMLDivElement | null>(null)
+  const isDraggingRef = useRef<boolean>(false)
+  const startXRef = useRef<number>(0)
+  const startScrollLeftRef = useRef<number>(0)
+  const draggedRef = useRef<boolean>(false)
 
   const scrollToIndex = useCallback((index: number): void => {
     const el = trackRef.current
@@ -113,6 +117,40 @@ export function HeroCarousel() {
     setIsAutoPlaying(false)
   }
 
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>): void => {
+    const el = trackRef.current
+    if (!el) return
+    e.preventDefault()
+    isDraggingRef.current = true
+    draggedRef.current = false
+    startXRef.current = e.clientX
+    startScrollLeftRef.current = el.scrollLeft
+    try {
+      el.setPointerCapture(e.pointerId)
+    } catch {}
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>): void => {
+    if (!isDraggingRef.current) return
+    const el = trackRef.current
+    if (!el) return
+    const dx = e.clientX - startXRef.current
+    if (Math.abs(dx) > 3) draggedRef.current = true
+    el.scrollLeft = startScrollLeftRef.current - dx
+    setIsAutoPlaying(false)
+  }
+
+  const endDrag = (e?: React.PointerEvent<HTMLDivElement>): void => {
+    if (!isDraggingRef.current) return
+    isDraggingRef.current = false
+    try {
+      if (e && e.pointerId != null) trackRef.current?.releasePointerCapture(e.pointerId)
+    } catch {}
+    setTimeout(() => {
+      draggedRef.current = false
+    }, 0)
+  }
+
   return (
     <section
       aria-label="Featured slides"
@@ -122,11 +160,26 @@ export function HeroCarousel() {
       {/* Track: CSS scroll-snap with one full-height slide per page */}
       <div
         ref={trackRef}
-        className="relative z-10 h-full w-full overflow-x-auto snap-x snap-mandatory scroll-smooth"
+        className="relative z-10 h-full w-full overflow-x-auto snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing select-none"
         onScroll={(e) => {
           const el = e.currentTarget
           const page = Math.round(el.scrollLeft / el.clientWidth)
           setCurrentSlide(page)
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        onDragStart={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          return false
+        }}
+        onClickCapture={(e) => {
+          if (draggedRef.current) {
+            e.preventDefault()
+            e.stopPropagation()
+          }
         }}
       >
         <div className="flex h-full w-full">
@@ -151,10 +204,14 @@ export function HeroCarousel() {
                   {/* Text Content */}
                   <div className="space-y-6 text-center lg:text-left">
                     <div className="space-y-4">
-                      <Badge variant="outline" className="text-sm">{s.badge}</Badge>
+                      <Badge variant="outline" className="text-sm">
+                        {s.badge}
+                      </Badge>
                       <div className="space-y-2">
                         <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">{s.title}</h1>
-                        <h2 className="text-xl lg:text-2xl text-primary font-semibold">{s.subtitle}</h2>
+                        <h2 className="text-xl lg:text-2xl text-primary font-semibold">
+                          {s.subtitle}
+                        </h2>
                       </div>
                       <p className="text-lg text-muted-foreground max-w-2xl">{s.description}</p>
                     </div>

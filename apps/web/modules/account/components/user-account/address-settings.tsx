@@ -76,9 +76,7 @@ const AddressForm = memo(function AddressForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor={fid("address")}>
-          Address
-        </Label>
+        <Label htmlFor={fid("address")}>Address</Label>
         <Input
           id={fid("address")}
           value={formData.address || ""}
@@ -90,9 +88,7 @@ const AddressForm = memo(function AddressForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor={fid("city")}>
-            City
-          </Label>
+          <Label htmlFor={fid("city")}>City</Label>
           <Input
             id={fid("city")}
             value={formData.city || ""}
@@ -102,9 +98,7 @@ const AddressForm = memo(function AddressForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={fid("state")}>
-            State
-          </Label>
+          <Label htmlFor={fid("state")}>State</Label>
           <Input
             id={fid("state")}
             value={formData.state || ""}
@@ -117,9 +111,7 @@ const AddressForm = memo(function AddressForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor={fid("zipCode")}>
-            ZIP Code
-          </Label>
+          <Label htmlFor={fid("zipCode")}>ZIP Code</Label>
           <Input
             id={fid("zipCode")}
             value={formData.zipCode || ""}
@@ -129,9 +121,7 @@ const AddressForm = memo(function AddressForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={fid("country")}>
-            Country
-          </Label>
+          <Label htmlFor={fid("country")}>Country</Label>
           <Select value={formData.country} onValueChange={(value) => onChange({ country: value })}>
             <SelectTrigger id={fid("country")}>
               <SelectValue />
@@ -148,9 +138,7 @@ const AddressForm = memo(function AddressForm({
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor={fid("type")}>
-            Address Type
-          </Label>
+          <Label htmlFor={fid("type")}>Address Type</Label>
           <Select
             value={formData.type}
             onValueChange={(value) => onChange({ type: value as "shipping" | "billing" })}
@@ -171,9 +159,7 @@ const AddressForm = memo(function AddressForm({
             checked={!!formData.isDefault}
             onCheckedChange={(checked) => onChange({ isDefault: checked })}
           />
-          <Label htmlFor={fid("isDefault")}>
-            Set as default address
-          </Label>
+          <Label htmlFor={fid("isDefault")}>Set as default address</Label>
         </div>
       </div>
 
