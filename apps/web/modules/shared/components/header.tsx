@@ -7,6 +7,9 @@ import { HeaderMobileMenu } from "./header-mobile-menu"
 import { HeaderNavIsland } from "./header-nav-island"
 import { HeaderSearch } from "./header-search"
 import { LocaleSwitcher } from "./locale-switcher"
+import { headers } from "next/headers"
+import { getLocaleFromHeaders } from "modules/shared/lib/i18n/config"
+import { translate } from "modules/shared/lib/i18n"
 
 type NavItem = {
   readonly titleKey: string
@@ -22,7 +25,7 @@ const navigationItems: ReadonlyArray<NavItem> = [
   { titleKey: "nav.dashboard", href: "/dashboard/user" },
 ]
 
-export function Header(): JSX.Element {
+export async function Header(): Promise<JSX.Element> {
   const disableHeaderInteractions: boolean =
     (process.env.NEXT_PUBLIC_DISABLE_HEADER_INTERACTIONS ?? "false").toLowerCase() === "true"
   // Hide announcement bar by default to reduce CLS; opt-in via env
@@ -30,6 +33,8 @@ export function Header(): JSX.Element {
     (process.env.NEXT_PUBLIC_DISABLE_ANNOUNCEMENT_BAR ?? "true").toLowerCase() === "true"
   const disableHeaderSearch: boolean =
     (process.env.NEXT_PUBLIC_DISABLE_HEADER_SEARCH ?? "false").toLowerCase() === "true"
+  const h = await headers()
+  const locale = getLocaleFromHeaders(h)
   if (disableHeaderInteractions) {
     // Minimal, static header with no data fetching or interactivity
     return (
@@ -43,13 +48,13 @@ export function Header(): JSX.Element {
                 href="/shop"
                 className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
               >
-                Shop
+                {translate(locale, "nav.shop")}
               </AppLink>
               <AppLink
                 href="/categories"
                 className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
               >
-                Categories
+                {translate(locale, "nav.categories")}
               </AppLink>
             </nav>
           </div>
@@ -108,7 +113,7 @@ export function Header(): JSX.Element {
             <AppLink href="/" className="flex items-center space-x-2">
               <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
             </AppLink>
-            <HeaderNavIsland navigationItems={navigationItems} />
+            <HeaderNavIsland navigationItems={navigationItems} locale={locale} />
           </div>
           {/* Center: search */}
           {!disableHeaderSearch && (
@@ -123,7 +128,7 @@ export function Header(): JSX.Element {
             <HeaderActionsIsland />
             <LocaleSwitcher />
             <ThemeToggle />
-            <HeaderMobileMenu navigationItems={navigationItems} />
+            <HeaderMobileMenu navigationItems={navigationItems} locale={locale} />
           </div>
         </div>
       </header>

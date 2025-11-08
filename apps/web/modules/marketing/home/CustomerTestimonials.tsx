@@ -288,7 +288,7 @@ export function CustomerTestimonials(): JSX.Element {
         <div className="relative">
           <div
             ref={containerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing select-none"
+            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth cursor-grab active:cursor-grabbing select-none no-scrollbar"
             onScroll={handleScroll}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}

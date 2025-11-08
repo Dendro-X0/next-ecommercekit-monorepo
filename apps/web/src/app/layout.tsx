@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { GlobalCrashOverlay } from "modules/ui/components/global-crash-overlay"
 import { ClientProviders } from "@/components/providers/client-providers"
@@ -7,17 +6,7 @@ import { FullClientProviders } from "@/components/providers/full-client-provider
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { animationsDisabled, minimalBoot, productsDisabled, uiTemplates } from "@/lib/safe-mode"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "optional",
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "optional",
-})
+const fontVars: string = ""
 
 export const metadata: Metadata = {
   // Use a canonical base so absolute URLs are generated correctly in metadata and sitemaps
@@ -88,7 +77,7 @@ export default function RootLayout({
         ))}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${fontVars} antialiased`}
         data-minimal-boot={minimalBoot ? "true" : "false"}
         data-animations-disabled={animationsDisabled ? "true" : "false"}
         data-products-disabled={productsDisabled ? "true" : "false"}

@@ -2,19 +2,23 @@
  * Safe-mode switches for UI gating.
  * One export per file.
  */
+const RAW_ENV: string = process.env.NODE_ENV ?? "development"
 export const productsDisabled: boolean =
-  (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false").toLowerCase() === "true" ||
-  (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
+  RAW_ENV === "production"
+    ? false
+    : (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false").toLowerCase() === "true" ||
+      (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
 
 /**
  * Disable animations (e.g., motion/react) for safer hydration in dev.
  */
 const RAW_DISABLE_ANIM: string | undefined = process.env.NEXT_PUBLIC_DISABLE_ANIMATIONS
-const RAW_ENV: string = process.env.NODE_ENV ?? "development"
 export const animationsDisabled: boolean =
-  RAW_DISABLE_ANIM !== undefined
-    ? RAW_DISABLE_ANIM.toLowerCase() === "true"
-    : RAW_ENV !== "production"
+  RAW_ENV === "production"
+    ? false
+    : RAW_DISABLE_ANIM !== undefined
+      ? RAW_DISABLE_ANIM.toLowerCase() === "true"
+      : true
 
 /**
  * Render the minimal boot without heavy providers to isolate crashes.
@@ -34,4 +38,5 @@ export const minimalBoot: boolean =
  * This helps isolate freezes by removing network/data dependencies.
  */
 const RAW_UI_TEMPLATES: string | undefined = process.env.NEXT_PUBLIC_USE_UI_TEMPLATES
-export const uiTemplates: boolean = RAW_UI_TEMPLATES?.toLowerCase() === "true"
+export const uiTemplates: boolean =
+  RAW_ENV === "production" ? false : RAW_UI_TEMPLATES?.toLowerCase() === "true"

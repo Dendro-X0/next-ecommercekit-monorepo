@@ -3,7 +3,11 @@ import type { MetadataRoute } from "next"
 const BASE: string = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 export const dynamic = "force-dynamic"
 const FETCH_TIMEOUT_MS: number = 3000
-const DISABLE_FETCH: boolean = (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false") === "true"
+const RAW_ENV: string = process.env.NODE_ENV ?? "development"
+const DISABLE_FETCH: boolean =
+  RAW_ENV === "production"
+    ? false
+    : (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false") === "true"
 
 const baseRoutes: readonly string[] = ["/", "/shop", "/categories", "/contact"] as const
 

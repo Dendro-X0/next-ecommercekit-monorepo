@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
+import { LOCALES_CONFIG } from "@/modules/shared/config/locales"
 
 /**
  * Middleware: capture ?ref=CODE and set AFF_REF cookie for 30 days.
@@ -10,11 +11,15 @@ export function middleware(req: NextRequest): NextResponse {
   const ref: string | null = url.searchParams.get("ref")
   const isProd: boolean = (process.env.NODE_ENV ?? "development") === "production"
 
-  // Locale prefix rewrite: allow /en/* and /es/* without duplicating routes.
+  // Locale prefix rewrite: allow any enabled locale prefix without duplicating routes.
   const firstSeg: string = url.pathname.split("/")[1] ?? ""
-  if (firstSeg === "en" || firstSeg === "es") {
+  const enabledCodes: readonly string[] = LOCALES_CONFIG.options
+    .filter((o) => o.enabled)
+    .map((o) => o.code)
+  if (enabledCodes.includes(firstSeg)) {
     const dest = req.nextUrl.clone()
-    dest.pathname = url.pathname.replace(/^\/(en|es)(?=\/|$)/, "") || "/"
+    const re = new RegExp(`^/(?:${enabledCodes.join("|")})(?=/|$)`) // strip first locale segment
+    dest.pathname = url.pathname.replace(re, "") || "/"
     const rewriteRes: NextResponse = NextResponse.rewrite(dest)
     if (ref && ref.length >= 4) {
       rewriteRes.cookies.set({

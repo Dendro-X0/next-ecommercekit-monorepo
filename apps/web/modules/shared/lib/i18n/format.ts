@@ -3,6 +3,18 @@ import type { Locale } from "./config"
 const LOCALE_CURRENCY: Readonly<Record<Locale, string>> = {
   en: "USD",
   es: "USD",
+  de: "EUR",
+  fr: "EUR",
+  it: "EUR",
+  ja: "JPY",
+  ko: "KRW",
+  pt: "EUR",
+  ru: "RUB",
+  zh: "CNY",
+  ar: "USD",
+  nl: "EUR",
+  pl: "PLN",
+  tr: "TRY",
 } as const
 
 export function formatCurrency(locale: Locale, amount: number, currency?: string): string {

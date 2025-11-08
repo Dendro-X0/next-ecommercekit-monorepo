@@ -4,6 +4,7 @@ import { wishlistApi } from "@/lib/data/wishlist"
 import { WISHLIST_HAS_QK } from "@/lib/wishlist/query-keys"
 import type { Product } from "@/types"
 import { ProductCard } from "./product-card"
+import { uiTemplates } from "@/lib/safe-mode"
 
 interface ProductGridProps {
   products: Product[]
@@ -15,8 +16,6 @@ export function ProductGrid({ products, priorityFirst = false }: ProductGridProp
   const queryClient = useQueryClient()
   const enableWishlist: boolean =
     (process.env.NEXT_PUBLIC_UI_ENABLE_WISHLIST ?? "false").toLowerCase() === "true"
-  const uiTemplates: boolean =
-    (process.env.NEXT_PUBLIC_USE_UI_TEMPLATES ?? "false").toLowerCase() === "true"
   const wishlistDisabled: boolean = uiTemplates && !enableWishlist
 
   // Prime cache with a single bulk call; components will read from cache

@@ -7,6 +7,7 @@
   "exports": {
     "./client/stripe": "./src/client/stripe.ts",
     "./client/paypal": "./src/client/paypal.ts",
+    "./client/polar": "./src/client/polar.ts",
     "./hooks/use-stripe-config": "./src/hooks/use-stripe-config.ts",
     "./hooks/use-paypal-config": "./src/hooks/use-paypal-config.ts",
     "./hooks/use-stripe-intent": "./src/hooks/use-stripe-intent.ts",
@@ -20,5 +21,9 @@
   "devDependencies": {
     "react": "19.1.1",
     "@tanstack/react-query": "^5.87.4"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
   }
 }

@@ -50,11 +50,16 @@ export type ListProductsResponse = Readonly<{
 const API_BASE: string = "/api/v1"
 
 // Safe-mode flags: when enabled, avoid all network requests and return static data.
+const RAW_ENV: string = process.env.NODE_ENV ?? "development"
 const DISABLE_DATA_FETCH: boolean =
-  (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false").toLowerCase() === "true"
+  RAW_ENV === "production"
+    ? false
+    : (process.env.NEXT_PUBLIC_DISABLE_DATA_FETCH ?? "false").toLowerCase() === "true"
 const DISABLE_PRODUCTS: boolean =
-  DISABLE_DATA_FETCH ||
-  (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
+  RAW_ENV === "production"
+    ? false
+    : DISABLE_DATA_FETCH ||
+      (process.env.NEXT_PUBLIC_DISABLE_PRODUCTS ?? "false").toLowerCase() === "true"
 
 function localProductsList(params: ListProductsParams = {}): ListProductsResponse {
   const pageSize: number = Math.max(1, Math.min(100, params.pageSize ?? 12))

@@ -1,7 +1,7 @@
 "use client"
 
 import { translate } from "modules/shared/lib/i18n"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
+import type { Locale } from "modules/shared/lib/i18n/config"
 import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
 import type { JSX } from "react"
@@ -60,11 +60,12 @@ function useEnableOnFirstInteraction(): boolean {
 
 export function HeaderNavIsland({
   navigationItems,
+  locale,
 }: {
   readonly navigationItems: readonly HeaderNavItem[]
+  readonly locale: Locale
 }): JSX.Element {
   const pathname: string = usePathname() ?? "/"
-  const locale = getLocaleFromPath(pathname)
   const enabled: boolean = useEnableOnFirstInteraction()
   const disableDropdown: boolean =
     (process.env.NEXT_PUBLIC_DISABLE_NAV_DROPDOWN ?? "false").toLowerCase() === "true"

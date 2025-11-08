@@ -2,7 +2,7 @@
 
 import { Heart, LayoutGrid, LogIn, LogOut, Menu, ShoppingCart, UserPlus } from "lucide-react"
 import { translate } from "modules/shared/lib/i18n"
-import { getLocaleFromPath } from "modules/shared/lib/i18n/config"
+import { getLocaleFromPath, type Locale } from "modules/shared/lib/i18n/config"
 import { usePathname } from "next/navigation"
 import type { JSX } from "react"
 import { Button } from "@/components/ui/button"
@@ -28,11 +28,13 @@ export type HeaderMobileNavItem = Readonly<{
  */
 export function HeaderMobileMenu({
   navigationItems,
+  locale: localeProp,
 }: {
   readonly navigationItems: readonly HeaderMobileNavItem[]
+  readonly locale?: Locale
 }): JSX.Element {
   const pathname: string = usePathname() ?? "/"
-  const locale = getLocaleFromPath(pathname)
+  const locale = localeProp ?? getLocaleFromPath(pathname)
   const session = useSession()
   const user = session?.user ?? null
   const cartCount: number = useCartStore((s) => s.items.reduce((sum, it) => sum + it.quantity, 0))

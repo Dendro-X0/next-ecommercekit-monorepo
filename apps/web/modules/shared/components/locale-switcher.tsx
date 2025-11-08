@@ -12,18 +12,18 @@ export function LocaleSwitcher(): JSX.Element {
   const router = useRouter()
   const pathname: string = usePathname() ?? "/"
   const describedById = useId()
-  // Only navigate to locales that are both enabled in config and supported by current routing (en/es).
-  const enabledCodes: readonly string[] = LOCALES_CONFIG.options
+  // Navigate to any enabled locale code.
+  type LocaleCode = (typeof LOCALES_CONFIG.options)[number]["code"]
+  const enabledCodes = LOCALES_CONFIG.options
     .filter((o) => o.enabled)
-    .map((o) => o.code)
-  const navSupported: readonly ("en" | "es")[] = ["en", "es"] as const
+    .map((o) => o.code) as readonly LocaleCode[]
 
-  const currentLocale: "en" | "es" = getCurrentLocale(pathname)
+  const currentLocale = getCurrentLocale(pathname)
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     const code = e.target.value
-    if (enabledCodes.includes(code) && (navSupported as readonly string[]).includes(code)) {
-      const nextPath = buildPathWithLocale(pathname, code as "en" | "es")
+    if ((enabledCodes as readonly string[]).includes(code)) {
+      const nextPath = buildPathWithLocale(pathname, code as LocaleCode)
       router.push(nextPath)
     }
   }
@@ -37,37 +37,40 @@ export function LocaleSwitcher(): JSX.Element {
         onChange={handleChange}
         aria-describedby={describedById}
       >
-        {LOCALES_CONFIG.options.filter((opt) => opt.enabled).map((opt) => (
-          <option
-            key={opt.code}
-            value={opt.code}
-            disabled={false}
-            aria-disabled={false}
-          >
-            {opt.label}
-          </option>
-        ))}
+        {LOCALES_CONFIG.options
+          .filter((opt) => opt.enabled)
+          .map((opt) => (
+            <option key={opt.code} value={opt.code}>
+              {opt.label}
+            </option>
+          ))}
       </select>
       <span id={describedById} className="sr-only">
-        Current language is {currentLocale === "en" ? "English" : "Español"}
+        Current language is {LOCALES_CONFIG.options.find((o) => o.code === currentLocale)?.label}
       </span>
     </label>
   )
 }
 
-function getCurrentLocale(path: string): "en" | "es" {
-  if (path.startsWith("/es")) return "es"
-  return "en"
+function getCurrentLocale(path: string): (typeof LOCALES_CONFIG.options)[number]["code"] {
+  type LocaleCode = (typeof LOCALES_CONFIG.options)[number]["code"]
+  const seg = (path.split("/")[1] || "") as string
+  const enabled = LOCALES_CONFIG.options
+    .filter((o) => o.enabled)
+    .map((o) => o.code) as readonly LocaleCode[]
+  if ((enabled as readonly string[]).includes(seg)) return seg as LocaleCode
+  return LOCALES_CONFIG.defaultLocale
 }
 
-function buildPathWithLocale(path: string, locale: "en" | "es"): string {
-  // Normalize root or existing locale prefix
-  if (locale === "en") {
-    // Remove leading "/es" if present
-    return path.startsWith("/es") ? path.replace(/^\/es(\/|$)/, "/") : path || "/"
-  }
-  // Ensure "/es" prefix exists exactly once
-  if (path.startsWith("/es/")) return path
-  if (path === "/es") return path
-  return path === "/" ? "/es" : `/es${path}`
+function buildPathWithLocale(
+  path: string,
+  locale: (typeof LOCALES_CONFIG.options)[number]["code"],
+): string {
+  const codes = LOCALES_CONFIG.options
+    .filter((o) => o.enabled)
+    .map((o) => o.code) as readonly string[]
+  const re = new RegExp(`^/(?:${codes.join("|")})(/|$)`)
+  const normalized = path.replace(re, "/") || "/"
+  if (locale === LOCALES_CONFIG.defaultLocale) return normalized
+  return normalized === "/" ? `/${locale}` : `/${locale}${normalized}`
 }
