@@ -2,7 +2,7 @@
 
 An end‑to‑end, production‑ready foundation for modern commerce. Built to learn from and launch with.
 
-- Full‑stack Next.js 15 + React 19
+- Full‑stack Next.js 16 + React 19
 - Strict TypeScript, modular monorepo, clear boundaries
 - Auth, admin, payments, and real API clients out of the box
 
@@ -80,7 +80,7 @@ If you see persistent CLS above 0.1 on the homepage in production, please open a
 
 The kit ships with a pragmatic, production‑ready stack and batteries included:
 
-- Framework: Next.js 15, React 19
+- Framework: Next.js 16, React 19
 - Language: TypeScript (strict)
 - Monorepo: Turborepo + pnpm
 - API: Hono, mounted via Route Handlers (`apps/web/src/app/api/*`)

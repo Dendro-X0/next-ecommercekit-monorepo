@@ -38,7 +38,7 @@ const heroSlides: readonly Slide[] = [
     title: "Next.js Ecommerce Starterkit",
     subtitle: "Ship faster with best practices",
     description:
-      "A comprehensive, production‑ready foundation: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and launch with.",
+      "A comprehensive, production‑ready foundation: Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and launch with.",
     image: "/shop1.png",
     cta: {
       primary: {

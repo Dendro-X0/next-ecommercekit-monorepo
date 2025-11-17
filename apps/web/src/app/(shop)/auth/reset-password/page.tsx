@@ -4,7 +4,7 @@ import { ResetPasswordForm } from "@/components/auth/reset-password-form"
 type ResetSearchParams = { readonly token?: string; readonly error?: string }
 
 /**
- * Reset Password page. Awaits searchParams to satisfy Next.js 15 dynamic API usage.
+ * Reset Password page. Awaits searchParams to satisfy the Next.js 16 dynamic search params API.
  */
 export default async function resetPasswordPage(props: {
   readonly searchParams: Promise<ResetSearchParams>

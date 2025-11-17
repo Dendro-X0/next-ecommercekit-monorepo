@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.7] - 2025-11-16
+### Changed
+- Upgraded the web app to **Next.js 16.0.3** and **React 19.2.0**.
+  - `apps/web/package.json` now targets Next.js 16 and React 19.2, aligning with the latest starter defaults.
+- Migrated ESLint in `apps/web` to the native **ESLint 9 flat config** and removed deprecated Next.js lint wiring.
+  - Replaced `next lint` with direct `eslint . --ext .ts,.tsx` scripts.
+  - Removed the deprecated `eslint` option from `apps/web/next.config.ts`.
+  - Ignored `.next` and `scripts` in ESLint config to avoid parsing generated files.
+- Tuned **Biome** configuration for Tailwind CSS v4 directives and monorepo usage.
+  - Enabled Tailwind v4 directive parsing in the root `biome.json`.
+- Updated documentation and marketing copy to reference **Next.js 16** instead of 15.
+  - `README.md`, `docs/architecture.md`, `docs/performance-playbook.md`.
+  - Marketing hero components under `apps/web/modules/marketing/home/*`.
+- Introduced a Next.js 16-style `proxy.ts` auth gate for the web app.
+  - `apps/web/proxy.ts` now protects `/dashboard` routes by redirecting unauthenticated users to `/auth/login` with a `callbackUrl`.
+  - Existing locale-prefix and affiliate referral cookie logic remains in `apps/web/src/middleware.ts`.
+
+### Fixed
+- Resolved prior ESLint issues after the Next.js 16 upgrade.
+  - Eliminated circular/legacy config problems by consolidating on a single flat config.
+  - Removed unused `eslint-disable` comments and addressed a `react-hooks/exhaustive-deps` warning in the PayPal return page.
+- Verified that `pnpm --filter web lint` and `pnpm --filter web typecheck` complete without errors on the upgraded stack.
+
 ## [1.1.6] - 2025-10-27
 ### Added
 - Dashboard metadata descriptions for improved SEO on private routes:

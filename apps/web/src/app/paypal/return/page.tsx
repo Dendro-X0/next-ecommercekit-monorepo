@@ -39,7 +39,7 @@ export default function PaypalReturnPage(): JSX.Element {
         },
       )
     }
-  }, [token, captureMut, router.replace])
+  }, [token, captureMut, router])
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-lg text-center">

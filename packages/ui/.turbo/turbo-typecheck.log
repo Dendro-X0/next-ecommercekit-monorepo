@@ -1,4 +1,4 @@
 
-> @repo/ui@0.1.0 typecheck G:\Web Development Project\Codebase-X0\my-workspace\next-ecommercekit-monorepo\packages\ui
+> @repo/ui@0.1.0 typecheck G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\packages\ui
 > tsc -p tsconfig.json --noEmit
 

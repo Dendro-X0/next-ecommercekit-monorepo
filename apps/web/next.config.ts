@@ -5,16 +5,10 @@ import path from "path"
 // Run: ANALYZE=true pnpm --filter web build
 const withBundleAnalyzer =
   process.env.ANALYZE === "true"
-    ? // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require("@next/bundle-analyzer")({ enabled: true })
+    ? require("@next/bundle-analyzer")({ enabled: true })
     : (config: NextConfig) => config
 
 const nextConfig: NextConfig = {
-  eslint: {
-    // Allow production builds to complete even if there are ESLint warnings/errors.
-    // We are running in a Safe Mode and will address lint issues separately.
-    ignoreDuringBuilds: true,
-  },
   // Keep production builds lean and avoid extra artifacts on disk
   productionBrowserSourceMaps: false,
   webpack: (config, { dev, isServer }) => {

@@ -37,7 +37,7 @@
   "peerDependencies": {
     "react": ">=18.2.0 <20",
     "react-dom": ">=18.2.0 <20",
-    "next": ">=15.0.0 <16"
+    "next": ">=15.0.0 <17"
   },
   "dependencies": {
     "@repo/i18n": "workspace:*",

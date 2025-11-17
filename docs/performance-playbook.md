@@ -1,4 +1,4 @@
-# Performance Playbook (Next.js 15 Monorepo)
+# Performance Playbook (Next.js 16 Monorepo)
 
 This guide captures practical steps to keep deployments smooth on Vercel (Hobby/Pro) and to keep bundles and serverless invocations lean.
 

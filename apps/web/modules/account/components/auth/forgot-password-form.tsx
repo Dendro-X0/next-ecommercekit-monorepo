@@ -60,7 +60,6 @@ export function ForgotPasswordForm() {
     const origin: string = typeof window !== "undefined" ? window.location.origin : ""
     const redirectTo: string = origin ? `${origin}/auth/reset-password` : "/auth/reset-password"
     // Debug: log redirect to help diagnose Invalid redirectURL
-    // eslint-disable-next-line no-console
     console.info("[ForgotPassword] redirectTo:", redirectTo)
     const { error } = await authClient.requestPasswordReset({
       email: values.email,

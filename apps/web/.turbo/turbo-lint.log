@@ -1,0 +1,173 @@
+
+> web@1.1.6 lint G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web
+> eslint . --ext .ts,.tsx
+
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\account\components\auth\forgot-password-form.tsx
+  63:5  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\account\components\user-account\order-history.tsx
+  45:55  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\marketing\home\BentoGrid.tsx
+  64:32  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  78:30  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\marketing\home\ClientProbe.tsx
+  13:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\marketing\home\FeaturedProducts.tsx
+  131:13  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\marketing\home\HeroCarousel.tsx
+  185:39  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  192:57  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\marketing\home\TopSelling.tsx
+  144:13  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shared\components\header-mobile-menu.tsx
+   52:23  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  106:25  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  111:25  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  120:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  126:25  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shared\components\islands\auth-menu.tsx
+  30:17  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  33:17  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  46:28  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  67:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  73:29  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  79:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  84:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shop\components\cart\cart-drawer.tsx
+   65:21  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+   96:23  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  110:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  113:27  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shop\components\cart\cart-summary.tsx
+  42:17  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shop\components\cart\mobile-checkout-bar.tsx
+  27:19  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\shop\components\product\related-products.tsx
+  33:35  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\ui\components\dropdown-menu.tsx
+  240:7  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\modules\ui\components\select.tsx
+  52:29  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\next.config.ts
+  8:7  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-var-requires')
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\(shop)\cart\page.tsx
+  25:19  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  51:39  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\(shop)\categories\[slug]\client.tsx
+  45:9  warning  The 'items' logical expression could make the dependencies of useMemo Hook (at line 53) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\(shop)\order-success\[orderId]\page.tsx
+  97:19  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\(shop)\shop\client.tsx
+  131:9   warning  The 'items' logical expression could make the dependencies of useMemo Hook (at line 163) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  219:29  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                                                                   no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\customers-table.tsx
+  170:46  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\nav-main.tsx
+  47:15  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  52:37  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  63:47  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\nav-projects.tsx
+  49:32  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  56:36  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\nav-user.tsx
+  31:32  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\orders-table.tsx
+  151:46  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\products-table.tsx
+   55:9   warning  The 'items' logical expression could make the dependencies of useMemo Hook (at line 62) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+   98:19  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                                                                  no-restricted-syntax
+  164:25  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                                                                  no-restricted-syntax
+  213:46  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                                                                  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\_components\team-switcher.tsx
+  32:32  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\customers\reviews\page.tsx
+  58:9  warning  The 'items' logical expression could make the dependencies of useMemo Hook (at line 71) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\marketing\affiliate\page.tsx
+  74:9  warning  The 'items' logical expression could make the dependencies of useMemo Hook (at line 93) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\admin\orders\page.tsx
+   41:9   warning  The 'orders' logical expression could make the dependencies of useMemo Hook (at line 48) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'orders' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  157:31  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                                                                    no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\_components\dashboard-header.tsx
+  74:49  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  78:45  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\_components\quick-actions.tsx
+  26:83  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  32:83  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  38:83  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  44:83  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\_components\recent-orders.tsx
+  58:76  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\_components\user-sidebar.tsx
+   80:42  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  100:36  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  116:19  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  132:42  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\_components\wishlist-preview.tsx
+  40:47  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+  72:83  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\orders\page.tsx
+   40:9   warning  The 'orders' logical expression could make the dependencies of useMemo Hook (at line 51) change on every render. To fix this, wrap the initialization of 'orders' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  194:31  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                             no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\page.tsx
+  112:9   warning  The 'orders' logical expression could make the dependencies of useMemo Hook (at line 128) change on every render. To fix this, wrap the initialization of 'orders' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  112:9   warning  The 'orders' logical expression could make the dependencies of useMemo Hook (at line 171) change on every render. To fix this, wrap the initialization of 'orders' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  112:9   warning  The 'orders' logical expression could make the dependencies of useMemo Hook (at line 233) change on every render. To fix this, wrap the initialization of 'orders' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  389:53  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                              no-restricted-syntax
+  440:87  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child                                                                              no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\reviews\page.tsx
+  99:9  warning  The 'userReviews' logical expression could make the dependencies of useMemo Hook (at line 140) change on every render. To fix this, wrap the initialization of 'userReviews' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  99:9  warning  The 'userReviews' logical expression could make the dependencies of useMemo Hook (at line 141) change on every render. To fix this, wrap the initialization of 'userReviews' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  99:9  warning  The 'userReviews' logical expression could make the dependencies of useMemo Hook (at line 144) change on every render. To fix this, wrap the initialization of 'userReviews' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\settings\layout.tsx
+  34:60  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\dashboard\user\wishlist\page.tsx
+  200:87  warning  Avoid using 'asChild' in app code. Prefer our shims (e.g., Button shim) or ensure exactly one non-Fragment child  no-restricted-syntax
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\error.tsx
+  18:5  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+G:\Web Development Project\Codebase-X0\velocity-stack-workspace\next-ecommercekit-monorepo\apps\web\src\app\paypal\return\page.tsx
+  42:6  warning  React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 81 problems (0 errors, 81 warnings)
+  0 errors and 4 warnings potentially fixable with the `--fix` option.
+

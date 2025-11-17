@@ -1,7 +1,7 @@
 # Architecture
 
 ## Tech Stack (Summary)
-- Framework: Next.js 15, React 19
+- Framework: Next.js 16, React 19
 - Language: TypeScript (strict)
 - Monorepo: Turborepo + pnpm
 - API: Hono mounted via Route Handlers (`apps/web/src/app/api/*`)

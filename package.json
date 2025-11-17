@@ -1,6 +1,6 @@
 {
   "name": "next-ecommercekit-monorepo",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "private": true,
   "packageManager": "pnpm@10.16.1",
   "engines": {
@@ -27,17 +27,17 @@
     "@types/node": "^20.19.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.4",
-    "@next/bundle-analyzer": "^16.0.0",
-    "cross-env": "^10.0.0",
+    "@biomejs/biome": "^2.3.5",
+    "@next/bundle-analyzer": "^16.0.3",
+    "cross-env": "^10.1.0",
     "prettier": "^3.6.2",
-    "turbo": "^2.5.6",
-    "vitest": "^3.2.4"
+    "turbo": "^2.6.1",
+    "vitest": "^4.0.9"
   },
   "dependencies": {
-    "@stripe/react-stripe-js": "^4.0.2",
-    "@stripe/stripe-js": "^7.9.0",
-    "stripe": "^18.5.0"
+    "@stripe/react-stripe-js": "^5.3.0",
+    "@stripe/stripe-js": "^8.4.0",
+    "stripe": "^19.3.1"
   },
   "repository": {
     "type": "git",

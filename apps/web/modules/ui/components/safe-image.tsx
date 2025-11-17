@@ -29,7 +29,7 @@ export type SafeImageProps = Readonly<{
    * map this to loading="eager"; in production (next/image), we pass `priority`.
    */
   priority?: boolean
-  /** Explicitly control fetch priority where supported (Next 15, modern browsers). */
+  /** Explicitly control fetch priority where supported (Next.js 16+, modern browsers). */
   fetchPriority?: "auto" | "low" | "high"
 }>
 

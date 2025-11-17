@@ -15,7 +15,6 @@ export default function RouteError({
   reset: () => void
 }>): ReactElement {
   useEffect(() => {
-    // eslint-disable-next-line no-console
     console.error("[error.tsx]", {
       message: error.message,
       stack: error.stack,

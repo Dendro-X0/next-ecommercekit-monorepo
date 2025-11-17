@@ -102,7 +102,7 @@ export function HeroSection(): JSX.Element {
                 </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl">
-                A comprehensive, production‑ready foundation: Next.js 15, TypeScript, Tailwind CSS,
+                A comprehensive, production‑ready foundation: Next.js 16, TypeScript, Tailwind CSS,
                 shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and
                 launch with.
               </p>
