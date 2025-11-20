@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2025-11-19
+### Added
+- Minimalist `ShopLogo` SVG brand mark shared between the web header and favicons.
+
+### Changed
+- Updated the web header (both minimal and full variants) to use the new `ShopLogo` icon plus `SHOP` wordmark.
+- Swapped favicon configuration in `apps/web/src/app/layout.tsx` to use light/dark SVG favicons for better dark‑mode support.
+- Refined the central handbag shape in the logo to be wider and more rectangular for improved clarity at small sizes.
+- Documented Polar as an optional hosted checkout provider in `packages/payments/README.md`, alongside Stripe and PayPal.
+- Expanded `docs/payments.md` to include Polar environment variables, routes, and usage notes, clarifying that only Stripe and PayPal are wired into the main `/checkout` UI.
+- Updated `.env.local.example` with Polar‑related environment variables and sensible local defaults.
+
 ## [1.1.7] - 2025-11-16
 ### Changed
 - Upgraded the web app to **Next.js 16.0.3** and **React 19.2.0**.

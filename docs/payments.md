@@ -1,4 +1,4 @@
-# Payments Setup (Stripe + PayPal)
+# Payments Setup (Stripe + PayPal + Polar optional)
 
 This template ships with complete, idempotent server integrations and typed clients.
 Use this checklist to configure payments on Vercel quickly.
@@ -18,6 +18,11 @@ PayPal
 - PAYPAL_CLIENT_SECRET = ...
 - PAYPAL_MODE = sandbox or live
 - PAYPAL_WEBHOOK_ID = ...
+
+Polar (optional)
+- POLAR_ACCESS_TOKEN = ...
+- POLAR_SERVER = sandbox or production
+- POLAR_SUCCESS_URL = https://your-domain.com/polar/success
 
 Base URL
 - WEB_ORIGIN = https://your-domain.com
@@ -53,6 +58,9 @@ Server (packages/api)
   - POST /api/v1/payments/paypal/capture
   - POST /api/v1/payments/paypal/webhook (idempotent by transmission id)
 
+- Polar (optional)
+  - GET /api/v1/payments/polar/checkout (creates a hosted checkout and returns a redirect URL)
+
 Business effects
 - Orders move between pending/paid/cancelled
 - Inventory commit on paid, restock on cancel/refund
@@ -65,10 +73,16 @@ Use the shared typed clients from the monorepo package `@repo/payments`:
 ```ts
 import { paymentsStripeApi } from "@repo/payments/client/stripe"
 import { paymentsPaypalApi } from "@repo/payments/client/paypal"
+import { paymentsPolarApi } from "@repo/payments/client/polar"
 ```
 
 The checkout UI (`apps/web`) reads provider availability from the server via
 `paymentsStripeApi.config()` and `paymentsPaypalApi.config()`.
+
+Polar is used for separate hosted checkout flows (for example, selling standalone
+templates or add-ons) and is not wired into the main `/checkout` cart UI by
+default. To use it, call `paymentsPolarApi.createCheckout` from a dedicated flow
+and redirect the user to the returned URL.
 
 Stripe Elements wrapper: `apps/web/modules/shop/components/checkout/stripe-payment-element.tsx`.
 

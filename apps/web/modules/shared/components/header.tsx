@@ -2,6 +2,7 @@ import { X } from "lucide-react"
 import type { JSX } from "react"
 import { ThemeToggle } from "@/components/theme/theme-toggle"
 import { AppLink } from "./app-link"
+import { ShopLogo } from "./shop-logo"
 import { HeaderActionsIsland } from "./header-actions-island"
 import { HeaderMobileMenu } from "./header-mobile-menu"
 import { HeaderNavIsland } from "./header-nav-island"
@@ -42,7 +43,10 @@ export async function Header(): Promise<JSX.Element> {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-3 lg:grid lg:grid-cols-12 lg:gap-4">
           {/* Left: logo + simple nav */}
           <div className="flex items-center gap-3 min-w-0 lg:col-span-4">
-            <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
+            <AppLink href="/" className="flex items-center gap-2" aria-label="ModularShop home">
+              <ShopLogo />
+              <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
+            </AppLink>
             <nav className="hidden md:flex items-center space-x-1">
               <AppLink
                 href="/shop"
@@ -110,7 +114,12 @@ export async function Header(): Promise<JSX.Element> {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-3 lg:grid lg:grid-cols-12 lg:gap-4">
           {/* Left: logo + nav island */}
           <div className="flex items-center gap-3 min-w-0 lg:col-span-4">
-            <AppLink href="/" className="flex items-center space-x-2">
+            <AppLink
+              href="/"
+              className="flex items-center gap-2"
+              aria-label="ModularShop home"
+            >
+              <ShopLogo />
               <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
             </AppLink>
             <HeaderNavIsland navigationItems={navigationItems} locale={locale} />

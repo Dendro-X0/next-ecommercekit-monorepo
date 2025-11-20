@@ -4,6 +4,7 @@ Typed client utilities for Payments used across apps. Currently provides:
 
 - Stripe client: `@repo/payments/client/stripe`
 - PayPal client: `@repo/payments/client/paypal`
+- Polar client (optional hosted checkouts): `@repo/payments/client/polar`
 - React Query hooks:
   - `@repo/payments/hooks/use-stripe-config`
   - `@repo/payments/hooks/use-paypal-config`
@@ -20,6 +21,7 @@ Server routes live in `packages/api/src/routes/`:
 ```ts
 import { paymentsStripeApi } from "@repo/payments/client/stripe"
 import { paymentsPaypalApi } from "@repo/payments/client/paypal"
+import { paymentsPolarApi } from "@repo/payments/client/polar"
 // Hooks
 import { useStripeConfig } from "@repo/payments/hooks/use-stripe-config"
 import { usePaypalConfig } from "@repo/payments/hooks/use-paypal-config"
@@ -45,6 +47,10 @@ Configure on the server (Vercel project envs):
   - `PAYPAL_MODE` = `sandbox | live`
   - `PAYPAL_WEBHOOK_ID`
   - Webhook to: `/api/v1/payments/paypal/webhook`
+- Polar (optional)
+  - `POLAR_ACCESS_TOKEN`
+  - `POLAR_SERVER` = `sandbox | production`
+  - `POLAR_SUCCESS_URL` (optional success redirect)
 - Base URL
   - `WEB_ORIGIN` (e.g., https://your-domain.com)
 

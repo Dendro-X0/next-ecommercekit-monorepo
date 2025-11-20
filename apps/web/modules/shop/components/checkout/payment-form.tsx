@@ -18,7 +18,8 @@ import type { PaymentMethod } from "@/types/cart"
 
 /**
  * Checkout payment step. Supports custom provider ordering and optional back button.
- * Placeholders included for (Stripe, Lemon Squeezy, Polar, Creem).
+ * Currently wires Stripe and PayPal (plus a demo card flow). Other providers such
+ * as Polar can be integrated via separate flows, not this form.
  */
 /**
  * Props for `PaymentForm`.

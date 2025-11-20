@@ -37,8 +37,11 @@ export const metadata: Metadata = {
     images: ["/next-ecommerce-starter.png"],
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: [
+      { url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
+    ],
+    shortcut: "/favicon-light.svg",
     apple: "/apple-touch-icon.png",
   },
   // Page-specific canonicals are provided at the route level.
