@@ -268,7 +268,7 @@ export function CustomerTestimonials(): JSX.Element {
               onClick={prev}
               aria-label="Previous testimonials"
               title="Previous testimonials"
-              className="w-11 h-11 rounded-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent"
+              className="w-12 h-12 min-w-[3rem] min-h-[3rem] rounded-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -278,7 +278,7 @@ export function CustomerTestimonials(): JSX.Element {
               onClick={next}
               aria-label="Next testimonials"
               title="Next testimonials"
-              className="w-11 h-11 rounded-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent"
+              className="w-12 h-12 min-w-[3rem] min-h-[3rem] rounded-full border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>

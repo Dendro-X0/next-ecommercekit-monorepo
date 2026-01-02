@@ -71,7 +71,7 @@ export default function CategoriesPageClient({
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {items.map((c) => (
+          {items.map((c, idx) => (
             <AppLink key={c.id} href={`/categories/${c.slug}`} className="group">
               <Card className="h-full overflow-hidden">
                 <CardHeader className="p-0">
@@ -82,7 +82,8 @@ export default function CategoriesPageClient({
                       alt={c.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      fetchPriority="low"
+                      priority={idx === 0}
+                      fetchPriority={idx === 0 ? "high" : "low"}
                       className="object-cover transition-transform duration-200 group-hover:scale-105"
                     />
                   </div>

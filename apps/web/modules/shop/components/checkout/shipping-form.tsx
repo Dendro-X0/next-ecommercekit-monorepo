@@ -68,7 +68,7 @@ export function ShippingForm({ onNext, initialData, savedAddresses = [] }: Shipp
     formState: { errors, isSubmitting },
     getValues,
   } = useForm<ShippingAddress>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as never),
     defaultValues: {
       firstName: initialData?.firstName ?? "",
       lastName: initialData?.lastName ?? "",

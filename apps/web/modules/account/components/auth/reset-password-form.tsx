@@ -49,7 +49,7 @@ interface ResetPasswordFormProps {
 export function ResetPasswordForm({ token }: ResetPasswordFormProps): React.JSX.Element {
   const router = useRouter()
   const form = useForm<ResetPasswordValues>({
-    resolver: zodResolver(ResetPasswordSchema),
+    resolver: zodResolver(ResetPasswordSchema as never),
     defaultValues: {
       password: "",
       confirmPassword: "",

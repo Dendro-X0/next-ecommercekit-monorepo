@@ -52,7 +52,7 @@ export function TwoFactorForm(): React.JSX.Element {
   const router = useRouter()
   const queryClient = useQueryClient()
   const form = useForm<TwoFactorValues>({
-    resolver: zodResolver(TwoFactorSchema),
+    resolver: zodResolver(TwoFactorSchema as never),
     defaultValues: {
       code: "",
       trustDevice: false,

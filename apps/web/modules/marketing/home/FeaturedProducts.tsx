@@ -49,7 +49,10 @@ export function FeaturedProducts({ initialData }: FeaturedProductsProps) {
   )
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-900 min-h-[680px]">
+    <section
+      className="py-16 bg-white dark:bg-gray-900"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 720px" }}
+    >
       <div className="container mx-auto px-4">
         <h2 className="section-title mb-12 text-black dark:text-white">NEW ARRIVALS</h2>
 

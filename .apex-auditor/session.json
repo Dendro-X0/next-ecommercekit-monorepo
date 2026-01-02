@@ -1,0 +1,7 @@
+{
+  "configPath": "apex.config.json",
+  "preset": "default",
+  "incremental": false,
+  "buildIdStrategy": "auto",
+  "lastReportPath": "E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\.apex-auditor\\report.html"
+}

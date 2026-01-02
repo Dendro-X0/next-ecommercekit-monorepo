@@ -57,7 +57,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-2">
-            <AppLink href="/" className="inline-block mb-6">
+            <AppLink href="/" className="inline-flex items-center mb-6 py-1.5">
               <span className="text-2xl font-black text-black dark:text-white">ModularShop</span>
             </AppLink>
             <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
@@ -109,9 +109,9 @@ export function Footer() {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="font-semibold text-black dark:text-white mb-4 text-sm tracking-wider">
+              <h2 className="font-semibold text-black dark:text-white mb-4 text-sm tracking-wider">
                 {section.title}
-              </h3>
+              </h2>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>

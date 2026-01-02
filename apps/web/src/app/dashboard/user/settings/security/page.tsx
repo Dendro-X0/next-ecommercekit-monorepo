@@ -34,15 +34,15 @@ type ChangeEmailValues = z.infer<typeof ChangeEmailSchema>
  */
 export default function SecuritySettingsPage(): ReactElement {
   const pwForm = useForm<ChangePasswordValues>({
-    resolver: zodResolver(ChangePasswordSchema),
+    resolver: zodResolver(ChangePasswordSchema as never),
     defaultValues: { currentPassword: "", newPassword: "" },
   })
   const emailForm = useForm<ChangeEmailValues>({
-    resolver: zodResolver(ChangeEmailSchema),
+    resolver: zodResolver(ChangeEmailSchema as never),
     defaultValues: { newEmail: "" },
   })
   const confForm = useForm<PasswordValues>({
-    resolver: zodResolver(PasswordSchema),
+    resolver: zodResolver(PasswordSchema as never),
     defaultValues: { password: "" },
   })
   const onChangePassword: SubmitHandler<ChangePasswordValues> = async (values): Promise<void> => {

@@ -85,7 +85,7 @@ export function PaymentForm({
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CardData>({
-    resolver: zodResolver(cardSchema),
+    resolver: zodResolver(cardSchema as never),
     defaultValues: { name: "", number: "", expiryMonth: "", expiryYear: "", cvv: "" },
     mode: "onBlur",
   })

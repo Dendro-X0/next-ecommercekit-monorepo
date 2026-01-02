@@ -339,6 +339,15 @@ export function ContactInfo() {
     },
   ]
 
+  const [mapVisible, setMapVisible] = useState<boolean>(false)
+  const [hasInteractedWithMap, setHasInteractedWithMap] = useState<boolean>(false)
+  const addressLine: string =
+    contactDetails.find((item) => item.title === "Address")?.details[0] ??
+    "123 Business Ave, New York, NY 10001"
+  const encodedAddress: string = encodeURIComponent(addressLine)
+  const mapEmbedSrc: string = `https://www.google.com/maps?q=${encodedAddress}&output=embed`
+  const mapLinkHref: string = `https://www.google.com/maps?q=${encodedAddress}`
+
   return (
     <div className="space-y-6">
       <div>
@@ -390,34 +399,59 @@ export function ContactInfo() {
         ))}
       </div>
 
-      {/* Map embed */}
+      {/* Map embed with explicit user consent to avoid third-party cookies on initial load */}
       <Card className="py-0">
         <CardContent className="p-0">
-          {(() => {
-            const addressLine =
-              contactDetails.find((i) => i.title === "Address")?.details[0] ??
-              "123 Business Ave, New York, NY 10001"
-            const q = encodeURIComponent(addressLine)
-            const src = `https://www.google.com/maps?q=${q}&output=embed`
-            const link = `https://www.google.com/maps?q=${q}`
-            return (
-              <figure className="m-0">
-                <div className="relative rounded-lg overflow-hidden">
-                  <div className="aspect-[16/9] sm:aspect-[16/9] lg:aspect-[16/9]" />
-                  <iframe
-                    src={src}
-                    title={`Map location for ${addressLine}`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0 w-full h-full border-0"
-                  />
+          <figure className="m-0">
+            <div className="relative rounded-lg overflow-hidden">
+              <div className="aspect-[16/9] sm:aspect-[16/9] lg:aspect-[16/9]" />
+              {mapVisible ? (
+                <iframe
+                  src={mapEmbedSrc}
+                  title={`Map location for ${addressLine}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 w-full h-full border-0"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-muted px-4 text-center">
+                  <p className="text-sm text-muted-foreground max-w-md">
+                    We use an embedded Google Map to show our store location. Loading the map may allow
+                    Google to set cookies on your device. You can choose to load the interactive map or
+                    open the location directly in Google Maps.
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={(): void => {
+                        setMapVisible(true)
+                        setHasInteractedWithMap(true)
+                      }}
+                    >
+                      Load interactive map
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={(): void => {
+                        setHasInteractedWithMap(true)
+                        window.open(mapLinkHref, "_blank", "noopener,noreferrer")
+                      }}
+                    >
+                      Open in Google Maps
+                    </Button>
+                  </div>
                 </div>
-                <figcaption className="sr-only">
-                  Map showing location: {addressLine}. Open in Google Maps: {link}
-                </figcaption>
-              </figure>
-            )
-          })()}
+              )}
+            </div>
+            <figcaption className="sr-only">
+              {hasInteractedWithMap
+                ? `Map showing location: ${addressLine}. Open in Google Maps: ${mapLinkHref}.`
+                : `Placeholder for map showing location: ${addressLine}. Use the buttons to load the interactive map or open the location in Google Maps: ${mapLinkHref}.`}
+            </figcaption>
+          </figure>
         </CardContent>
       </Card>
     </div>

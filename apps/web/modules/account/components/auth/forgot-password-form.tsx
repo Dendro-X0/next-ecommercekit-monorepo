@@ -46,7 +46,7 @@ export function ForgotPasswordForm() {
   /** Local success state to switch UI after request */
   const [success, setSuccess] = useState<boolean>(false)
   const form = useForm<ForgotPasswordValues>({
-    resolver: zodResolver(ForgotPasswordSchema),
+    resolver: zodResolver(ForgotPasswordSchema as never),
     defaultValues: {
       email: "",
     },

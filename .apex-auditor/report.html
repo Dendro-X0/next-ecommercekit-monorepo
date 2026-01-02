@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexAuditor Report</title>
+  <style>
+    :root {
+      --green: #0cce6b;
+      --yellow: #ffa400;
+      --red: #ff4e42;
+      --bg: #0f172a;
+      --panel: #0b1224;
+      --card: #111a33;
+      --border: #27324d;
+      --text: #e8edf7;
+      --muted: #93a4c3;
+      --accent: #7c3aed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #122042, #0a1020 45%), #0a0f1f;
+      color: var(--text);
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    h1 { margin-bottom: 0.5rem; letter-spacing: 0.02em; }
+    .meta { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .meta-card {
+      background: linear-gradient(135deg, var(--panel), #0f1a33);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+    .meta-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .meta-value { font-size: 1.05rem; font-weight: 650; color: var(--text); }
+    .cards { display: grid; gap: 1.5rem; }
+    .card {
+      background: linear-gradient(180deg, var(--card), #0e1a31);
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 45px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .card-title { font-size: 1.1rem; font-weight: 650; }
+    .card-title span { color: var(--muted); font-weight: 500; }
+    .device-badge {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: #1f2937;
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .device-badge.mobile { background: linear-gradient(135deg, #0ea5e9, #0891b2); color: #e6f6ff; border-color: #0ea5e9; }
+    .device-badge.desktop { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #f5efff; border-color: #8b5cf6; }
+    .scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+    .score-item { text-align: center; }
+    .score-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 auto 0.35rem;
+      border: 2px solid var(--border);
+      background: #0c152a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .score-circle.green { border-color: var(--green); color: var(--green); box-shadow: 0 0 0 1px rgba(12, 206, 107, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .score-circle.yellow { border-color: var(--yellow); color: var(--yellow); box-shadow: 0 0 0 1px rgba(255, 164, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .score-circle.red { border-color: var(--red); color: var(--red); box-shadow: 0 0 0 1px rgba(255, 78, 66, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .score-label { font-size: 0.78rem; color: var(--muted); }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.85rem; }
+    .metric {
+      background: #0c152a;
+      padding: 0.85rem;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .metric-value { font-size: 1.05rem; font-weight: 650; }
+    .metric-value.green { color: var(--green); }
+    .metric-value.yellow { color: var(--yellow); }
+    .metric-value.red { color: var(--red); }
+    .metric-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; letter-spacing: 0.04em; }
+    .issues {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0c152a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+    .issues-title { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .issue {
+      font-size: 0.88rem;
+      color: var(--text);
+      padding: 0.35rem 0.25rem;
+      border-bottom: 1px dashed var(--border);
+    }
+    .issue:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <h1>ApexAuditor Report</h1>
+  <p class="meta">Generated: 2026-01-02T03:13:18.390Z</p>
+  <div class="meta-grid">
+    <div class="meta-card"><div class="meta-label">Build ID</div><div class="meta-value">-</div></div>
+    <div class="meta-card"><div class="meta-label">Incremental</div><div class="meta-value">No</div></div>
+    <div class="meta-card"><div class="meta-label">Cache</div><div class="meta-value">disabled</div></div>
+    <div class="meta-card"><div class="meta-label">Resolved parallel</div><div class="meta-value">4</div></div>
+    <div class="meta-card"><div class="meta-label">Elapsed</div><div class="meta-value">5m 24s</div></div>
+    <div class="meta-card"><div class="meta-label">Avg / step</div><div class="meta-value">3s</div></div>
+    <div class="meta-card"><div class="meta-label">Combos</div><div class="meta-value">100</div></div>
+    <div class="meta-card"><div class="meta-label">Runs per combo</div><div class="meta-value">1</div></div>
+    <div class="meta-card"><div class="meta-label">Throttling</div><div class="meta-value">simulate</div></div>
+    <div class="meta-card"><div class="meta-label">CPU slowdown</div><div class="meta-value">4</div></div>
+    <div class="meta-card"><div class="meta-label">Warm-up</div><div class="meta-value">Yes</div></div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">home <span style="color:#888">/</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">35</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">2392ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value red">0.597</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">home <span style="color:#888">/</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">19</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">1948ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value red">0.467</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">safe <span style="color:#888">/safe</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle green">90</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">260ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">safe <span style="color:#888">/safe</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">81</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value green">186ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">return <span style="color:#888">/paypal/return</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle green">93</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.6s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value green">156ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (300ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">return <span style="color:#888">/paypal/return</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">88</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value green">116ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">cancel <span style="color:#888">/paypal/cancel</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle green">94</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value green">160ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (300ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">cancel <span style="color:#888">/paypal/cancel</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">82</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value green">153ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (300ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">user <span style="color:#888">/dashboard/user</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">496ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1868ms)</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">user <span style="color:#888">/dashboard/user</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">44</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.4s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">956ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2343ms)</div><div class="issue">Reduce unused JavaScript (550ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">wishlist <span style="color:#888">/dashboard/user/wishlist</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">523ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1817ms)</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short (19ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">wishlist <span style="color:#888">/dashboard/user/wishlist</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">46</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">5.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">707ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2604ms)</div><div class="issue">Reduce unused JavaScript (550ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">settings <span style="color:#888">/dashboard/user/settings</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">76</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">407ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1777ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">settings <span style="color:#888">/dashboard/user/settings</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">45</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">558ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1767ms)</div><div class="issue">Reduce unused JavaScript (410ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">security <span style="color:#888">/dashboard/user/settings/security</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">71</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">598ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1729ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">security <span style="color:#888">/dashboard/user/settings/security</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">52</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.6s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">514ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2109ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">profile <span style="color:#888">/dashboard/user/settings/profile</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">84</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">343ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2163ms)</div><div class="issue">Reduce unused JavaScript (130ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">profile <span style="color:#888">/dashboard/user/settings/profile</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">53</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">414ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2157ms)</div><div class="issue">Reduce unused JavaScript (80ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">notifications <span style="color:#888">/dashboard/user/settings/notifications</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">71</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">474ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1805ms)</div><div class="issue">Reduce unused JavaScript (680ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">notifications <span style="color:#888">/dashboard/user/settings/notifications</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">40</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">781ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1891ms)</div><div class="issue">Reduce unused JavaScript (360ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">addresses <span style="color:#888">/dashboard/user/settings/addresses</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">73</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">461ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1737ms)</div><div class="issue">Reduce unused JavaScript (790ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">addresses <span style="color:#888">/dashboard/user/settings/addresses</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">53</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.6s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">488ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1696ms)</div><div class="issue">Reduce unused JavaScript (170ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reviews <span style="color:#888">/dashboard/user/reviews</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">327ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2147ms)</div><div class="issue">Reduce unused JavaScript (600ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reviews <span style="color:#888">/dashboard/user/reviews</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">61</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.4s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">371ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1686ms)</div><div class="issue">Reduce unused JavaScript (40ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/user/orders</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">66</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">5.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.4s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">559ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (3063ms)</div><div class="issue">Reduce unused JavaScript (700ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/user/orders</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">49</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">2.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">402ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2440ms)</div><div class="issue">Reduce unused JavaScript (640ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/dashboard/user/orders/[orderId]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">83</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">404ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1734ms)</div><div class="issue">Reduce unused JavaScript (70ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/dashboard/user/orders/[orderId]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">49</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">517ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1830ms)</div><div class="issue">Reduce unused JavaScript (240ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">affiliate <span style="color:#888">/dashboard/user/affiliate</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">73</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">459ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1757ms)</div><div class="issue">Reduce unused JavaScript (650ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">affiliate <span style="color:#888">/dashboard/user/affiliate</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">61</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">4.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">274ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1727ms)</div><div class="issue">Reduce unused JavaScript (570ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">admin <span style="color:#888">/dashboard/admin</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">80</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">353ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1746ms)</div><div class="issue">Reduce unused JavaScript (640ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">admin <span style="color:#888">/dashboard/admin</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">54</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">4.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.6s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">403ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1722ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/admin/orders</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">86</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">284ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1747ms)</div><div class="issue">Reduce unused JavaScript (210ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/admin/orders</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">63</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">295ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1764ms)</div><div class="issue">Reduce unused JavaScript (210ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/dashboard/admin/orders/[orderId]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">76</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.7s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">504ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2390ms)</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/dashboard/admin/orders/[orderId]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">53</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">368ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2434ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">email <span style="color:#888">/dashboard/admin/marketing/email</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">63</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">5.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.4s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">646ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Avoid multiple page redirects (673ms)</div><div class="issue">Initial server response time was short (48ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">email <span style="color:#888">/dashboard/admin/marketing/email</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">50</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">5.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">495ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (3509ms)</div><div class="issue">Reduce unused JavaScript (580ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">affiliate <span style="color:#888">/dashboard/admin/marketing/affiliate</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">70</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">518ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1817ms)</div><div class="issue">Reduce unused JavaScript (620ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">affiliate <span style="color:#888">/dashboard/admin/marketing/affiliate</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">48</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">557ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1828ms)</div><div class="issue">Reduce unused JavaScript (240ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">ads <span style="color:#888">/dashboard/admin/marketing/ads</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">82</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">373ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1783ms)</div><div class="issue">Reduce unused JavaScript (20ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">ads <span style="color:#888">/dashboard/admin/marketing/ads</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">50</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">402ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2102ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">refunds <span style="color:#888">/dashboard/admin/finance/refunds</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">69</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.7s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.4s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">548ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (672ms)</div><div class="issue">Reduce unused JavaScript (610ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">refunds <span style="color:#888">/dashboard/admin/finance/refunds</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">49</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">515ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1834ms)</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">ecommerce <span style="color:#888">/dashboard/admin/ecommerce</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">85</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">318ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1733ms)</div><div class="issue">Reduce unused JavaScript (220ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">ecommerce <span style="color:#888">/dashboard/admin/ecommerce</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">57</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">363ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1783ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">products <span style="color:#888">/dashboard/admin/ecommerce/products</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">73</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">427ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1795ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">products <span style="color:#888">/dashboard/admin/ecommerce/products</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">51</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">433ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1811ms)</div><div class="issue">Reduce unused JavaScript (460ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">edit <span style="color:#888">/dashboard/admin/ecommerce/products/[productId]/edit</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">72</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">555ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2217ms)</div><div class="issue">Reduce unused JavaScript (430ms)</div><div class="issue">Initial server response time was short (30ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">edit <span style="color:#888">/dashboard/admin/ecommerce/products/[productId]/edit</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">48</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">2.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">440ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2176ms)</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">create <span style="color:#888">/dashboard/admin/ecommerce/products/create</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">75</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">529ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2162ms)</div><div class="issue">Reduce unused JavaScript (220ms)</div><div class="issue">Initial server response time was short (4ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">create <span style="color:#888">/dashboard/admin/ecommerce/products/create</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">44</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">728ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2160ms)</div><div class="issue">Reduce unused JavaScript (230ms)</div><div class="issue">Initial server response time was short (27ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/admin/ecommerce/orders</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">72</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">550ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1856ms)</div><div class="issue">Reduce unused JavaScript (460ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">orders <span style="color:#888">/dashboard/admin/ecommerce/orders</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">46</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">525ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1844ms)</div><div class="issue">Reduce unused JavaScript (700ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[id] <span style="color:#888">/dashboard/admin/ecommerce/orders/[id]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">82</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">381ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1736ms)</div><div class="issue">Reduce unused JavaScript (260ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[id] <span style="color:#888">/dashboard/admin/ecommerce/orders/[id]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">60</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">236ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1848ms)</div><div class="issue">Reduce unused JavaScript (700ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">inventory <span style="color:#888">/dashboard/admin/ecommerce/inventory</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">63</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.7s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.3s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">860ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2461ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">inventory <span style="color:#888">/dashboard/admin/ecommerce/inventory</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">45</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">705ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1746ms)</div><div class="issue">Reduce unused JavaScript (740ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">dashboard <span style="color:#888">/dashboard/admin/dashboard</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">75</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">732ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1768ms)</div><div class="issue">Reduce unused JavaScript (100ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">dashboard <span style="color:#888">/dashboard/admin/dashboard</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">43</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">624ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1791ms)</div><div class="issue">Reduce unused JavaScript (650ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reports <span style="color:#888">/dashboard/admin/dashboard/reports</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">79</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">444ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1861ms)</div><div class="issue">Reduce unused JavaScript (270ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reports <span style="color:#888">/dashboard/admin/dashboard/reports</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">59</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">305ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1756ms)</div><div class="issue">Reduce unused JavaScript (260ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">overview <span style="color:#888">/dashboard/admin/dashboard/overview</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">71</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value yellow">1.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">450ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1850ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">overview <span style="color:#888">/dashboard/admin/dashboard/overview</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">49</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.3s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">638ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2507ms)</div><div class="issue">Reduce unused JavaScript (770ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">analytics <span style="color:#888">/dashboard/admin/dashboard/analytics</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">86</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">289ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1771ms)</div><div class="issue">Reduce unused JavaScript (240ms)</div><div class="issue">Initial server response time was short (21ms)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">analytics <span style="color:#888">/dashboard/admin/dashboard/analytics</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">61</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.7s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">274ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1740ms)</div><div class="issue">Reduce unused JavaScript (270ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">customers <span style="color:#888">/dashboard/admin/customers</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">68</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.8s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">592ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1791ms)</div><div class="issue">Reduce unused JavaScript (770ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">customers <span style="color:#888">/dashboard/admin/customers</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">45</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">613ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (2068ms)</div><div class="issue">Reduce unused JavaScript (750ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reviews <span style="color:#888">/dashboard/admin/customers/reviews</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">84</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">391ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1749ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reviews <span style="color:#888">/dashboard/admin/customers/reviews</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">59</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">321ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Avoid multiple page redirects (1751ms)</div><div class="issue">Reduce unused JavaScript (200ms)</div><div class="issue">Initial server response time was short</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">shop <span style="color:#888">/shop</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">71</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">565ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">shop <span style="color:#888">/shop</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">46</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">611ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.008</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (360ms)</div><div class="issue">Initial server response time was short (5ms)</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[slug] <span style="color:#888">/products/[slug]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">67</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">639ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value red">0.312</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[slug] <span style="color:#888">/products/[slug]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">48</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">587ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.096</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (310ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/order-success/[orderId]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle green">90</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">424ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[orderId] <span style="color:#888">/order-success/[orderId]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">64</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">450ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (300ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">contact <span style="color:#888">/contact</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">762ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">contact <span style="color:#888">/contact</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">53</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">796ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">checkout <span style="color:#888">/checkout</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">60</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.9s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">690ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value red">0.398</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (430ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">checkout <span style="color:#888">/checkout</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">59</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">718ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">categories <span style="color:#888">/categories</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">368ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (300ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">categories <span style="color:#888">/categories</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">45</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">885ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[slug] <span style="color:#888">/categories/[slug]</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">61</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">95</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value red">4.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">920ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short (7ms)</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">[slug] <span style="color:#888">/categories/[slug]</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle red">49</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">95</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">849ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.008</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">cart <span style="color:#888">/cart</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">79</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">598ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (340ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">cart <span style="color:#888">/cart</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">64</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.0s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">426ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">verify-email <span style="color:#888">/auth/verify-email</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">82</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">453ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">verify-email <span style="color:#888">/auth/verify-email</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">63</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">589ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">two-factor <span style="color:#888">/auth/two-factor</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">85</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.3s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.6s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">290ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">two-factor <span style="color:#888">/auth/two-factor</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">62</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">96</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">508ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">signup <span style="color:#888">/auth/signup</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">81</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value red">666ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">signup <span style="color:#888">/auth/signup</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">69</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">266ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reset-password <span style="color:#888">/auth/reset-password</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle green">90</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">1.7s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">412ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">reset-password <span style="color:#888">/auth/reset-password</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">67</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.2s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">417ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">magic-link <span style="color:#888">/auth/magic-link</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">77</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.6s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">485ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (150ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">magic-link <span style="color:#888">/auth/magic-link</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">62</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value green">2.4s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.1s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">495ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">login <span style="color:#888">/auth/login</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">79</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.8s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.2s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">377ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (110ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">login <span style="color:#888">/auth/login</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">58</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">97</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">92</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">2.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.0s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">554ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div><div class="issue">Minify CSS</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">forgot-password <span style="color:#888">/auth/forgot-password</span></div>
+        <span class="device-badge mobile">mobile</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">78</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.5s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">1.5s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">471ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (450ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">forgot-password <span style="color:#888">/auth/forgot-password</span></div>
+        <span class="device-badge desktop">desktop</span>
+      </div>
+      <div class="scores">
+        <div class="score-item"><div class="score-circle yellow">64</div><div class="score-label">P</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">A</div></div>
+        <div class="score-item"><div class="score-circle green">100</div><div class="score-label">BP</div></div>
+        <div class="score-item"><div class="score-circle green">91</div><div class="score-label">SEO</div></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-value yellow">3.1s</div><div class="metric-label">LCP</div></div>
+        <div class="metric"><div class="metric-value green">0.9s</div><div class="metric-label">FCP</div></div>
+        <div class="metric"><div class="metric-value yellow">387ms</div><div class="metric-label">TBT</div></div>
+        <div class="metric"><div class="metric-value green">0.000</div><div class="metric-label">CLS</div></div>
+        <div class="metric"><div class="metric-value ">-</div><div class="metric-label">INP</div></div>
+      </div>
+      <div class="issues"><div class="issues-title">Top Issues</div><div class="issue">Reduce unused JavaScript (630ms)</div><div class="issue">Initial server response time was short</div><div class="issue">Avoid multiple page redirects</div></div>
+    </div>
+  </div>
+</body>
+</html>

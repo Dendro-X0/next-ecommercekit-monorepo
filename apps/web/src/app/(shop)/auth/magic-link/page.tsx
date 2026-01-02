@@ -30,7 +30,7 @@ export default function MagicLinkPage(): ReactElement {
   const [message, setMessage] = useState<string | undefined>(undefined)
   const [error, setError] = useState<string | undefined>(undefined)
   const form = useForm<MagicValues>({
-    resolver: zodResolver(MagicSchema),
+    resolver: zodResolver(MagicSchema as never),
     defaultValues: { email: "" },
   })
 

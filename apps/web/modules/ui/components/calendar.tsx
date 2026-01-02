@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  type LucideProps,
   ChevronDown as ChevronDownIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
@@ -42,14 +43,16 @@ function CalendarRoot({ className, rootRef, ...props }: RootProps): React.ReactE
   )
 }
 
+type CalendarChevronProps = {
+  readonly className?: string
+  readonly orientation?: "left" | "right" | "down"
+} & Omit<LucideProps, "ref">
+
 function CalendarChevron({
   className,
   orientation,
   ...props
-}: {
-  readonly className?: string
-  readonly orientation?: "left" | "right" | "down"
-} & React.SVGProps<SVGSVGElement>): React.ReactElement {
+}: CalendarChevronProps): React.ReactElement {
   if (orientation === "left") {
     return <ChevronLeftIcon className={cn("size-4", className)} {...props} />
   }

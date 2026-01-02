@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { MinimalLangHeader } from "modules/shared/components/minimal-lang-header"
 import type { JSX } from "react"
 import { ShopHome } from "@/components/home/ShopHome"
@@ -5,6 +6,13 @@ import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import { ClientIslands } from "./client-islands"
 export const revalidate = 60
+
+export const metadata: Metadata = {
+  title: "ModularShop – Modern Next.js Ecommerce Starter",
+  description:
+    "Browse the ModularShop demo storefront built with Next.js 16, TypeScript, Tailwind CSS, Better Auth, and Drizzle. Explore featured products, categories, and customer testimonials.",
+  alternates: { canonical: "/" },
+}
 
 /**
  * Production homepage: render full storefront UI.

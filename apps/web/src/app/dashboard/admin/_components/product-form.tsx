@@ -40,6 +40,9 @@ const slugify = (input: string): string =>
 
 type ProductFormProps = Readonly<{ productId?: string }>
 
+type AnyResolverFn = (schema: unknown) => unknown
+const zodResolverUntyped: AnyResolverFn = zodResolver as unknown as AnyResolverFn
+
 /**
  * ProductForm
  * Typed admin form for creating or updating a product.
@@ -134,7 +137,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema) as Resolver<FormValues>,
+    resolver: zodResolverUntyped(schema) as Resolver<FormValues>,
     defaultValues: {
       name: "",
       slug: "",

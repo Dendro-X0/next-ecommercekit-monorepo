@@ -65,7 +65,7 @@ export default function ProfileSettingsPage(): ReactElement {
   const avatarInputId = useId()
   const emailInputId = useId()
   const form = useForm<ProfileValues>({
-    resolver: zodResolver(ProfileSchema),
+    resolver: zodResolver(ProfileSchema as never),
     defaultValues: { name: "", username: "" },
   })
   useEffect(() => {

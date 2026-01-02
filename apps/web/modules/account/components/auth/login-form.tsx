@@ -54,7 +54,7 @@ export function LoginForm() {
   const params = useSearchParams()
   const queryClient = useQueryClient()
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(LoginSchema as never),
     defaultValues: {
       identifier: "",
       password: "",

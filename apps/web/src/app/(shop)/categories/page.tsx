@@ -1,7 +1,16 @@
 import { categoriesRepo } from "@repo/db"
+import type { Metadata } from "next"
 import { unstable_cache } from "next/cache"
 import type { JSX } from "react"
 import { productsDisabled } from "@/lib/safe-mode"
+
+export const metadata: Metadata = {
+  title: "Browse Categories | ModularShop",
+  description:
+    "Explore all product categories in the ModularShop demo. Find digital downloads, physical goods, and more organized by category.",
+  alternates: { canonical: "/categories" },
+}
+
 export const revalidate = 300
 // Avoid build-time DB requirement in CI by disabling SSG for this route.
 // Runtime fetch still occurs on request.

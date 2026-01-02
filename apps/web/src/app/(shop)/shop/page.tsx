@@ -13,6 +13,8 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Shop All Products",
+  description:
+    "Shop all products in the ModularShop demo, including digital downloads and physical goods, powered by Next.js 16 and a modern commerce stack.",
   alternates: { canonical: "/shop" },
 }
 

@@ -88,20 +88,23 @@ export async function Header(): Promise<JSX.Element> {
       {!disableAnnouncementBar && (
         <div className="bg-black text-white text-center py-2 text-sm relative">
           <span className="px-2">Demo notice: payments are disabled in this deployment.</span>
-          <AppLink href="/auth/signup" className="underline hover:no-underline text-white">
+          <AppLink
+            href="/auth/signup"
+            className="inline-flex items-center px-1.5 py-1 underline hover:no-underline text-white"
+          >
             Create an account
           </AppLink>
           <span className="px-2">to explore the full UI. See</span>
           <AppLink
             href="https://github.com/Dendro-X0/next-ecommerce-starterkit#readme"
-            className="underline hover:no-underline text-white"
+            className="inline-flex items-center px-1.5 py-1 underline hover:no-underline text-white"
           >
             README
           </AppLink>
           <span className="px-2">for setup details.</span>
           <button
             type="button"
-            className="absolute right-4 top-2 hover:opacity-70 transition-opacity"
+            className="absolute right-2 top-1.5 flex h-10 w-10 items-center justify-center rounded-full hover:opacity-70 transition-opacity"
             aria-label="Dismiss banner"
           >
             <X className="h-4 w-4" />

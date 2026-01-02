@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-01-02T03:13:18.396Z",
+  "regressions": [
+    {
+      "label": "categories",
+      "path": "/categories",
+      "device": "desktop",
+      "previousP": 66,
+      "currentP": 45,
+      "deltaP": -21
+    },
+    {
+      "label": "affiliate",
+      "path": "/dashboard/admin/marketing/affiliate",
+      "device": "mobile",
+      "previousP": 86,
+      "currentP": 70,
+      "deltaP": -16
+    },
+    {
+      "label": "[slug]",
+      "path": "/products/[slug]",
+      "device": "desktop",
+      "previousP": 64,
+      "currentP": 48,
+      "deltaP": -16
+    },
+    {
+      "label": "[slug]",
+      "path": "/categories/[slug]",
+      "device": "mobile",
+      "previousP": 77,
+      "currentP": 61,
+      "deltaP": -16
+    },
+    {
+      "label": "refunds",
+      "path": "/dashboard/admin/finance/refunds",
+      "device": "mobile",
+      "previousP": 84,
+      "currentP": 69,
+      "deltaP": -15
+    },
+    {
+      "label": "products",
+      "path": "/dashboard/admin/ecommerce/products",
+      "device": "desktop",
+      "previousP": 66,
+      "currentP": 51,
+      "deltaP": -15
+    },
+    {
+      "label": "checkout",
+      "path": "/checkout",
+      "device": "mobile",
+      "previousP": 75,
+      "currentP": 60,
+      "deltaP": -15
+    },
+    {
+      "label": "settings",
+      "path": "/dashboard/user/settings",
+      "device": "desktop",
+      "previousP": 59,
+      "currentP": 45,
+      "deltaP": -14
+    },
+    {
+      "label": "email",
+      "path": "/dashboard/admin/marketing/email",
+      "device": "mobile",
+      "previousP": 77,
+      "currentP": 63,
+      "deltaP": -14
+    },
+    {
+      "label": "orders",
+      "path": "/dashboard/admin/ecommerce/orders",
+      "device": "desktop",
+      "previousP": 59,
+      "currentP": 46,
+      "deltaP": -13
+    }
+  ],
+  "topIssues": [
+    {
+      "title": "Avoid multiple page redirects",
+      "count": 100,
+      "totalMs": 119598.08020000001
+    },
+    {
+      "title": "Reduce unused JavaScript",
+      "count": 86,
+      "totalMs": 34440
+    },
+    {
+      "title": "Initial server response time was short",
+      "count": 100,
+      "totalMs": 161
+    },
+    {
+      "title": "Minify CSS",
+      "count": 14,
+      "totalMs": 0
+    }
+  ],
+  "deepAuditTargets": [
+    {
+      "label": "home",
+      "path": "/",
+      "device": "desktop",
+      "score": 19
+    },
+    {
+      "label": "home",
+      "path": "/",
+      "device": "mobile",
+      "score": 35
+    },
+    {
+      "label": "notifications",
+      "path": "/dashboard/user/settings/notifications",
+      "device": "desktop",
+      "score": 40
+    },
+    {
+      "label": "dashboard",
+      "path": "/dashboard/admin/dashboard",
+      "device": "desktop",
+      "score": 43
+    },
+    {
+      "label": "user",
+      "path": "/dashboard/user",
+      "device": "desktop",
+      "score": 44
+    }
+  ],
+  "suggestedCommands": [
+    "pnpm tsx src/bin.ts --config E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json --desktop-only --open-report # focus on /",
+    "pnpm tsx src/bin.ts --config E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json --mobile-only --open-report # focus on /",
+    "pnpm tsx src/bin.ts --config E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json --desktop-only --open-report # focus on /dashboard/user/settings/notifications",
+    "pnpm tsx src/bin.ts --config E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json --desktop-only --open-report # focus on /dashboard/admin/dashboard",
+    "pnpm tsx src/bin.ts --config E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json --desktop-only --open-report # focus on /dashboard/user"
+  ],
+  "budgetViolations": [],
+  "budgetPassed": true
+}

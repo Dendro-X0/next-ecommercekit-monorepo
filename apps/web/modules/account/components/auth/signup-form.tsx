@@ -72,7 +72,7 @@ export function SignUpForm() {
     readonly message?: string
   }>({ status: "idle" })
   const form = useForm<SignupFormValues>({
-    resolver: zodResolver(SignupSchema),
+    resolver: zodResolver(SignupSchema as never),
     defaultValues: {
       email: "",
       username: "",

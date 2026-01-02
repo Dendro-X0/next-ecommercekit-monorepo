@@ -183,9 +183,9 @@ export function ProductCard({
         </div>
 
         <AppLink href={product.slug ? `/products/${product.slug}` : "#"}>
-          <h3 className="font-medium line-clamp-2 hover:text-primary transition-colors">
+          <h2 className="font-medium line-clamp-2 hover:text-primary transition-colors">
             {product.name || "Untitled Product"}
-          </h3>
+          </h2>
         </AppLink>
 
         <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>

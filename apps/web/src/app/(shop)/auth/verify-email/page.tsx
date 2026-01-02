@@ -51,7 +51,7 @@ export default function VerifyEmailPage(): ReactElement {
   const [error, setError] = useState<string | undefined>(undefined)
   const params = useSearchParams()
   const form = useForm<VerifyEmailValues>({
-    resolver: zodResolver(VerifyEmailSchema),
+    resolver: zodResolver(VerifyEmailSchema as never),
     defaultValues: { email: "" },
   })
 

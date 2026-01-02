@@ -1,0 +1,3623 @@
+{
+  "meta": {
+    "configPath": "E:\\Web Project\\experimental-workspace\\apex-auditor-workspace\\next-ecommercekit-monorepo\\apex.config.json",
+    "incremental": false,
+    "resolvedParallel": 4,
+    "totalSteps": 100,
+    "comboCount": 100,
+    "executedCombos": 100,
+    "cachedCombos": 0,
+    "runsPerCombo": 1,
+    "executedSteps": 100,
+    "cachedSteps": 0,
+    "warmUp": true,
+    "throttlingMethod": "simulate",
+    "cpuSlowdownMultiplier": 4,
+    "startedAt": "2026-01-02T03:07:53.993Z",
+    "completedAt": "2026-01-02T03:13:18.380Z",
+    "elapsedMs": 324387,
+    "averageStepMs": 3243.87
+  },
+  "results": [
+    {
+      "url": "http://localhost:3000/",
+      "path": "/",
+      "label": "home",
+      "device": "mobile",
+      "scores": {
+        "performance": 35,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4189.0875,
+        "fcpMs": 974.3625,
+        "tbtMs": 2392.0000000000005,
+        "cls": 0.5970510638109398
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/",
+      "path": "/",
+      "label": "home",
+      "device": "desktop",
+      "scores": {
+        "performance": 19,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4187.52,
+        "fcpMs": 978.84,
+        "tbtMs": 1948.420000000001,
+        "cls": 0.4671313022241203
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/safe",
+      "path": "/safe",
+      "label": "safe",
+      "device": "mobile",
+      "scores": {
+        "performance": 90,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2861.1531,
+        "fcpMs": 973.4354000000001,
+        "tbtMs": 260,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 26160
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/safe",
+      "path": "/safe",
+      "label": "safe",
+      "device": "desktop",
+      "scores": {
+        "performance": 81,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2437.6560999999997,
+        "fcpMs": 962.6560999999999,
+        "tbtMs": 186,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 27395
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/paypal/return",
+      "path": "/paypal/return",
+      "label": "return",
+      "device": "mobile",
+      "scores": {
+        "performance": 93,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2851.422,
+        "fcpMs": 1645.948,
+        "tbtMs": 156,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 300,
+          "estimatedSavingsBytes": 26153
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/paypal/return",
+      "path": "/paypal/return",
+      "label": "return",
+      "device": "desktop",
+      "scores": {
+        "performance": 88,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2022.8449999999998,
+        "fcpMs": 972.845,
+        "tbtMs": 115.99999999999977,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 27605
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/paypal/cancel",
+      "path": "/paypal/cancel",
+      "label": "cancel",
+      "device": "mobile",
+      "scores": {
+        "performance": 94,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2780.6705,
+        "fcpMs": 1029.447,
+        "tbtMs": 160,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 300,
+          "estimatedSavingsBytes": 26344
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/paypal/cancel",
+      "path": "/paypal/cancel",
+      "label": "cancel",
+      "device": "desktop",
+      "scores": {
+        "performance": 82,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2564.9612,
+        "fcpMs": 946.9612,
+        "tbtMs": 153,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 300,
+          "estimatedSavingsBytes": 27859
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user",
+      "label": "user",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3552.1680000000006,
+        "fcpMs": 1735.112,
+        "tbtMs": 496.41599999999994,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1868.056
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 128138
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user",
+      "label": "user",
+      "device": "desktop",
+      "scores": {
+        "performance": 44,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4616.625000000002,
+        "fcpMs": 1396.6499999999999,
+        "tbtMs": 956.1249999999991,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2343.3
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 550,
+          "estimatedSavingsBytes": 291723
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/wishlist",
+      "label": "wishlist",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3501.48,
+        "fcpMs": 1834.32,
+        "tbtMs": 523.0799999999999,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1817.1600000000003
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 129990
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 19
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/wishlist",
+      "label": "wishlist",
+      "device": "desktop",
+      "scores": {
+        "performance": 46,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4959.836999999999,
+        "fcpMs": 1452.1860000000001,
+        "tbtMs": 706.9689999999996,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2604.3719999999994
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 550,
+          "estimatedSavingsBytes": 292025
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings",
+      "label": "settings",
+      "device": "mobile",
+      "scores": {
+        "performance": 76,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4150.416300000001,
+        "fcpMs": 1526.5236,
+        "tbtMs": 407,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1777.2618000000004
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 127830
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings",
+      "label": "settings",
+      "device": "desktop",
+      "scores": {
+        "performance": 45,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4426.415,
+        "fcpMs": 1734.088,
+        "tbtMs": 558,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1767.0440000000003
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 410,
+          "estimatedSavingsBytes": 107317
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/security",
+      "label": "security",
+      "device": "mobile",
+      "scores": {
+        "performance": 71,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4027.3225,
+        "fcpMs": 1658.47,
+        "tbtMs": 597.9999999999986,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1729.2349999999997
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 213770
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/security",
+      "label": "security",
+      "device": "desktop",
+      "scores": {
+        "performance": 52,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3472.2250000000013,
+        "fcpMs": 1617.78,
+        "tbtMs": 513.9449999999993,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2108.8900000000003
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/profile",
+      "label": "profile",
+      "device": "mobile",
+      "scores": {
+        "performance": 84,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3219.6620000000003,
+        "fcpMs": 1716.1080000000002,
+        "tbtMs": 342.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2162.554
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 130,
+          "estimatedSavingsBytes": 44411
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/profile",
+      "label": "profile",
+      "device": "desktop",
+      "scores": {
+        "performance": 53,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3818.099999999999,
+        "fcpMs": 1712.3999999999999,
+        "tbtMs": 413.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2156.7
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 80,
+          "estimatedSavingsBytes": 44559
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/notifications",
+      "label": "notifications",
+      "device": "mobile",
+      "scores": {
+        "performance": 71,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4368.8055,
+        "fcpMs": 1872.0595,
+        "tbtMs": 474,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1805.373
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 680,
+          "estimatedSavingsBytes": 130398
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/notifications",
+      "label": "notifications",
+      "device": "desktop",
+      "scores": {
+        "performance": 40,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4486.327499999999,
+        "fcpMs": 1771.062,
+        "tbtMs": 781,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1890.531
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 360,
+          "estimatedSavingsBytes": 107385
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/addresses",
+      "label": "addresses",
+      "device": "mobile",
+      "scores": {
+        "performance": 73,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4290.559499999999,
+        "fcpMs": 1680.1864999999998,
+        "tbtMs": 460.99999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1736.7910000000004
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 790,
+          "estimatedSavingsBytes": 130128
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/settings/addresses",
+      "label": "addresses",
+      "device": "desktop",
+      "scores": {
+        "performance": 53,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3483.167999999999,
+        "fcpMs": 1591.5839999999998,
+        "tbtMs": 488.00000000000136,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1695.792
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 170,
+          "estimatedSavingsBytes": 128059
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/reviews",
+      "label": "reviews",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4371.63,
+        "fcpMs": 1684.42,
+        "tbtMs": 327,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2147.21
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 600,
+          "estimatedSavingsBytes": 130330
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/reviews",
+      "label": "reviews",
+      "device": "desktop",
+      "scores": {
+        "performance": 61,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3142.2239999999997,
+        "fcpMs": 1421.112,
+        "tbtMs": 371.2779999999989,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1685.556
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 40,
+          "estimatedSavingsBytes": 127841
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/orders",
+      "label": "orders",
+      "device": "mobile",
+      "scores": {
+        "performance": 66,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 5225.774000000003,
+        "fcpMs": 1355.5230000000001,
+        "tbtMs": 559.3180000000007,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 3062.887
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 700,
+          "estimatedSavingsBytes": 292025
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/orders",
+      "label": "orders",
+      "device": "desktop",
+      "scores": {
+        "performance": 49,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4918.443000000001,
+        "fcpMs": 1953.3960000000002,
+        "tbtMs": 402,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2440.0470000000005
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 640,
+          "estimatedSavingsBytes": 128615
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/orders/[orderId]",
+      "label": "[orderId]",
+      "device": "mobile",
+      "scores": {
+        "performance": 83,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3218.4389999999994,
+        "fcpMs": 1467.3756,
+        "tbtMs": 403.9999999999991,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1733.6878
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 70,
+          "estimatedSavingsBytes": 127934
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/orders/[orderId]",
+      "label": "[orderId]",
+      "device": "desktop",
+      "scores": {
+        "performance": 49,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3239.2619999999997,
+        "fcpMs": 1859.5079999999998,
+        "tbtMs": 517.0000000000005,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1829.754
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 240,
+          "estimatedSavingsBytes": 107385
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/affiliate",
+      "label": "affiliate",
+      "device": "mobile",
+      "scores": {
+        "performance": 73,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4201.130999999999,
+        "fcpMs": 1722.1989999999998,
+        "tbtMs": 458.99999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1757.4660000000003
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 650,
+          "estimatedSavingsBytes": 130330
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/user/affiliate",
+      "label": "affiliate",
+      "device": "desktop",
+      "scores": {
+        "performance": 61,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3984.911000000002,
+        "fcpMs": 1653.9643999999998,
+        "tbtMs": 274.0356000000006,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1726.9821999999995
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 570,
+          "estimatedSavingsBytes": 127731
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin",
+      "label": "admin",
+      "device": "mobile",
+      "scores": {
+        "performance": 80,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3823.321199999999,
+        "fcpMs": 1488.1606000000002,
+        "tbtMs": 352.5000000000007,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1745.5803
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 640,
+          "estimatedSavingsBytes": 128127
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin",
+      "label": "admin",
+      "device": "desktop",
+      "scores": {
+        "performance": 54,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3965.520000000001,
+        "fcpMs": 1643.6799999999998,
+        "tbtMs": 402.99999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1721.8400000000001
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 128212
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/orders",
+      "label": "orders",
+      "device": "mobile",
+      "scores": {
+        "performance": 86,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3247.3655999999996,
+        "fcpMs": 1491.7312000000002,
+        "tbtMs": 284.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1747.3656
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 210,
+          "estimatedSavingsBytes": 127866
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/orders",
+      "label": "orders",
+      "device": "desktop",
+      "scores": {
+        "performance": 63,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3515.960000000001,
+        "fcpMs": 1526.984,
+        "tbtMs": 295,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1763.9920000000004
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 210,
+          "estimatedSavingsBytes": 127662
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/orders/[orderId]",
+      "label": "[orderId]",
+      "device": "mobile",
+      "scores": {
+        "performance": 76,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3665.304,
+        "fcpMs": 1714.652,
+        "tbtMs": 503.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2389.815
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 130327
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/orders/[orderId]",
+      "label": "[orderId]",
+      "device": "desktop",
+      "scores": {
+        "performance": 53,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4780.090499999999,
+        "fcpMs": 1745.766,
+        "tbtMs": 368.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2434.3244999999997
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 128568
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/email",
+      "label": "email",
+      "device": "mobile",
+      "scores": {
+        "performance": 63,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 5479.686499999998,
+        "fcpMs": 1418.6490000000001,
+        "tbtMs": 646.2339999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 291910
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 672.883
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 48
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/email",
+      "label": "email",
+      "device": "desktop",
+      "scores": {
+        "performance": 50,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 5123.130999999998,
+        "fcpMs": 1482.261,
+        "tbtMs": 495.32600000000093,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 3508.609
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 580,
+          "estimatedSavingsBytes": 292025
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/affiliate",
+      "label": "affiliate",
+      "device": "mobile",
+      "scores": {
+        "performance": 70,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4419.7919999999995,
+        "fcpMs": 1834.896,
+        "tbtMs": 517.9999999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1817.4480000000005
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 620,
+          "estimatedSavingsBytes": 109556
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/affiliate",
+      "label": "affiliate",
+      "device": "desktop",
+      "scores": {
+        "performance": 48,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3771.313,
+        "fcpMs": 1855.036,
+        "tbtMs": 557.3975,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1827.518
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 240,
+          "estimatedSavingsBytes": 128185
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/ads",
+      "label": "ads",
+      "device": "mobile",
+      "scores": {
+        "performance": 82,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3398.424,
+        "fcpMs": 1765.616,
+        "tbtMs": 373,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1782.808
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 20,
+          "estimatedSavingsBytes": 128185
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/marketing/ads",
+      "label": "ads",
+      "device": "desktop",
+      "scores": {
+        "performance": 50,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4805.706,
+        "fcpMs": 1803.804,
+        "tbtMs": 402,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2101.902
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 128045
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/finance/refunds",
+      "label": "refunds",
+      "device": "mobile",
+      "scores": {
+        "performance": 69,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4735.010999999998,
+        "fcpMs": 1415.298,
+        "tbtMs": 547.9679999999992,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 671.766
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 610,
+          "estimatedSavingsBytes": 292135
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/finance/refunds",
+      "label": "refunds",
+      "device": "desktop",
+      "scores": {
+        "performance": 49,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3586.34,
+        "fcpMs": 1868.17,
+        "tbtMs": 515,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1834.085
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 128185
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce",
+      "label": "ecommerce",
+      "device": "mobile",
+      "scores": {
+        "performance": 85,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3361.3100000000004,
+        "fcpMs": 1461.8400000000001,
+        "tbtMs": 318.3699999999999,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1733.42
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 220,
+          "estimatedSavingsBytes": 127959
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce",
+      "label": "ecommerce",
+      "device": "desktop",
+      "scores": {
+        "performance": 57,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3400.4040000000014,
+        "fcpMs": 1766.9360000000001,
+        "tbtMs": 363.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1783.4679999999998
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products",
+      "label": "products",
+      "device": "mobile",
+      "scores": {
+        "performance": 73,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4407.0380000000005,
+        "fcpMs": 1789.7359999999999,
+        "tbtMs": 427,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1794.868
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 130060
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products",
+      "label": "products",
+      "device": "desktop",
+      "scores": {
+        "performance": 51,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3942.752,
+        "fcpMs": 1821.3760000000002,
+        "tbtMs": 433,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1810.688
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 460,
+          "estimatedSavingsBytes": 128159
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products/[productId]/edit",
+      "label": "edit",
+      "device": "mobile",
+      "scores": {
+        "performance": 72,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4017.3280000000004,
+        "fcpMs": 1832.656,
+        "tbtMs": 554.5000000000009,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2217.3280000000004
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 430,
+          "estimatedSavingsBytes": 83562
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 30
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products/[productId]/edit",
+      "label": "edit",
+      "device": "desktop",
+      "scores": {
+        "performance": 48,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4464.585000000001,
+        "fcpMs": 1951.6680000000001,
+        "tbtMs": 440,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2175.834
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83538
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products/create",
+      "label": "create",
+      "device": "mobile",
+      "scores": {
+        "performance": 75,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3618.603,
+        "fcpMs": 1924.804,
+        "tbtMs": 529,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2162.402
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 220,
+          "estimatedSavingsBytes": 83621
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 4
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/products/create",
+      "label": "create",
+      "device": "desktop",
+      "scores": {
+        "performance": 44,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3614.6699999999996,
+        "fcpMs": 1919.56,
+        "tbtMs": 727.9999999999991,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2159.7799999999997
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 230,
+          "estimatedSavingsBytes": 83667
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 27
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/orders",
+      "label": "orders",
+      "device": "mobile",
+      "scores": {
+        "performance": 72,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4079.0879999999997,
+        "fcpMs": 1912.9279999999999,
+        "tbtMs": 550,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1856.464
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 460,
+          "estimatedSavingsBytes": 128117
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/orders",
+      "label": "orders",
+      "device": "desktop",
+      "scores": {
+        "performance": 46,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4429.4025,
+        "fcpMs": 1888.23,
+        "tbtMs": 524.9999999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1844.1149999999998
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 700,
+          "estimatedSavingsBytes": 127887
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/orders/[id]",
+      "label": "[id]",
+      "device": "mobile",
+      "scores": {
+        "performance": 82,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3446.3399999999992,
+        "fcpMs": 1468.04,
+        "tbtMs": 381.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1735.52
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 260,
+          "estimatedSavingsBytes": 128174
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/orders/[id]",
+      "label": "[id]",
+      "device": "desktop",
+      "scores": {
+        "performance": 60,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4339.254,
+        "fcpMs": 1895.2240000000002,
+        "tbtMs": 236.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1847.612
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 700,
+          "estimatedSavingsBytes": 128227
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/inventory",
+      "label": "inventory",
+      "device": "mobile",
+      "scores": {
+        "performance": 63,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4701.670000000002,
+        "fcpMs": 1305.501,
+        "tbtMs": 859.6660000000004,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2461.002
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 291957
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/ecommerce/inventory",
+      "label": "inventory",
+      "device": "desktop",
+      "scores": {
+        "performance": 45,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4182.652500000002,
+        "fcpMs": 1692.29,
+        "tbtMs": 705,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1746.145
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 740,
+          "estimatedSavingsBytes": 128216
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard",
+      "label": "dashboard",
+      "device": "mobile",
+      "scores": {
+        "performance": 75,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3118.196,
+        "fcpMs": 1736.3919999999998,
+        "tbtMs": 731.5979999999993,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1768.196
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 100,
+          "estimatedSavingsBytes": 128180
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard",
+      "label": "dashboard",
+      "device": "desktop",
+      "scores": {
+        "performance": 43,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4369.5779999999995,
+        "fcpMs": 1782.616,
+        "tbtMs": 624.3649999999998,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1791.308
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 650,
+          "estimatedSavingsBytes": 107115
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/reports",
+      "label": "reports",
+      "device": "mobile",
+      "scores": {
+        "performance": 79,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3449.1895,
+        "fcpMs": 1695.2758000000001,
+        "tbtMs": 443.95685000000026,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1860.6378999999997
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 270,
+          "estimatedSavingsBytes": 127545
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/reports",
+      "label": "reports",
+      "device": "desktop",
+      "scores": {
+        "performance": 59,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3776.46945,
+        "fcpMs": 1711.7642,
+        "tbtMs": 305,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1755.8820999999996
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 260,
+          "estimatedSavingsBytes": 127876
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/overview",
+      "label": "overview",
+      "device": "mobile",
+      "scores": {
+        "performance": 71,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4623.196000000001,
+        "fcpMs": 1899.344,
+        "tbtMs": 450.00000000000045,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1849.672
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 130398
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/overview",
+      "label": "overview",
+      "device": "desktop",
+      "scores": {
+        "performance": 49,
+        "accessibility": 97,
+        "bestPractices": 96,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4563.910000000002,
+        "fcpMs": 1264.173,
+        "tbtMs": 638.218000000001,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2506.955000000001
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 770,
+          "estimatedSavingsBytes": 292025
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/analytics",
+      "label": "analytics",
+      "device": "mobile",
+      "scores": {
+        "performance": 86,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3271.17,
+        "fcpMs": 1742.3400000000001,
+        "tbtMs": 289,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1771.17
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 240,
+          "estimatedSavingsBytes": 128185
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 21
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/dashboard/analytics",
+      "label": "analytics",
+      "device": "desktop",
+      "scores": {
+        "performance": 61,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3735.109500000002,
+        "fcpMs": 1680.146,
+        "tbtMs": 274.49999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1740.0729999999999
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 270,
+          "estimatedSavingsBytes": 128185
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/customers",
+      "label": "customers",
+      "device": "mobile",
+      "scores": {
+        "performance": 68,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4392.2925,
+        "fcpMs": 1781.3100000000002,
+        "tbtMs": 591.9999999999991,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1790.6549999999995
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 770,
+          "estimatedSavingsBytes": 130383
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/customers",
+      "label": "customers",
+      "device": "desktop",
+      "scores": {
+        "performance": 45,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4477.893,
+        "fcpMs": 1735.262,
+        "tbtMs": 613,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 2067.631
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 750,
+          "estimatedSavingsBytes": 128159
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/customers/reviews",
+      "label": "reviews",
+      "device": "mobile",
+      "scores": {
+        "performance": 84,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3194.0560000000005,
+        "fcpMs": 1496.704,
+        "tbtMs": 391.1899999999989,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1749.3520000000003
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/dashboard/admin/customers/reviews",
+      "label": "reviews",
+      "device": "desktop",
+      "scores": {
+        "performance": 59,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3504.6060000000007,
+        "fcpMs": 1702.632,
+        "tbtMs": 320.69700000000034,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 1751.3159999999996
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 200,
+          "estimatedSavingsBytes": 127912
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/shop",
+      "path": "/shop",
+      "label": "shop",
+      "device": "mobile",
+      "scores": {
+        "performance": 71,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 3931.861,
+        "fcpMs": 1070.574,
+        "tbtMs": 564.9999999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/shop",
+      "path": "/shop",
+      "label": "shop",
+      "device": "desktop",
+      "scores": {
+        "performance": 46,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4367.515999999999,
+        "fcpMs": 1103.758,
+        "tbtMs": 610.6209999999994,
+        "cls": 0.0078913120492762
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 360,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 5
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/products/[slug]#description",
+      "path": "/products/[slug]",
+      "label": "[slug]",
+      "device": "mobile",
+      "scores": {
+        "performance": 67,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2120.4900000000002,
+        "fcpMs": 967.49,
+        "tbtMs": 638.5000000000009,
+        "cls": 0.31186026288554014
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/products/[slug]#description",
+      "path": "/products/[slug]",
+      "label": "[slug]",
+      "device": "desktop",
+      "scores": {
+        "performance": 48,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3315.5370000000003,
+        "fcpMs": 968.358,
+        "tbtMs": 586.9999999999998,
+        "cls": 0.09639679537693722
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 310,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/order-success/[orderId]",
+      "path": "/order-success/[orderId]",
+      "label": "[orderId]",
+      "device": "mobile",
+      "scores": {
+        "performance": 90,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 1112.7340000000002,
+        "fcpMs": 962.7340000000002,
+        "tbtMs": 423.9999999999993,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/order-success/[orderId]",
+      "path": "/order-success/[orderId]",
+      "label": "[orderId]",
+      "device": "desktop",
+      "scores": {
+        "performance": 64,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2843.238,
+        "fcpMs": 926.238,
+        "tbtMs": 449.8809999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 300,
+          "estimatedSavingsBytes": 104860
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/contact",
+      "path": "/contact",
+      "label": "contact",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2843.531,
+        "fcpMs": 935.531,
+        "tbtMs": 762.2345,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104258
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/contact",
+      "path": "/contact",
+      "label": "contact",
+      "device": "desktop",
+      "scores": {
+        "performance": 53,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3289.5350000000008,
+        "fcpMs": 986.5350000000001,
+        "tbtMs": 795.7325000000005,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104258
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/cart",
+      "path": "/checkout",
+      "label": "checkout",
+      "device": "mobile",
+      "scores": {
+        "performance": 60,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2850.79075,
+        "fcpMs": 933.1162999999999,
+        "tbtMs": 689.5,
+        "cls": 0.39803404254062646
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 430,
+          "estimatedSavingsBytes": 225400
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/cart",
+      "path": "/checkout",
+      "label": "checkout",
+      "device": "desktop",
+      "scores": {
+        "performance": 59,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2409.686,
+        "fcpMs": 950.6859999999999,
+        "tbtMs": 717.9999999999995,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/categories",
+      "path": "/categories",
+      "label": "categories",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3846.0795,
+        "fcpMs": 1743.7020000000002,
+        "tbtMs": 367.5000000000007,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 300,
+          "estimatedSavingsBytes": 104220
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/categories",
+      "path": "/categories",
+      "label": "categories",
+      "device": "desktop",
+      "scores": {
+        "performance": 45,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 4053.9235,
+        "fcpMs": 1144.242,
+        "tbtMs": 884.8790000000004,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104138
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/categories/[slug]",
+      "path": "/categories/[slug]",
+      "label": "[slug]",
+      "device": "mobile",
+      "scores": {
+        "performance": 61,
+        "accessibility": 95,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 4280.692500000001,
+        "fcpMs": 1138.954,
+        "tbtMs": 919.5000000000009,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83520
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 7
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/categories/[slug]",
+      "path": "/categories/[slug]",
+      "label": "[slug]",
+      "device": "desktop",
+      "scores": {
+        "performance": 49,
+        "accessibility": 95,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 2763.152,
+        "fcpMs": 1143.152,
+        "tbtMs": 848.924,
+        "cls": 0.008183196775009007
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/cart",
+      "path": "/cart",
+      "label": "cart",
+      "device": "mobile",
+      "scores": {
+        "performance": 79,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3078.288,
+        "fcpMs": 1004.192,
+        "tbtMs": 597.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 340,
+          "estimatedSavingsBytes": 104771
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/cart",
+      "path": "/cart",
+      "label": "cart",
+      "device": "desktop",
+      "scores": {
+        "performance": 64,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2991.5782,
+        "fcpMs": 927.5781999999999,
+        "tbtMs": 426,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104860
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/verify-email",
+      "path": "/auth/verify-email",
+      "label": "verify-email",
+      "device": "mobile",
+      "scores": {
+        "performance": 82,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3100.3690000000006,
+        "fcpMs": 991.2460000000001,
+        "tbtMs": 453.4999999999998,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104310
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/verify-email",
+      "path": "/auth/verify-email",
+      "label": "verify-email",
+      "device": "desktop",
+      "scores": {
+        "performance": 63,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2295.154,
+        "fcpMs": 1003.154,
+        "tbtMs": 588.9999999999995,
+        "cls": 0.00006327742067574509
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 104268
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/two-factor",
+      "path": "/auth/two-factor",
+      "label": "two-factor",
+      "device": "mobile",
+      "scores": {
+        "performance": 85,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3274.7075,
+        "fcpMs": 1590.766,
+        "tbtMs": 289.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83391
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/two-factor",
+      "path": "/auth/two-factor",
+      "label": "two-factor",
+      "device": "desktop",
+      "scores": {
+        "performance": 62,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "seo": 100
+      },
+      "metrics": {
+        "lcpMs": 2196.8920000000003,
+        "fcpMs": 1070.892,
+        "tbtMs": 507.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/signup",
+      "path": "/auth/signup",
+      "label": "signup",
+      "device": "mobile",
+      "scores": {
+        "performance": 81,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 2357.2619999999997,
+        "fcpMs": 1071.262,
+        "tbtMs": 665.6844999999992,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/signup",
+      "path": "/auth/signup",
+      "label": "signup",
+      "device": "desktop",
+      "scores": {
+        "performance": 69,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 2616.3999999999996,
+        "fcpMs": 1074.4,
+        "tbtMs": 266.49999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/reset-password",
+      "path": "/auth/reset-password",
+      "label": "reset-password",
+      "device": "mobile",
+      "scores": {
+        "performance": 90,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 1667.4734999999998,
+        "fcpMs": 1011.6489999999999,
+        "tbtMs": 412,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/reset-password",
+      "path": "/auth/reset-password",
+      "label": "reset-password",
+      "device": "desktop",
+      "scores": {
+        "performance": 67,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2167.6859999999997,
+        "fcpMs": 1056.686,
+        "tbtMs": 417,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/magic-link",
+      "path": "/auth/magic-link",
+      "label": "magic-link",
+      "device": "mobile",
+      "scores": {
+        "performance": 77,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3648.2290000000003,
+        "fcpMs": 1099.486,
+        "tbtMs": 484.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 150,
+          "estimatedSavingsBytes": 83517
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/magic-link",
+      "path": "/auth/magic-link",
+      "label": "magic-link",
+      "device": "desktop",
+      "scores": {
+        "performance": 62,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 2387.418,
+        "fcpMs": 1076.4180000000001,
+        "tbtMs": 495.49999999999955,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/auth/login",
+      "label": "login",
+      "device": "mobile",
+      "scores": {
+        "performance": 79,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 3809.943999999999,
+        "fcpMs": 1154.6109999999999,
+        "tbtMs": 376.9999999999998,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 110,
+          "estimatedSavingsBytes": 83455
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "path": "/auth/login",
+      "label": "login",
+      "device": "desktop",
+      "scores": {
+        "performance": 58,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92
+      },
+      "metrics": {
+        "lcpMs": 2542.2,
+        "fcpMs": 1043.2,
+        "tbtMs": 553.6000000000004,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "unminified-css",
+          "title": "Minify CSS",
+          "estimatedSavingsMs": 0,
+          "estimatedSavingsBytes": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/forgot-password",
+      "path": "/auth/forgot-password",
+      "label": "forgot-password",
+      "device": "mobile",
+      "scores": {
+        "performance": 78,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3517.1295,
+        "fcpMs": 1503.753,
+        "tbtMs": 470.5,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 450,
+          "estimatedSavingsBytes": 104042
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    },
+    {
+      "url": "http://localhost:3000/auth/forgot-password",
+      "path": "/auth/forgot-password",
+      "label": "forgot-password",
+      "device": "desktop",
+      "scores": {
+        "performance": 64,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 91
+      },
+      "metrics": {
+        "lcpMs": 3119.8015000000005,
+        "fcpMs": 921.1206,
+        "tbtMs": 387.43969999999933,
+        "cls": 0
+      },
+      "opportunities": [
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "estimatedSavingsMs": 630,
+          "estimatedSavingsBytes": 104548
+        },
+        {
+          "id": "server-response-time",
+          "title": "Initial server response time was short",
+          "estimatedSavingsMs": 0
+        },
+        {
+          "id": "redirects",
+          "title": "Avoid multiple page redirects",
+          "estimatedSavingsMs": 0
+        }
+      ]
+    }
+  ]
+}
