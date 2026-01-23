@@ -11,6 +11,7 @@ import { Slider } from "@/components/ui/slider"
 import { categories as mockCategories } from "@/lib/data"
 import { uiTemplates } from "@/lib/safe-mode"
 import type { FilterOptions } from "@/types"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type CategoryItem = Readonly<{
   id: string
@@ -160,7 +161,14 @@ export function ProductFilters({ filters, onFiltersChange }: ProductFiltersProps
         ) : (
           <div className="space-y-2 max-h-64 overflow-auto pr-1">
             {loading && categories.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Loading...</p>
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex items-center space-x-2">
+                    <Skeleton className="h-4 w-4 rounded-sm" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
+                ))}
+              </div>
             ) : (
               categories.map((category) => (
                 <div key={category.id} className="flex items-center space-x-2">

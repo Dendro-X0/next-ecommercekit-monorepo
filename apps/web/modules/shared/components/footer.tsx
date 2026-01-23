@@ -132,7 +132,7 @@ export function Footer() {
         <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              ModularShop © 2025, All Rights Reserved
+              ModularShop © 2026, All Rights Reserved
             </p>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center md:justify-start">

@@ -80,7 +80,7 @@ export default function RootLayout({
         ))}
       </head>
       <body
-        className={`${fontVars} antialiased`}
+        className={`${fontVars} antialiased`.trim()}
         data-minimal-boot={minimalBoot ? "true" : "false"}
         data-animations-disabled={animationsDisabled ? "true" : "false"}
         data-products-disabled={productsDisabled ? "true" : "false"}

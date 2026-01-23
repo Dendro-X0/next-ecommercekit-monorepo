@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.9] - 2026-01-23
+### Changed
+- Refined **Auth UI**: Moved authentication pages (`login`, `signup`, `reset-password`, etc.) to a focused layout group `(auth)` that omits the global shop header/footer for cleaner, distraction-free entry.
+- Improved **Loading States**:
+  - `ShopHome`: Replaced the "loading..." section with a proper skeleton grid for "Browse Categories".
+  - `ProductFilters`: Replaced text-based "Loading..." indicator with skeleton items for categories.
+- Fixed **Hydration Error**: Resolved a class name mismatch (`" antialiased"`) in the root layout that caused console hydration warnings.
+
 ## [1.1.8] - 2025-11-19
 ### Added
 - Minimalist `ShopLogo` SVG brand mark shared between the web header and favicons.

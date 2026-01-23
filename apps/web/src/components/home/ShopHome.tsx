@@ -13,10 +13,19 @@ const BrowseCategoriesLazy = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section
-        className="py-16"
-        style={{ contentVisibility: "auto", containIntrinsicSize: "1200px 700px" }}
-      />
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="h-8 w-64 bg-gray-200 dark:bg-gray-800 rounded mb-12 animate-pulse" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-[4/3] rounded-xl bg-gray-200 dark:bg-gray-800 animate-pulse border border-gray-200 dark:border-gray-800"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
     ),
   },
 )
