@@ -12,7 +12,7 @@ This template focuses on completeness and maintainability over vanity numbers. I
 
 <!-- PLACEHOLDER 1: UI Showcase GIF -->
 <!-- [Insert UI & Pages Walkthrough GIF Here] -->
-![UI Showcase](docs\assets\next-ecommercekit_1.gif)
+![UI Showcase](docs/assets/next-ecommercekit_1.gif)
 
 ![Lighthouse](apps/web/public/lighthouse_1.png)
 
@@ -34,8 +34,6 @@ This template focuses on completeness and maintainability over vanity numbers. I
 - [Roadmap](./ROADMAP.md)
 
 ---
-
-
 
 ## Tech Stack
 
@@ -59,7 +57,7 @@ The kit ships with a pragmatic, production‑ready stack and batteries included:
 
 <!-- PLACEHOLDER 2: Tech Stack & Code GIF -->
 <!-- [Insert Tech Stack, Code & File Tree GIF Here] -->
-![Tech Stack Demo](docs\assets\next-ecommercekit_filetree_1.gif)
+![Tech Stack Demo](docs/assets/next-ecommercekit_filetree_1.gif)
 
 ## Quickstart
 
