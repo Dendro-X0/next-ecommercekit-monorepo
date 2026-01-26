@@ -10,15 +10,9 @@ This template focuses on completeness and maintainability over vanity numbers. I
 
 ---
 
-![Project Thumbnail](apps/web/public/next-ecommercekit.png)
-
 <!-- PLACEHOLDER 1: UI Showcase GIF -->
 <!-- [Insert UI & Pages Walkthrough GIF Here] -->
-![UI Showcase](apps/web/public/ui-showcase-placeholder.gif)
-
-<!-- PLACEHOLDER 2: Tech Stack & Code GIF -->
-<!-- [Insert Tech Stack, Code & File Tree GIF Here] -->
-![Tech Stack Demo](apps/web/public/tech-stack-placeholder.gif)
+![UI Showcase](docs\assets\next-ecommercekit_1.gif)
 
 ![Lighthouse](apps/web/public/lighthouse_1.png)
 
@@ -33,49 +27,6 @@ This template focuses on completeness and maintainability over vanity numbers. I
 - [Media Storage](./docs/media-storage.md)
 - [Internationalization](./docs/i18n.md)
 - [Env Setup](./ENV_SETUP.md)
-
----
-
-## Performance & CLS (Home vs. Shop)
-
-The screenshots above show a large gap between the homepage and shop page Lighthouse scores. The shop page consistently achieves 100/100 with CLS ≈ 0.006, while the homepage can occasionally score in the 70s due to a transient CLS spike (e.g., 0.75 in one run).
-
-### Why does the homepage sometimes report high CLS?
-
-The homepage contains more above‑the‑fold dynamic UI than the shop page (hero presentation + early sections). In earlier iterations, these areas were rendered by client-only islands that hydrated after first paint, causing content to shift once data and client JS arrived. Even after we stabilized most sections, a few conditions can still inflate CLS in local audits:
-
-- Client islands or controls mounting above the fold before hydration completes.
-- Image placeholders without stable dimensions on hero artwork in certain breakpoints.
-- Header/islands (cart/wishlist/menu) reflowing when fonts and styles settle.
-- Debug-only overlays (dev tools, CLS visualizer) present in local runs; they do not affect the layout flow but can nudge timing and increase sensitivity to small shifts.
-
-In production, we’ve reduced these to near zero, but Lighthouse in dev can still intermittently catch one of these transitions.
-
-### What we fixed already
-
-- SSR initial data for above‑the‑fold listings (Featured/Top‑selling) with stable min-heights to avoid jump-on-hydration.
-- Hero converted to a static/CSS scroll-snap section (no JS carousel) to avoid layout moves during mount.
-- Header islands given reserved space and consistent icon sizes; announcement bar is opt‑in to avoid top‑of‑page shifts.
-- All images use Next/Image (no custom loader) with sizes/aspect ratio and `priority` + `fetchPriority` for LCP images.
-- Below‑the‑fold sections use `content-visibility: auto` with tuned `contain-intrinsic-size` to hold space without doing work.
-- Client islands that aren’t needed for first paint are moved after primary content to minimize above‑the‑fold layout churn.
-
-### Remaining mitigations (if you still see CLS spikes locally)
-
-- Ensure the hero and any first-screen imagery have an explicit aspect ratio or fixed height at each breakpoint.
-- Double‑check any client‑only components that still render before main content; move them after the fold or SSR a placeholder with stable height.
-- Prefer `font-display: optional` (already used for Geist fonts) and keep icon sizes fixed in CSS.
-- When auditing locally, use an incognito/guest window and close dev overlays; you can also append `?lhci=1` to suppress extra scripts that might skew timings.
-
-### How to reproduce and measure
-
-- Run the app and audit both pages:
-  - Home: `http://localhost:3000/`
-  - Shop: `http://localhost:3000/shop`
-- Use Chrome Lighthouse in a fresh incognito window. Run at least 3 times; focus on “Cumulative Layout Shift”.
-- For a visual of shifts during development, we include a dev-only CLS overlay (see `apps/web/src/app/layout.tsx` scripts block). Remove/disable when auditing if you prefer a clean environment.
-
-If you see persistent CLS above 0.1 on the homepage in production, please open an issue with the screenshot and page markup around the hero so we can further tune intrinsic sizes or breakpoints.
 - [Troubleshooting](./docs/troubleshooting.md)
 - [Development Mode Limitations](./docs/dev-mode-limitations.md)
 - [Components Inventory](./docs/components.md)
@@ -83,6 +34,8 @@ If you see persistent CLS above 0.1 on the homepage in production, please open a
 - [Roadmap](./ROADMAP.md)
 
 ---
+
+
 
 ## Tech Stack
 
@@ -103,6 +56,10 @@ The kit ships with a pragmatic, production‑ready stack and batteries included:
 - i18n: shared typed messages and formatters via `@repo/i18n` (also re‑exported by `@repo/ui`)
 
 ---
+
+<!-- PLACEHOLDER 2: Tech Stack & Code GIF -->
+<!-- [Insert Tech Stack, Code & File Tree GIF Here] -->
+![Tech Stack Demo](docs\assets\next-ecommercekit_filetree_1.gif)
 
 ## Quickstart
 
