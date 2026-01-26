@@ -21,7 +21,6 @@ This template focuses on completeness and maintainability over vanity numbers. I
 ![Tech Stack Demo](apps/web/public/tech-stack-placeholder.gif)
 
 ![Lighthouse](apps/web/public/lighthouse_1.png)
-![Lighthouse](apps/web/public/lighthouse_2.png)
 
 ## Documentation
 

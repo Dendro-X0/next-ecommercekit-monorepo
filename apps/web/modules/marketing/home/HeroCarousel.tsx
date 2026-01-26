@@ -223,23 +223,23 @@ export function HeroCarousel() {
       </CarouselContent>
 
       {/* Floating Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
-        <div className="flex space-x-3 bg-background/80 backdrop-blur-md rounded-full px-4 py-2 border border-border shadow-lg">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
+        <div className="flex space-x-2 bg-black/40 backdrop-blur-md rounded-full px-3 py-1.5 border border-white/10 shadow-lg">
           {heroSlides.map((slide, index) => (
             <button
               type="button"
               key={slide.id}
               onClick={() => goToSlide(index)}
-              className="group relative flex items-center justify-center focus-visible:outline-none"
+              className="group relative flex items-center justify-center focus-visible:outline-none min-w-[32px] min-h-[32px]"
               aria-label={`Go to slide ${index + 1}`}
               aria-current={currentSlide === index ? "true" : undefined}
             >
               <span
                 className={cn(
-                  "transition-all duration-500 rounded-full",
+                  "transition-all duration-300 rounded-full",
                   currentSlide === index
-                    ? "w-8 h-2 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]"
-                    : "w-2 h-2 bg-foreground/20 hover:bg-foreground/40"
+                    ? "w-6 h-1.5 bg-white shadow-sm"
+                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/60"
                 )}
               />
             </button>

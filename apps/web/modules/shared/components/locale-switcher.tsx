@@ -39,6 +39,7 @@ export function LocaleSwitcher(): JSX.Element {
     <Select value={currentLocale} onValueChange={handleValueChange}>
       <SelectTrigger
         className="w-[140px] h-9 rounded-xl border-border/40 bg-background/50 backdrop-blur-sm hover:bg-accent/50 transition-all font-bold text-[13px]"
+        aria-label="Select language"
       >
         <Globe className="h-4 w-4 mr-2 text-muted-foreground" />
         <SelectValue placeholder="Language" />

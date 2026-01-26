@@ -60,7 +60,7 @@ export default function RootLayout({
 }>) {
   // Best-effort dynamic preconnects for common image CDNs
   const preconnectHrefs: string[] = (() => {
-    const out: string[] = ["https://res.cloudinary.com", "https://picsum.photos"]
+    const out: string[] = []
     const base = process.env.S3_PUBLIC_BASE_URL
     if (base) {
       try {
