@@ -224,7 +224,7 @@ export function HeroCarousel() {
 
       {/* Floating Indicators */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
-        <div className="flex space-x-2 bg-black/40 backdrop-blur-md rounded-full px-3 py-1.5 border border-white/10 shadow-lg">
+        <div className="flex space-x-2 bg-black/40 backdrop-blur-md rounded-full px-3 py-0.25 border border-white/10 shadow-lg">
           {heroSlides.map((slide, index) => (
             <button
               type="button"
