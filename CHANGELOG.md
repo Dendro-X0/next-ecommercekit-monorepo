@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-01-25
+### Changed
+- **Header Redesign**: Implemented a premium aesthetic for navigation tabs with a "surgical" glowing underline effect and precise vertical centering.
+- **Scrollbar Refinement**: Replaced the default scrollbar in the shop category filter with a custom, thin, "seamless" scrollbar that matches the theme.
+- **Documentation**: Updated `README.md` with placeholders for visual showcases (UI & Tech Stack) and standardized project structure overview.
+
 ## [1.1.9] - 2026-01-23
 ### Changed
 - Refined **Auth UI**: Moved authentication pages (`login`, `signup`, `reset-password`, etc.) to a focused layout group `(auth)` that omits the global shop header/footer for cleaner, distraction-free entry.

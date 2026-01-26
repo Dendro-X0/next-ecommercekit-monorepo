@@ -49,47 +49,70 @@ export function MembershipCard({ user }: MembershipCardProps) {
     return { nextTier, progress, needed }
   }
 
+  const getTierGradient = (tier: string) => {
+    switch (tier) {
+      case "Platinum":
+        return "from-purple-500/20 via-purple-500/10 to-transparent"
+      case "Gold":
+        return "from-yellow-500/20 via-yellow-500/10 to-transparent"
+      case "Silver":
+        return "from-slate-400/20 via-slate-400/10 to-transparent"
+      default:
+        return "from-orange-500/20 via-orange-500/10 to-transparent"
+    }
+  }
+
   const { nextTier, progress, needed } = getNextTierProgress()
 
   return (
-    <Card className="overflow-hidden">
-      <div className={`h-2 ${getTierColor(user.membershipTier)}`} />
-      <CardHeader>
+    <Card className="overflow-hidden border-border/50 bg-card/30 backdrop-blur-md relative">
+      <div className={`absolute inset-0 bg-linear-to-br ${getTierGradient(user.membershipTier)} pointer-events-none`} />
+      <div className={`h-1.5 w-full ${getTierColor(user.membershipTier)}`} />
+      <CardHeader className="relative z-10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {getTierIcon(user.membershipTier)}
-            <CardTitle>{user.membershipTier} Member</CardTitle>
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-xl bg-background/50 border border-border/50 shadow-sm`}>
+              {getTierIcon(user.membershipTier)}
+            </div>
+            <div>
+              <CardTitle className="text-xl font-bold tracking-tight">{user.membershipTier} Member</CardTitle>
+              <CardDescription className="text-xs font-medium uppercase tracking-wider">
+                Since {new Date(user.joinDate).toLocaleDateString()}
+              </CardDescription>
+            </div>
           </div>
-          <Badge variant="secondary">{user.loyaltyPoints} points</Badge>
+          <Badge variant="outline" className="bg-background/50 border-primary/20 text-primary font-bold px-3 py-1">
+            {user.loyaltyPoints.toLocaleString()} <span className="ml-1 font-medium text-[10px] uppercase opacity-70">pts</span>
+          </Badge>
         </div>
-        <CardDescription>
-          Member since {new Date(user.joinDate).toLocaleDateString()}
-        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <div className="text-muted-foreground">Total Spent</div>
-            <div className="font-semibold">${user.totalSpent.toLocaleString()}</div>
+      <CardContent className="space-y-6 relative z-10">
+        <div className="grid grid-cols-2 gap-8 py-2">
+          <div className="space-y-1">
+            <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Total Investment</div>
+            <div className="text-2xl font-bold tracking-tight">${user.totalSpent.toLocaleString()}</div>
           </div>
-          <div>
-            <div className="text-muted-foreground">Total Orders</div>
-            <div className="font-semibold">{user.totalOrders}</div>
+          <div className="space-y-1 text-right">
+            <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Orders Placed</div>
+            <div className="text-2xl font-bold tracking-tight">{user.totalOrders}</div>
           </div>
         </div>
 
         {nextTier && (
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Progress to {nextTier}</span>
-              <span>${needed} to go</span>
+          <div className="space-y-3 bg-background/40 p-4 rounded-2xl border border-border/50">
+            <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+              <span className="text-muted-foreground">Next Tier: <span className="text-foreground">{nextTier}</span></span>
+              <span className="text-primary">${needed.toLocaleString()} to go</span>
             </div>
-            <Progress value={progress} className="h-2" aria-label={`Progress to ${nextTier}`} />
+            <div className="relative">
+              <Progress value={progress} className="h-2.5 bg-background shadow-inner" aria-label={`Progress to ${nextTier}`} />
+            </div>
           </div>
         )}
 
-        <div className="text-xs text-muted-foreground">
-          {user.membershipTier} members enjoy exclusive benefits and rewards
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary/80 bg-primary/5 w-fit px-3 py-1 rounded-full">
+          <Star className="h-3 w-3 fill-current" />
+          Exclusive Rewards Active
         </div>
       </CardContent>
     </Card>

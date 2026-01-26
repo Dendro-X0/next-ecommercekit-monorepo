@@ -7,9 +7,8 @@ import { SafeImage } from "@/components/ui/safe-image"
 import { animationsDisabled } from "@/lib/safe-mode"
 import { AppLink } from "../../shared/components/app-link"
 
-const HeroCarouselDynamic = dynamic(() => import("./HeroCarousel").then((m) => m.HeroCarousel), {
-  ssr: false,
-})
+// HeroCarousel is loaded dynamically to keep the initial bundle small.
+// We provide StaticHero as a fallback for SSR and during loading to prevent CLS.
 
 // Allow hard-disabling the hero carousel in production to isolate hydration/render issues.
 const disableHero: boolean =
@@ -32,10 +31,10 @@ function useIdleOrFirstInteraction(timeoutMs: number = 1500): boolean {
       }
     ).requestIdleCallback
       ? (
-          window as unknown as {
-            requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number
-          }
-        ).requestIdleCallback(() => setReady(true), { timeout: timeoutMs })
+        window as unknown as {
+          requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number
+        }
+      ).requestIdleCallback(() => setReady(true), { timeout: timeoutMs })
       : window.setTimeout(() => setReady(true), timeoutMs)
     window.addEventListener("pointerdown", onAny, { once: true, passive: true })
     window.addEventListener("keydown", onAny, { once: true })
@@ -50,18 +49,14 @@ function useIdleOrFirstInteraction(timeoutMs: number = 1500): boolean {
   return ready
 }
 
-export function HeroSection(): JSX.Element {
-  const ready: boolean = true
-
-  // Always SSR a static hero with the same fixed height as the carousel
-  // to prevent a large CLS when the client-only carousel mounts.
-  const StaticHero = (
-    <section className="relative w-full h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-      {/* Background image with high priority for LCP */}
+const StaticHero = (): JSX.Element => (
+  <section className="relative w-full h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    {/* Background image with high priority for LCP */}
+    <div className="absolute inset-0">
+      <AppLink href="/shop" className="sr-only">
+        Explore the demo
+      </AppLink>
       <div className="absolute inset-0">
-        <AppLink href="/shop" className="sr-only">
-          Explore the demo
-        </AppLink>
         <div className="absolute inset-0">
           <div className="relative w-full h-full">
             <AppLink href="#" aria-hidden="true">
@@ -86,50 +81,57 @@ export function HeroSection(): JSX.Element {
           </div>
         </div>
       </div>
-      <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-          <div className="space-y-6 text-center lg:text-left">
-            <div className="space-y-4">
-              <span className="inline-flex items-center rounded border px-2 py-0.5 text-xs">
-                Open Source
-              </span>
-              <div className="space-y-2">
-                <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
-                  Next.js Ecommerce Starterkit
-                </h1>
-                <h2 className="text-xl lg:text-2xl text-primary font-semibold">
-                  Ship faster with best practices
-                </h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl">
-                A comprehensive, production‑ready foundation: Next.js 16, TypeScript, Tailwind CSS,
-                shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and
-                launch with.
-              </p>
+    </div>
+    <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="space-y-6 text-center lg:text-left">
+          <div className="space-y-4">
+            <span className="inline-flex items-center rounded border px-2 py-0.5 text-xs">
+              Open Source
+            </span>
+            <div className="space-y-2">
+              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+                Next.js Ecommerce Starterkit
+              </h1>
+              <h2 className="text-xl lg:text-2xl text-primary font-semibold">
+                Ship faster with best practices
+              </h2>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <AppLink
-                href="https://github.com/Dendro-X0/next-ecommerce-starterkit"
-                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-white"
-              >
-                Star on GitHub
-              </AppLink>
-              <AppLink
-                href="/shop"
-                className="inline-flex items-center justify-center rounded-md border px-4 py-2"
-              >
-                Explore the demo
-              </AppLink>
-            </div>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              A comprehensive, production‑ready foundation: Next.js 16, TypeScript, Tailwind CSS,
+              shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and
+              launch with.
+            </p>
           </div>
-          <div className="relative hidden lg:block">
-            <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-2xl bg-muted border" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <AppLink
+              href="https://github.com/Dendro-X0/next-ecommerce-starterkit"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-white"
+            >
+              Star on GitHub
+            </AppLink>
+            <AppLink
+              href="/shop"
+              className="inline-flex items-center justify-center rounded-md border px-4 py-2"
+            >
+              Explore the demo
+            </AppLink>
           </div>
         </div>
+        <div className="relative hidden lg:block">
+          <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-2xl bg-muted border" />
+        </div>
       </div>
-    </section>
-  )
+    </div>
+  </section>
+)
 
-  if (disableHero) return StaticHero
+const HeroCarouselDynamic = dynamic(() => import("./HeroCarousel").then((m) => m.HeroCarousel), {
+  ssr: false,
+  loading: () => <StaticHero />,
+})
+
+export function HeroSection(): JSX.Element {
+  if (disableHero) return <StaticHero />
   return <HeroCarouselDynamic />
 }

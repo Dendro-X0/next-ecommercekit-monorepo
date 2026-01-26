@@ -159,7 +159,7 @@ export function ProductFilters({ filters, onFiltersChange }: ProductFiltersProps
         {error ? (
           <p className="text-sm text-destructive">{error}</p>
         ) : (
-          <div className="space-y-2 max-h-64 overflow-auto pr-1">
+          <div className="space-y-2 max-h-64 overflow-y-auto pr-2 scrollbar-premium">
             {loading && categories.length === 0 ? (
               <div className="space-y-2">
                 {Array.from({ length: 5 }).map((_, i) => (

@@ -71,26 +71,28 @@ export function HeaderNavIsland({
     (process.env.NEXT_PUBLIC_DISABLE_NAV_DROPDOWN ?? "false").toLowerCase() === "true"
 
   return (
-    <nav className="hidden md:flex items-center space-x-1" aria-label="Primary navigation">
-      {navigationItems.map((item) => (
-        <div key={item.titleKey}>
-          {item.hasDropdown && enabled && !disableDropdown ? (
-            <NavigationDropdown title={translate(locale, item.titleKey)} href={item.href} />
-          ) : (
-            <AppLink
-              href={item.href}
-              className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
-              aria-current={
-                pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
-                  ? "page"
-                  : undefined
-              }
-            >
-              {translate(locale, item.titleKey)}
-            </AppLink>
-          )}
-        </div>
-      ))}
+    <nav className="hidden md:flex items-center space-x-1 h-full" aria-label="Primary navigation">
+      {navigationItems.map((item) => {
+        const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
+        return (
+          <div key={item.titleKey} className="h-full flex items-center">
+            {item.hasDropdown && enabled && !disableDropdown ? (
+              <NavigationDropdown title={translate(locale, item.titleKey)} href={item.href} />
+            ) : (
+              <AppLink
+                href={item.href}
+                className={`px-4 h-full flex items-center text-[13px] font-bold tracking-tight transition-all duration-300 relative group ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                aria-current={active ? "page" : undefined}
+              >
+                <span className="relative py-1">
+                  {translate(locale, item.titleKey)}
+                  <span className={`absolute -bottom-1 left-0 right-0 h-[2.5px] bg-primary rounded-full transition-all duration-500 shadow-[0_0_12px_var(--primary)] origin-center ${active ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100"}`} />
+                </span>
+              </AppLink>
+            )}
+          </div>
+        )
+      })}
     </nav>
   )
 }

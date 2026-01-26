@@ -50,13 +50,14 @@ const TOP_PRODUCTS: ReadonlyArray<ProductPoint> = [
 function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): ReactElement {
   const gradientId = useId()
   return (
-    <Card>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden group">
+      <div className="h-1 w-full bg-linear-to-r from-green-500 to-emerald-500 opacity-50 group-hover:opacity-100 transition-opacity" />
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <FileBarChart className="h-5 w-5" />
-          Revenue
+          <FileBarChart className="h-5 w-5 text-green-500" />
+          Revenue Growth
         </CardTitle>
-        <CardDescription>Last 6 months gross revenue</CardDescription>
+        <CardDescription>Gross revenue performance (Last 6 months)</CardDescription>
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (
@@ -101,6 +102,7 @@ function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): Re
                   stroke="var(--color-revenue)"
                   fill={`url(#${gradientId})`}
                   strokeWidth={3}
+                  activeDot={{ r: 6, strokeWidth: 0, fill: "var(--color-revenue)" }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -113,13 +115,14 @@ function RevenueCard({ data }: { readonly data: ReadonlyArray<MonthPoint> }): Re
 
 function TopProductsCard({ data }: { readonly data: ReadonlyArray<ProductPoint> }): ReactElement {
   return (
-    <Card>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden group">
+      <div className="h-1 w-full bg-linear-to-r from-blue-500 to-indigo-500 opacity-50 group-hover:opacity-100 transition-opacity" />
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Star className="h-5 w-5" />
-          Top Products
+          <Star className="h-5 w-5 text-blue-500" />
+          Top Performing Products
         </CardTitle>
-        <CardDescription>Units sold (last 30 days)</CardDescription>
+        <CardDescription>Units sold leaderboard (last 30 days)</CardDescription>
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (
@@ -169,20 +172,20 @@ function ReportsList(): ReactElement {
     { id: "r3", name: "Customers", description: "New vs returning customers with LTV" },
   ] as const
   return (
-    <Card>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50">
       <CardHeader>
-        <CardTitle>Reports</CardTitle>
-        <CardDescription>Download structured data for analysis</CardDescription>
+        <CardTitle>Available Reports</CardTitle>
+        <CardDescription>Download structured data for offline analysis</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           {reports.map((r) => (
-            <div key={r.id} className="flex items-center justify-between rounded-md border p-3">
+            <div key={r.id} className="flex items-center justify-between rounded-xl border border-border/50 bg-background/50 p-4 hover:border-primary/50 transition-colors group">
               <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{r.name}</p>
+                <p className="truncate text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{r.name}</p>
                 <p className="truncate text-xs text-muted-foreground">{r.description}</p>
               </div>
-              <Button size="sm" disabled>
+              <Button size="sm" variant="outline" disabled className="opacity-50">
                 Download
               </Button>
             </div>

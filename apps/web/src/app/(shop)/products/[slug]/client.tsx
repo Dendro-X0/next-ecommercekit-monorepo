@@ -1,7 +1,20 @@
 "use client"
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Heart, Minus, Plus, Share2, ShoppingCart } from "lucide-react"
+import {
+  Heart,
+  Minus,
+  Plus,
+  Share2,
+  ShoppingCart,
+  ShieldCheck,
+  Truck,
+  RotateCcw,
+  Clock,
+  Layers,
+  CheckCircle2,
+  PackageCheck
+} from "lucide-react"
 import { useParams } from "next/navigation"
 import { type ReactElement, useEffect, useId, useMemo, useState } from "react"
 import { MobilePdpBar } from "@/components/product/mobile-pdp-bar"
@@ -373,9 +386,8 @@ export default function ProductPageClient(): ReactElement {
                   aria-current={selectedImage === index}
                   aria-label={`${product.name} image ${index + 1}`}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative aspect-square w-16 sm:w-20 overflow-hidden rounded-md border-2 transition-all snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                    selectedImage === index ? "border-primary" : "border-transparent"
-                  }`}
+                  className={`relative aspect-square w-16 sm:w-20 overflow-hidden rounded-md border-2 transition-all snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${selectedImage === index ? "border-primary" : "border-transparent"
+                    }`}
                 >
                   <SafeImage
                     src={image || "/placeholder.svg"}
@@ -412,67 +424,72 @@ export default function ProductPageClient(): ReactElement {
               </ol>
             </nav>
 
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline">{product.category}</Badge>
-              <Badge variant={isDigital ? "default" : "secondary"}>
-                {isDigital ? "Download" : "Shipping"}
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">
+                {product.category}
               </Badge>
+              <Badge variant={isDigital ? "default" : "outline"} className={isDigital ? "bg-blue-600 hover:bg-blue-700" : "border-muted-foreground/30"}>
+                {isDigital ? "Digital Download" : "Physical Shipping"}
+              </Badge>
+              {product.inStock && (
+                <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/20">
+                  Ready to Ship
+                </Badge>
+              )}
             </div>
-            <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-            <div className="flex items-center gap-3 mb-4">
-              <StarRating rating={avgRating} showValue={hasReviews} />
-              <span className="text-sm text-muted-foreground">
-                {hasReviews ? `(${reviewCount} reviews)` : "No reviews yet"}
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2 text-foreground">
+              {product.name}
+            </h1>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center bg-muted/30 px-2 py-1 rounded-md border border-border/50">
+                <StarRating rating={avgRating} size="sm" showValue={false} />
+                <span className="text-xs font-bold ml-1.5">{avgRating > 0 ? avgRating : "New"}</span>
+              </div>
+              <Separator orientation="vertical" className="h-4 bg-border/50" />
+              <span className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer" onClick={() => setTab("reviews")}>
+                {hasReviews ? `${reviewCount} Reviews` : "No reviews"}
               </span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-            <span className="text-3xl font-bold">{formatPrice(product.price)}</span>
+          <div className="flex flex-wrap items-baseline gap-3 bg-muted/20 p-4 sm:p-5 rounded-2xl border border-border/30">
+            <span className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">{formatPrice(product.price)}</span>
             {hasDiscount && (
-              <span className="text-xl text-muted-foreground line-through">
-                {formatPrice(product.originalPrice!)}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg sm:text-xl text-muted-foreground line-through font-medium">
+                  {formatPrice(product.originalPrice!)}
+                </span>
+                <Badge variant="destructive" className="animate-pulse bg-red-600 rounded-full py-0 px-2 text-[10px] font-bold">
+                  -{Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100)}%
+                </Badge>
+              </div>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
-            <div
-              className={`w-2 h-2 rounded-full ${product.inStock ? "bg-green-500" : "bg-red-500"}`}
-            />
-            <span className={product.inStock ? "text-green-600" : "text-red-600"}>
-              {product.inStock ? "In Stock" : "Out of Stock"}
-            </span>
-          </div>
-
-          <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex items-center gap-4">
-              <span className="font-medium">Quantity:</span>
-              <div className="flex items-center border rounded-lg h-11">
+              <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Quantity</span>
+              <div className="flex items-center bg-background/50 border border-border/50 rounded-xl overflow-hidden shadow-sm h-11 w-full sm:w-auto">
                 <Button
                   variant="ghost"
                   size="icon"
                   type="button"
-                  className="h-11 w-11"
+                  className="h-full w-14 sm:w-12 hover:bg-muted/50 rounded-none border-r border-border/50"
                   aria-label="Decrease quantity"
-                  title="Decrease quantity"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1}
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
-                <output id={quantityId} className="px-4 min-w-12 text-center" aria-live="polite">
+                <output id={quantityId} className="flex-1 sm:flex-none px-6 min-w-14 text-center font-bold text-base" aria-live="polite">
                   {quantity}
                 </output>
                 <Button
                   variant="ghost"
                   size="icon"
                   type="button"
-                  className="h-11 w-11"
+                  className="h-full w-14 sm:w-12 hover:bg-muted/50 rounded-none border-l border-border/50"
                   aria-label="Increase quantity"
-                  title="Increase quantity"
                   onClick={() => setQuantity(quantity + 1)}
                 >
                   <Plus className="h-4 w-4" />
@@ -480,53 +497,74 @@ export default function ProductPageClient(): ReactElement {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 size="lg"
-                className="h-11 rounded-lg px-6 w-full lg:w-auto"
+                className="h-14 rounded-xl px-8 flex-1 text-base font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
                 disabled={!product.inStock}
                 onClick={() => addItem(product, quantity)}
               >
-                <ShoppingCart className="h-4 w-4 mr-2" />
+                <ShoppingCart className="h-5 w-5 mr-3" />
                 Add to Cart
               </Button>
-              <div data-testid="pdp-wishlist-toggle" data-ready="true">
+              <div className="flex gap-2">
                 <Button
                   type="button"
                   size="lg"
                   variant="outline"
-                  className={`h-11 rounded-lg px-4 w-auto ${isWishlisted ? "text-red-500" : ""}`}
+                  className={`h-14 w-full flex-1 sm:w-14 sm:flex-none p-0 rounded-xl border-border/50 hover:bg-muted/30 transition-all ${isWishlisted ? "text-red-500 border-red-500/30 bg-red-500/5 hover:bg-red-500/10" : ""}`}
                   onClick={() => toggleWishlist.mutate()}
                   disabled={toggleWishlist.isPending}
                   aria-pressed={isWishlisted}
                   aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                  data-testid="pdp-wishlist-toggle-button"
                 >
-                  <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current" : ""}`} />
-                  <span className="ml-2">Wishlist</span>
+                  <Heart className={`h-5 w-5 ${isWishlisted ? "fill-current" : ""}`} />
+                  <span className="ml-2 sm:hidden font-bold">Wishlist</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="lg"
+                  variant="outline"
+                  aria-label="Share product"
+                  className="h-14 w-full flex-1 sm:w-14 sm:flex-none p-0 rounded-xl border-border/50 hover:bg-muted/30 transition-all"
+                  onClick={handleShare}
+                >
+                  <Share2 className="h-5 w-5" />
+                  <span className="ml-2 sm:hidden font-bold">Share</span>
                 </Button>
               </div>
-              <Button
-                type="button"
-                size="lg"
-                variant="outline"
-                aria-label="Share product"
-                className="h-11 rounded-lg px-4 w-auto whitespace-nowrap"
-                onClick={handleShare}
-              >
-                <Share2 className="h-4 w-4" />
-                <span className="ml-2">Share</span>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                type="button"
-                onClick={() => setReviewOpen(true)}
-                className="h-11 rounded-lg sm:w-auto whitespace-nowrap"
-              >
-                Write Review
-              </Button>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-3 pt-4">
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/50 hover:border-primary/30 transition-colors group">
+                <div className="p-2.5 rounded-lg bg-background text-primary shadow-sm group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="h-4 w-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/80">Security</p>
+                  <p className="text-xs font-bold leading-none">Safe Order</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/50 hover:border-primary/30 transition-colors group">
+                <div className="p-2.5 rounded-lg bg-background text-primary shadow-sm group-hover:scale-110 transition-transform">
+                  {isDigital ? <Clock className="h-4 w-4" /> : <Truck className="h-4 w-4" />}
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/80">{isDigital ? "Access" : "Shipping"}</p>
+                  <p className="text-xs font-bold leading-none">{isDigital ? "Instant" : "Express"}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/50 hover:border-primary/30 transition-colors group sm:flex xs:col-span-2 sm:col-span-1">
+                <div className="p-2.5 rounded-lg bg-background text-primary shadow-sm group-hover:scale-110 transition-transform">
+                  <RotateCcw className="h-4 w-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/80">Support</p>
+                  <p className="text-xs font-bold leading-none">Premium Help</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -548,31 +586,33 @@ export default function ProductPageClient(): ReactElement {
       <Separator className="my-12" />
 
       <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 p-1 rounded-lg bg-muted/30 mb-4 sm:mb-5">
+        <TabsList className="flex w-full h-auto items-center justify-start p-1.5 rounded-2xl bg-muted/20 border border-border/50 mb-8 sm:mb-12 overflow-x-auto no-scrollbar scroll-smooth">
+          <div className="flex-shrink-0 w-4 sm:hidden" />
           <TabsTrigger
             value="description"
-            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+            className="flex-shrink-0 min-w-[130px] rounded-xl py-3 px-6 text-sm font-bold border-none data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-lg transition-all duration-300"
           >
             Description
           </TabsTrigger>
           <TabsTrigger
             value="specifications"
-            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+            className="flex-shrink-0 min-w-[130px] rounded-xl py-3 px-6 text-sm font-bold border-none data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-lg transition-all duration-300"
           >
-            Specifications
+            Details
           </TabsTrigger>
           <TabsTrigger
             value="reviews"
-            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+            className="flex-shrink-0 min-w-[130px] rounded-xl py-3 px-6 text-sm font-bold border-none data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-lg transition-all duration-300"
           >
             Reviews ({publishedReviews.length})
           </TabsTrigger>
           <TabsTrigger
             value="faq"
-            className="rounded-md h-9 sm:h-10 px-3 data-[state=active]:bg-muted data-[state=active]:text-foreground focus-visible:ring-2"
+            className="flex-shrink-0 min-w-[130px] rounded-xl py-3 px-6 text-sm font-bold border-none data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-lg transition-all duration-300"
           >
-            FAQ
+            Support FAQ
           </TabsTrigger>
+          <div className="flex-shrink-0 w-4 sm:hidden" />
         </TabsList>
 
         <TabsContent value="description" className="mt-6">
@@ -586,28 +626,57 @@ export default function ProductPageClient(): ReactElement {
           </div>
         </TabsContent>
 
-        <TabsContent value="specifications" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="flex justify-between py-3 border-b">
-                <span className="font-medium">Category</span>
-                <span className="text-muted-foreground">{product.category}</span>
+        <TabsContent value="specifications" className="mt-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12">
+            <div className="space-y-4">
+              <div className="flex items-start gap-4 p-4 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm group hover:border-primary/30 transition-colors">
+                <div className="p-3 rounded-lg bg-blue-500/10 text-blue-500 group-hover:scale-110 transition-transform shrink-0">
+                  <Layers className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Category & Type</p>
+                  <p className="text-lg font-bold text-foreground capitalize">{product.category}</p>
+                  <p className="text-xs text-muted-foreground">{isDigital ? "Digital Goods & Assets" : "Physical Marketplace Item"}</p>
+                </div>
               </div>
-              <div className="flex justify-between py-3 border-b">
-                <span className="font-medium">SKU</span>
-                <span className="text-muted-foreground">{product.id}</span>
+
+              <div className="flex items-start gap-4 p-4 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm group hover:border-primary/30 transition-colors">
+                <div className="p-3 rounded-lg bg-purple-500/10 text-purple-500 group-hover:scale-110 transition-transform shrink-0">
+                  <PackageCheck className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Inventory Identifier</p>
+                  <p className="text-sm font-mono font-bold text-foreground break-all">{product.id}</p>
+                  <p className="text-xs text-muted-foreground">Unique SKU for this variation</p>
+                </div>
               </div>
-              <div className="flex justify-between py-3 border-b">
-                <span className="font-medium">Availability</span>
-                {isDigital ? (
-                  <span className="text-muted-foreground">
-                    Digital item — Instant access/download after purchase.
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">
-                    {product.inStock ? "In Stock. Ships in 1-2 business days." : "Out of Stock"}
-                  </span>
-                )}
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-4 p-4 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm group hover:border-primary/30 transition-colors">
+                <div className="p-3 rounded-lg bg-green-500/10 text-green-500 group-hover:scale-110 transition-transform shrink-0">
+                  <CheckCircle2 className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Availability Status</p>
+                  <p className={`text-lg font-bold ${product.inStock ? "text-green-500" : "text-red-500"}`}>
+                    {product.inStock ? "In Stock & Ready" : "Out of Stock"}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {isDigital ? "Instant delivery to your account" : "Calculated at checkout"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm group hover:border-primary/30 transition-colors">
+                <div className="p-3 rounded-lg bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform shrink-0">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Security & Protection</p>
+                  <p className="text-lg font-bold text-foreground">Buyer Protection</p>
+                  <p className="text-xs text-muted-foreground">Premium security on every order</p>
+                </div>
               </div>
             </div>
           </div>

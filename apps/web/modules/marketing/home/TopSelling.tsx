@@ -33,11 +33,11 @@ export function TopSelling({ initialData }: TopSellingProps): ReactElement {
     initialData:
       initialData && Array.isArray(initialData.items)
         ? ({
-            items: initialData.items,
-            total: initialData.items.length,
-            page: 1,
-            pageSize: initialData.items.length,
-          } as ListProductsResponse)
+          items: initialData.items,
+          total: initialData.items.length,
+          page: 1,
+          pageSize: initialData.items.length,
+        } as ListProductsResponse)
         : undefined,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -62,9 +62,12 @@ export function TopSelling({ initialData }: TopSellingProps): ReactElement {
   )
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-900 min-h-[680px]">
+    <section className="py-16 bg-white dark:bg-gray-900 min-h-[720px]">
       <div className="container mx-auto px-4">
-        <h2 className="section-title mb-12 text-black dark:text-white">TOP SELLING</h2>
+        <div className="flex flex-col items-center mb-16 space-y-2">
+          <span className="text-sm font-semibold tracking-wider text-primary uppercase">Curated for you</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground tracking-tight">Top Selling Products</h2>
+        </div>
 
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -92,10 +95,10 @@ export function TopSelling({ initialData }: TopSellingProps): ReactElement {
         {!isLoading && !error && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {items.map((product) => (
-              <Card key={product.id} className="group border-0 shadow-none bg-transparent">
+              <Card key={product.id} className="group border border-border/80 shadow-md hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 bg-card overflow-hidden rounded-2xl">
                 <CardContent className="p-0">
-                  <AppLink href={`/products/${product.slug}`}>
-                    <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4">
+                  <AppLink href={`/products/${product.slug}`} className="block h-full">
+                    <div className="aspect-square bg-muted/20 overflow-hidden relative">
                       <div className="relative w-full h-full">
                         <SafeImage
                           src={product.images?.[0] || "/placeholder.svg"}
@@ -108,27 +111,33 @@ export function TopSelling({ initialData }: TopSellingProps): ReactElement {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors line-clamp-2 min-h-[3rem]">
-                        {product.name}
-                      </h3>
-
-                      <div className="flex items-center gap-2 h-5">
-                        <StarRating rating={product.rating} />
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          {product.rating}/5 ({product.reviewCount})
-                        </span>
+                    <div className="p-5 space-y-3">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                          {product.name}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <StarRating rating={product.rating} />
+                          <span className="text-xs text-muted-foreground font-medium">
+                            ({product.reviewCount} reviews)
+                          </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2 min-h-[1.75rem]">
-                        <span className="text-xl font-bold text-black dark:text-white">
-                          {formatCurrency(locale, product.price)}
-                        </span>
-                        {product.originalPrice && (
-                          <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
-                            {formatCurrency(locale, product.originalPrice)}
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-xl font-bold text-foreground">
+                            {formatCurrency(locale, product.price)}
                           </span>
-                        )}
+                          {product.originalPrice && (
+                            <span className="text-sm text-muted-foreground line-through decoration-muted-foreground/60">
+                              {formatCurrency(locale, product.originalPrice)}
+                            </span>
+                          )}
+                        </div>
+                        <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full h-8 px-4 text-xs font-medium">
+                          View
+                        </Button>
                       </div>
                     </div>
                   </AppLink>

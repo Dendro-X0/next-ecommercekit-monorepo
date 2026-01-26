@@ -60,78 +60,91 @@ export function HeaderMobileMenu({
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-[85vw] sm:w-80">
-          <SheetHeader className="flex items-center justify-between">
-            <SheetTitle>Menu</SheetTitle>
-          </SheetHeader>
-          <nav className="mt-4 space-y-1">
-            {navigationItems.map((item) => (
-              <AppLink
-                key={item.titleKey}
-                href={item.href}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
-              >
-                {translate(locale, item.titleKey)}
-              </AppLink>
-            ))}
-          </nav>
-          {/* Quick actions */}
-          <div className="mt-6 border-t pt-4 space-y-2">
-            <AppLink
-              href="/dashboard/user/wishlist"
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Wishlist"
-            >
-              <Heart className="h-4 w-4" />
-              <span>Wishlist</span>
-            </AppLink>
-            <AppLink
-              href="/cart"
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Cart"
-            >
-              <ShoppingCart className="h-4 w-4" />
-              <span>Cart</span>
-              {cartCount > 0 && (
-                <span
-                  aria-hidden="true"
-                  className="ml-2 inline-flex items-center justify-center min-w-5 h-5 px-1 rounded-full bg-black text-white dark:bg-white dark:text-black text-[10px] leading-5"
+        <SheetContent side="left" className="w-[85vw] sm:w-[380px] border-r border-border/40 bg-background/95 backdrop-blur-xl p-0 flex flex-col">
+          <div className="p-6 border-b border-border/40">
+            <SheetHeader className="flex flex-row items-center justify-between space-y-0 text-left">
+              <SheetTitle className="text-xl font-black uppercase tracking-tighter text-left">Menu</SheetTitle>
+            </SheetHeader>
+          </div>
+
+          <div className="flex-1 overflow-y-auto pt-4 px-4 no-scrollbar">
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <p className="px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-2">Navigation</p>
+                {navigationItems.map((item) => (
+                  <AppLink
+                    key={item.titleKey}
+                    href={item.href}
+                    className="flex items-center gap-3 px-4 py-3 text-base font-bold text-foreground hover:bg-primary/5 rounded-xl transition-all duration-300 group"
+                  >
+                    <span className="group-hover:translate-x-1 transition-transform">{translate(locale, item.titleKey)}</span>
+                  </AppLink>
+                ))}
+              </div>
+
+              <div className="pt-4 space-y-1">
+                <p className="px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60 mb-2">My Account</p>
+                <AppLink
+                  href="/dashboard/user/wishlist"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/5 transition-all group"
+                  aria-label="Wishlist"
                 >
-                  {cartCount}
-                </span>
-              )}
-            </AppLink>
+                  <Heart className="h-5 w-5 text-muted-foreground group-hover:text-red-500 group-hover:fill-red-500/10 transition-colors" />
+                  <span className="font-bold">Wishlist</span>
+                </AppLink>
+                <AppLink
+                  href="/cart"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/5 transition-all group"
+                  aria-label="Cart"
+                >
+                  <div className="relative">
+                    <ShoppingCart className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground border-2 border-background">
+                        {cartCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className="font-bold">Shopping Cart</span>
+                </AppLink>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-muted/30 border-t border-border/40 mt-auto">
             {!user ? (
-              <div className="flex items-center gap-2 px-4 pt-2">
-                <Button asChild variant="ghost" className="flex-1" size="sm">
+              <div className="grid grid-cols-2 gap-3">
+                <Button asChild variant="outline" className="h-12 rounded-xl font-bold border-border/50 hover:bg-background transition-all" size="lg">
                   <AppLink href="/auth/login" aria-label="Login">
                     <LogIn className="h-4 w-4 mr-2" /> Login
                   </AppLink>
                 </Button>
-                <Button asChild className="flex-1" size="sm">
+                <Button asChild className="h-12 rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all" size="lg">
                   <AppLink href="/auth/signup" aria-label="Register">
                     <UserPlus className="h-4 w-4 mr-2" /> Register
                   </AppLink>
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 px-4 pt-2">
-                {isAdmin && (
-                  <Button asChild variant="secondary" className="flex-1" size="sm">
-                    <AppLink href="/dashboard/admin" aria-label="Admin">
-                      <LayoutGrid className="h-4 w-4 mr-2" /> Admin
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  {isAdmin && (
+                    <Button asChild variant="secondary" className="h-12 rounded-xl font-bold border-border/50" size="lg">
+                      <AppLink href="/dashboard/admin" aria-label="Admin">
+                        <LayoutGrid className="h-4 w-4 mr-2" /> Admin
+                      </AppLink>
+                    </Button>
+                  )}
+                  <Button asChild variant="secondary" className="h-12 rounded-xl font-bold border-border/50" size="lg">
+                    <AppLink href="/dashboard/user" aria-label="Dashboard">
+                      <LayoutGrid className="h-4 w-4 mr-2" /> User
                     </AppLink>
                   </Button>
-                )}
-                <Button asChild variant="secondary" className="flex-1" size="sm">
-                  <AppLink href="/dashboard/user" aria-label="Dashboard">
-                    <LayoutGrid className="h-4 w-4 mr-2" /> Dashboard
-                  </AppLink>
-                </Button>
+                </div>
                 <Button
-                  size="sm"
-                  variant="outline"
-                  className="flex-1"
+                  size="lg"
+                  variant="ghost"
+                  className="w-full h-12 rounded-xl font-bold text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all"
                   onClick={async (): Promise<void> => {
                     await authClient.signOut()
                     window.location.assign("/")

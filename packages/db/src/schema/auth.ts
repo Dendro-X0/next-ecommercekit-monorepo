@@ -6,7 +6,7 @@ export const user = pgTable("user", {
   name: text("name"),
   email: text("email").notNull().unique(),
   // Username support
-  username: text("username").notNull().unique(),
+  username: text("username").unique(),
   // Preserve the original casing/presentation the user chose
   displayUsername: text("display_username"),
   emailVerified: boolean("email_verified")

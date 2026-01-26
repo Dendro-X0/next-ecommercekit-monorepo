@@ -30,6 +30,20 @@ function buildBaseUrl(headers: HeaderLike): string {
 export async function getServerSession({
   headers,
 }: GetServerSessionInput): Promise<Session | null> {
+  // Mock session for development/testing if enabled
+  if (process.env.NODE_ENV === "development" && process.env.ENABLE_DEBUG_SESSION === "true") {
+    return {
+      user: {
+        id: "mock-user-123",
+        email: "dendro-x0@example.com",
+        name: "Dendro-X0",
+        image: "https://github.com/Dendro-X0.png",
+        roles: ["user", "admin"],
+        emailVerified: true,
+      },
+    }
+  }
+
   const base = buildBaseUrl(headers)
   const h = new Headers()
   const cookie = headers.get("cookie") || ""
@@ -46,13 +60,13 @@ export async function getServerSession({
     const data = (await res.json()) as { readonly user?: unknown }
     const u = data?.user as
       | (Record<string, unknown> & {
-          id?: unknown
-          email?: unknown
-          name?: unknown
-          image?: unknown
-          roles?: unknown
-          emailVerified?: unknown
-        })
+        id?: unknown
+        email?: unknown
+        name?: unknown
+        image?: unknown
+        roles?: unknown
+        emailVerified?: unknown
+      })
       | undefined
     if (!u) return { user: null }
     const rolesRaw = u.roles

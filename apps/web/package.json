@@ -52,6 +52,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@repo/api": "workspace:*",
+    "@repo/auth": "workspace:*",
     "@repo/payments": "workspace:*",
     "@repo/storage": "workspace:*",
     "@repo/ui": "workspace:*",

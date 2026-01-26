@@ -9,6 +9,7 @@ const withBundleAnalyzer =
     : (config: NextConfig) => config
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["better-auth"],
   // Keep production builds lean and avoid extra artifacts on disk
   productionBrowserSourceMaps: false,
   webpack: (config, { dev, isServer }) => {

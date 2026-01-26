@@ -40,9 +40,9 @@ export default function MagicLinkPage(): ReactElement {
     const callbackURL: string = (() => {
       try {
         const origin = window.location.origin
-        return new URL("/dashboard/user", origin).toString()
+        return new URL("/dashboard", origin).toString()
       } catch {
-        return "/dashboard/user"
+        return "/dashboard"
       }
     })()
     const { error: sendError } = await authClientHelpers.signInMagicLink({

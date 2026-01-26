@@ -23,7 +23,7 @@ const navigationItems: ReadonlyArray<NavItem> = [
   // Categories dropdown removed for performance; now a simple link to /categories
   { titleKey: "nav.categories", href: "/categories" },
   { titleKey: "nav.contact", href: "/contact" },
-  { titleKey: "nav.dashboard", href: "/dashboard/user" },
+  { titleKey: "nav.dashboard", href: "/dashboard" },
 ]
 
 export async function Header(): Promise<JSX.Element> {
@@ -112,34 +112,43 @@ export async function Header(): Promise<JSX.Element> {
         </div>
       )}
 
-      {/* Main Header */}
-      <header className="sticky top-0 z-40 w-full border-b bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-3 lg:grid lg:grid-cols-12 lg:gap-4">
+      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 transition-all duration-300">
+        <div className="container mx-auto px-4 h-16 sm:h-20 flex items-center justify-between gap-4 lg:grid lg:grid-cols-12 lg:gap-8">
           {/* Left: logo + nav island */}
-          <div className="flex items-center gap-3 min-w-0 lg:col-span-4">
+          <div className="flex items-center gap-6 min-w-0 lg:col-span-4 h-full">
             <AppLink
               href="/"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2.5 group transition-transform hover:scale-[1.02] active:scale-[0.98]"
               aria-label="ModularShop home"
             >
-              <ShopLogo />
-              <span className="text-2xl font-black text-black dark:text-white">SHOP</span>
+              <div className="p-2 rounded-xl bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                <ShopLogo />
+              </div>
+              <span className="text-xl sm:text-2xl font-black tracking-tighter text-foreground">SHOP</span>
             </AppLink>
+            <div className="hidden lg:block h-6 w-[1px] bg-border/40" />
             <HeaderNavIsland navigationItems={navigationItems} locale={locale} />
           </div>
           {/* Center: search */}
           {!disableHeaderSearch && (
-            <div className="hidden lg:flex lg:col-span-4 justify-center">
-              <div className="w-full max-w-md">
+            <div className="hidden lg:flex lg:col-span-4 justify-center items-center h-full">
+              <div className="w-full max-w-md scale-95 focus-within:scale-100 transition-transform duration-300">
                 <HeaderSearch />
               </div>
             </div>
           )}
           {/* Right: actions + theme toggle + mobile hamburger (far right) */}
-          <div className="relative z-20 pointer-events-auto flex items-center justify-end gap-2 sm:gap-3 lg:col-span-4">
-            <HeaderActionsIsland />
-            <LocaleSwitcher />
-            <ThemeToggle />
+          <div className="relative z-20 flex items-center justify-end gap-1.5 sm:gap-4 lg:col-span-4 h-full">
+            <div className="hidden sm:flex items-center gap-2">
+              <HeaderActionsIsland />
+              <div className="h-6 w-[1px] bg-border/40 mx-1" />
+            </div>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="hidden md:block">
+                <LocaleSwitcher />
+              </div>
+              <ThemeToggle />
+            </div>
             <HeaderMobileMenu navigationItems={navigationItems} locale={locale} />
           </div>
         </div>

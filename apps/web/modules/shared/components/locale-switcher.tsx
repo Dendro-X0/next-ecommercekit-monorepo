@@ -1,17 +1,25 @@
 "use client"
 
+import { Globe } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
-import { type ChangeEvent, type JSX, useId } from "react"
+import type { JSX } from "react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { LOCALES_CONFIG } from "@/modules/shared/config/locales"
 
 /**
  * LocaleSwitcher
- * Minimal locale selector for i18n scaffold. Navigates to locale-prefixed path.
+ * Premium locale selector using Shadcn Select.
  */
 export function LocaleSwitcher(): JSX.Element {
   const router = useRouter()
   const pathname: string = usePathname() ?? "/"
-  const describedById = useId()
+
   // Navigate to any enabled locale code.
   type LocaleCode = (typeof LOCALES_CONFIG.options)[number]["code"]
   const enabledCodes = LOCALES_CONFIG.options
@@ -20,35 +28,35 @@ export function LocaleSwitcher(): JSX.Element {
 
   const currentLocale = getCurrentLocale(pathname)
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const code = e.target.value
-    if ((enabledCodes as readonly string[]).includes(code)) {
-      const nextPath = buildPathWithLocale(pathname, code as LocaleCode)
+  const handleValueChange = (value: string): void => {
+    if ((enabledCodes as readonly string[]).includes(value)) {
+      const nextPath = buildPathWithLocale(pathname, value as LocaleCode)
       router.push(nextPath)
     }
   }
 
   return (
-    <label className="inline-flex items-center gap-2 text-sm" aria-label="Select language">
-      <span className="sr-only">Language</span>
-      <select
-        className="border rounded-md px-2 py-1 bg-white dark:bg-gray-900"
-        value={currentLocale}
-        onChange={handleChange}
-        aria-describedby={describedById}
+    <Select value={currentLocale} onValueChange={handleValueChange}>
+      <SelectTrigger
+        className="w-[140px] h-9 rounded-xl border-border/40 bg-background/50 backdrop-blur-sm hover:bg-accent/50 transition-all font-bold text-[13px]"
       >
+        <Globe className="h-4 w-4 mr-2 text-muted-foreground" />
+        <SelectValue placeholder="Language" />
+      </SelectTrigger>
+      <SelectContent className="rounded-xl border-border/40 bg-background/95 backdrop-blur-xl">
         {LOCALES_CONFIG.options
           .filter((opt) => opt.enabled)
           .map((opt) => (
-            <option key={opt.code} value={opt.code}>
+            <SelectItem
+              key={opt.code}
+              value={opt.code}
+              className="rounded-lg font-bold text-[13px] py-2.5"
+            >
               {opt.label}
-            </option>
+            </SelectItem>
           ))}
-      </select>
-      <span id={describedById} className="sr-only">
-        Current language is {LOCALES_CONFIG.options.find((o) => o.code === currentLocale)?.label}
-      </span>
-    </label>
+      </SelectContent>
+    </Select>
   )
 }
 

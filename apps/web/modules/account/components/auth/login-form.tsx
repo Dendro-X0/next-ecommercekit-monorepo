@@ -80,13 +80,13 @@ export function LoginForm() {
     try {
       const { error } = isEmail(values.identifier)
         ? await authClientHelpers.signInEmail({
-            email: values.identifier,
-            password: values.password,
-          })
+          email: values.identifier,
+          password: values.password,
+        })
         : await authClientHelpers.signInUsername({
-            username: values.identifier,
-            password: values.password,
-          })
+          username: values.identifier,
+          password: values.password,
+        })
       if (error) {
         // Avoid account enumeration via precise error text
         form.setError("identifier", { type: "server", message: "Invalid email or password" })
@@ -136,9 +136,7 @@ export function LoginForm() {
         }
       })()
       queryClient.setQueryData(["session"], { user })
-      const target: string = roles.includes("admin") ? "/dashboard/admin" : "/dashboard/user"
-      await router.prefetch(target)
-      router.push(target)
+      router.push("/dashboard")
     } catch (e) {
       const message: string = e instanceof Error ? e.message : "Sign-in failed"
       showToast(message, { type: "error" })

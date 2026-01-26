@@ -132,3 +132,21 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.scrollbar-premium::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollbar-premium::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-premium::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+  border-radius: 10px;
+}
+.scrollbar-premium::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+.scrollbar-premium {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--foreground) 10%, transparent) transparent;
+}

@@ -22,152 +22,141 @@ const getCategoryColorVar = (index: number): string =>
  */
 export function SpendingCharts({ spendingData, categoryData }: SpendingChartsProps): ReactElement {
   const gradientId: string = useId()
+  const totalSpending: number = spendingData.reduce((sum, it) => sum + it.amount, 0)
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {/* Monthly Spending Trend */}
-      <Card>
+      <Card className="bg-card/50 backdrop-blur-md border-border/50 overflow-hidden group">
+        <div className="h-1 w-full bg-linear-to-r from-blue-500 to-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            Monthly Spending
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <TrendingUp className="h-5 w-5 text-blue-500" />
+            Spending Trend
           </CardTitle>
-          <CardDescription>Your spending pattern over the last 12 months</CardDescription>
+          <CardDescription>Visualizing your cash flow over the year</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* SR-only summary for screen readers */}
-          <p className="sr-only">
-            Monthly spending total: $
-            {spendingData.reduce((sum, it) => sum + it.amount, 0).toFixed(2)} across{" "}
-            {spendingData.length} months.
-          </p>
-          <ChartContainer
-            config={{
-              amount: {
-                label: "Amount",
-                theme: { light: "#2563eb", dark: "#60a5fa" },
-              },
-            }}
-            className="h-[360px] w-full mx-auto"
-            ariaLabel="Monthly spending area chart"
-            ariaDescription="Area chart showing your spending over the last twelve months in US dollars"
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={spendingData} margin={{ top: 12, right: 16, left: 8, bottom: 8 }}>
-                <defs>
-                  <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="var(--color-amount)" stopOpacity={0.1} />
-                  </linearGradient>
-                </defs>
-                <XAxis
-                  dataKey="name"
-                  tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
-                />
-                <ChartTooltip
-                  content={<ChartTooltipContent />}
-                  formatter={(value: number | string) => [`$${value}`, "Spent"]}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="amount"
-                  stroke="var(--color-amount)"
-                  fillOpacity={1}
-                  fill={`url(#${gradientId})`}
-                  strokeWidth={3}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+          {totalSpending === 0 ? (
+            <div className="h-[360px] flex flex-col items-center justify-center text-muted-foreground bg-muted/20 rounded-xl border border-dashed">
+              <TrendingUp className="h-10 w-10 mb-4 opacity-20" />
+              <p className="text-sm font-medium">No spending data yet</p>
+            </div>
+          ) : (
+            <ChartContainer
+              config={{
+                amount: {
+                  label: "Spent",
+                  theme: { light: "#3b82f6", dark: "#60a5fa" },
+                },
+              }}
+              className="h-[360px] w-full"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={spendingData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="var(--color-amount)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fontSize: 11, fontWeight: 500, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 11, fontWeight: 500, fill: "hsl(var(--muted-foreground))" }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `$${value}`}
+                  />
+                  <ChartTooltip
+                    cursor={{ stroke: "var(--color-amount)", strokeWidth: 1, strokeDasharray: "4 4" }}
+                    content={<ChartTooltipContent />}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="amount"
+                    stroke="var(--color-amount)"
+                    fillOpacity={1}
+                    fill={`url(#${gradientId})`}
+                    strokeWidth={2}
+                    activeDot={{ r: 4, strokeWidth: 0, fill: "var(--color-amount)" }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          )}
         </CardContent>
       </Card>
 
       {/* Category Breakdown */}
-      <Card>
+      <Card className="bg-card/50 backdrop-blur-md border-border/50 overflow-hidden group">
+        <div className="h-1 w-full bg-linear-to-r from-purple-500 to-pink-500 opacity-50 group-hover:opacity-100 transition-opacity" />
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PieChartIcon className="h-5 w-5" />
-            Spending by Category
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <PieChartIcon className="h-5 w-5 text-purple-500" />
+            Budget Distribution
           </CardTitle>
-          <CardDescription>Where you spend your money most</CardDescription>
+          <CardDescription>Breaking down your spending habits</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* SR-only summary for category breakdown */}
-          <div className="sr-only">
-            <p>Spending by category summary:</p>
-            <ul>
-              {categoryData.map((c) => (
-                <li key={c.name}>
-                  {c.name}: ${c.amount} ({c.percentage}%)
-                </li>
-              ))}
-            </ul>
-          </div>
-          <ChartContainer
-            config={{
-              // Define six categorical colors exposed as CSS vars --color-c1..--color-c6
-              c1: { theme: { light: LIGHT_PALETTE[0], dark: DARK_PALETTE[0] } },
-              c2: { theme: { light: LIGHT_PALETTE[1], dark: DARK_PALETTE[1] } },
-              c3: { theme: { light: LIGHT_PALETTE[2], dark: DARK_PALETTE[2] } },
-              c4: { theme: { light: LIGHT_PALETTE[3], dark: DARK_PALETTE[3] } },
-              c5: { theme: { light: LIGHT_PALETTE[4], dark: DARK_PALETTE[4] } },
-              c6: { theme: { light: LIGHT_PALETTE[5], dark: DARK_PALETTE[5] } },
-            }}
-            className="h-[360px] w-full mx-auto"
-            ariaLabel="Spending by category donut chart"
-            ariaDescription="Donut chart showing spending by category with amounts in US dollars and percentages"
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="amount"
-                >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${entry.name}`} fill={getCategoryColorVar(index)} />
-                  ))}
-                </Pie>
-                <ChartTooltip
-                  content={<ChartTooltipContent />}
-                  formatter={(value, _name, item) => {
-                    const payload =
-                      item && typeof item === "object" && "payload" in item
-                        ? (item as { payload?: { percentage?: number; name?: string } }).payload
-                        : undefined
-                    const percent = payload?.percentage ?? 0
-                    const name = payload?.name ?? ""
-                    return [`$${value} (${percent}%)`, name]
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-          <div className="mt-4 space-y-2">
-            {categoryData.map((category, index) => (
-              <div key={category.name} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: getCategoryColorVar(index) }}
-                  />
-                  <span>{category.name}</span>
-                </div>
-                <span className="font-medium">${category.amount}</span>
+          {categoryData.length === 0 ? (
+            <div className="h-[360px] flex flex-col items-center justify-center text-muted-foreground bg-muted/20 rounded-xl border border-dashed">
+              <PieChartIcon className="h-10 w-10 mb-4 opacity-20" />
+              <p className="text-sm font-medium">Add orders to see breakdown</p>
+            </div>
+          ) : (
+            <>
+              <ChartContainer
+                config={{
+                  c1: { theme: { light: LIGHT_PALETTE[0], dark: DARK_PALETTE[0] } },
+                  c2: { theme: { light: LIGHT_PALETTE[1], dark: DARK_PALETTE[1] } },
+                  c3: { theme: { light: LIGHT_PALETTE[2], dark: DARK_PALETTE[2] } },
+                  c4: { theme: { light: LIGHT_PALETTE[3], dark: DARK_PALETTE[3] } },
+                  c5: { theme: { light: LIGHT_PALETTE[4], dark: DARK_PALETTE[4] } },
+                  c6: { theme: { light: LIGHT_PALETTE[5], dark: DARK_PALETTE[5] } },
+                }}
+                className="h-[300px] w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={85}
+                      paddingAngle={4}
+                      dataKey="amount"
+                      stroke="none"
+                    >
+                      {categoryData.map((entry, index) => (
+                        <Cell key={`cell-${entry.name}`} fill={getCategoryColorVar(index)} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
+                {categoryData.map((category, index) => (
+                  <div key={category.name} className="flex items-center justify-between p-2 rounded-lg bg-background/30 border border-border/30">
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <div
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: getCategoryColorVar(index) }}
+                      />
+                      <span className="text-[11px] font-semibold truncate">{category.name}</span>
+                    </div>
+                    <span className="text-[11px] font-bold">${category.amount}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </CardContent>
       </Card>
     </div>

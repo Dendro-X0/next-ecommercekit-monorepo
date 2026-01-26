@@ -11,6 +11,15 @@ This template focuses on completeness and maintainability over vanity numbers. I
 ---
 
 ![Project Thumbnail](apps/web/public/next-ecommercekit.png)
+
+<!-- PLACEHOLDER 1: UI Showcase GIF -->
+<!-- [Insert UI & Pages Walkthrough GIF Here] -->
+![UI Showcase](apps/web/public/ui-showcase-placeholder.gif)
+
+<!-- PLACEHOLDER 2: Tech Stack & Code GIF -->
+<!-- [Insert Tech Stack, Code & File Tree GIF Here] -->
+![Tech Stack Demo](apps/web/public/tech-stack-placeholder.gif)
+
 ![Lighthouse](apps/web/public/lighthouse_1.png)
 ![Lighthouse](apps/web/public/lighthouse_2.png)
 

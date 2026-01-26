@@ -38,7 +38,7 @@ export function HeaderSearch(): JSX.Element {
         type="search"
         placeholder={translate(locale, "search.placeholder")}
         onKeyDown={onKeyDown}
-        className="pl-10 pr-4 py-2 w-full bg-gray-100 dark:bg-gray-800 border-0 rounded-full focus:bg-white dark:focus:bg-gray-700 focus:ring-2 focus:ring-black dark:focus:ring-white text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+        className="pl-10 pr-4 h-11 w-full bg-muted/40 border border-border/20 rounded-xl focus:bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all duration-300 text-foreground placeholder:text-muted-foreground/60 shadow-sm"
         aria-label={translate(locale, "search.placeholder")}
       />
     </div>

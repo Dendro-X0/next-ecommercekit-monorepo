@@ -54,17 +54,21 @@ const CHANNELS: ReadonlyArray<ChannelPoint> = [
 
 function TrafficCard({ data }: { readonly data: ReadonlyArray<SeriesPoint> }): ReactElement {
   return (
-    <Card>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden group">
+      <div className="h-1 w-full bg-linear-to-r from-blue-500 to-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5" />
-          Traffic
+          <Activity className="h-5 w-5 text-blue-500" />
+          Traffic Trend
         </CardTitle>
-        <CardDescription>Monthly unique visitors</CardDescription>
+        <CardDescription>Monthly unique visitors analysis</CardDescription>
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (
-          <div className={EMPTY_STATE_CLASS}>No traffic data available.</div>
+          <div className={`${EMPTY_STATE_CLASS} flex-col gap-2`}>
+            <Activity className="h-8 w-8 opacity-20" />
+            <span>No traffic data available.</span>
+          </div>
         ) : (
           <ChartContainer
             config={{
@@ -91,6 +95,7 @@ function TrafficCard({ data }: { readonly data: ReadonlyArray<SeriesPoint> }): R
                   axisLine={false}
                 />
                 <ChartTooltip
+                  cursor={{ stroke: "var(--color-visitors)", strokeWidth: 1, strokeDasharray: "4 4" }}
                   content={<ChartTooltipContent />}
                   formatter={(v) => [String(v), "Visitors"]}
                 />
@@ -99,7 +104,8 @@ function TrafficCard({ data }: { readonly data: ReadonlyArray<SeriesPoint> }): R
                   dataKey="value"
                   stroke="var(--color-visitors)"
                   strokeWidth={3}
-                  dot={false}
+                  activeDot={{ r: 6, strokeWidth: 0, fill: "var(--color-visitors)" }}
+                  dot={{ r: 3, fill: "var(--color-visitors)", strokeWidth: 0 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -112,13 +118,14 @@ function TrafficCard({ data }: { readonly data: ReadonlyArray<SeriesPoint> }): R
 
 function ChannelsCard({ data }: { readonly data: ReadonlyArray<ChannelPoint> }): ReactElement {
   return (
-    <Card>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 overflow-hidden group">
+      <div className="h-1 w-full bg-linear-to-r from-purple-500 to-pink-500 opacity-50 group-hover:opacity-100 transition-opacity" />
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Users className="h-5 w-5" />
-          Traffic by Channel
+          <Users className="h-5 w-5 text-purple-500" />
+          Acquisition Channels
         </CardTitle>
-        <CardDescription>Share of sessions by acquisition channel</CardDescription>
+        <CardDescription>Share of sessions by source</CardDescription>
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (

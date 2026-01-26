@@ -168,28 +168,28 @@ export function HeroCarousel() {
                 fetchPriority={s.id === 1 ? "high" : "low"}
                 className="object-cover opacity-20"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/90" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-background/40 to-background/60" />
             </div>
             <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-                <div className="space-y-6 text-center lg:text-left">
+                <div className="space-y-6 text-center lg:text-left bg-background/30 backdrop-blur-md border border-white/10 p-8 rounded-2xl shadow-xl">
                   <div className="space-y-4">
-                    <Badge variant="outline" className="text-sm">{s.badge}</Badge>
+                    <Badge variant="secondary" className="text-sm font-medium px-3 py-1">{s.badge}</Badge>
                     <div className="space-y-2">
-                      <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">{s.title}</h1>
+                      <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-foreground drop-shadow-sm">{s.title}</h1>
                       <h2 className="text-xl lg:text-2xl text-primary font-semibold">{s.subtitle}</h2>
                     </div>
-                    <p className="text-lg text-muted-foreground max-w-2xl">{s.description}</p>
+                    <p className="text-lg text-muted-foreground/90 max-w-2xl font-medium">{s.description}</p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <Button size="lg" asChild>
+                    <Button size="lg" asChild className="shadow-lg hover:shadow-primary/25 transition-all duration-300">
                       <AppLink href={s.cta.primary.href}>
                         {s.cta.primary.icon && <s.cta.primary.icon className="mr-2 h-5 w-5" />}
                         {s.cta.primary.text}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </AppLink>
                     </Button>
-                    <Button size="lg" variant="outline" asChild>
+                    <Button size="lg" variant="outline" asChild className="bg-background/50 hover:bg-background/80 border-primary/20">
                       <AppLink href={s.cta.secondary.href}>{s.cta.secondary.text}</AppLink>
                     </Button>
                   </div>
@@ -222,49 +222,51 @@ export function HeroCarousel() {
         ))}
       </CarouselContent>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 mt-12">
-        <div className="flex items-center gap-2 bg-background/80 backdrop-blur border rounded-full px-3 py-2 shadow-md">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={prevSlide}
-            className="w-8 h-8 rounded-full"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <div className="flex space-x-2 px-1">
-            {heroSlides.map((slide, index) => (
-              <button
-                type="button"
-                key={slide.id}
-                onClick={() => goToSlide(index)}
-                className="w-6 h-6 flex items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white ring-offset-2 ring-offset-background"
-                aria-label={`Go to slide ${index + 1}`}
-                aria-current={currentSlide === index ? "true" : undefined}
-                title={`Go to slide ${index + 1}`}
-              >
-                <span
-                  className={cn(
-                    "w-3 h-3 rounded-full border shadow",
-                    currentSlide === index
-                      ? "bg-primary border-primary/70 shadow-primary/20 scale-110"
-                      : "bg-background/70 border-border hover:bg-background",
-                  )}
-                />
-              </button>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={nextSlide}
-            className="w-8 h-8 rounded-full"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+      {/* Floating Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
+        <div className="flex space-x-3 bg-background/80 backdrop-blur-md rounded-full px-4 py-2 border border-border shadow-lg">
+          {heroSlides.map((slide, index) => (
+            <button
+              type="button"
+              key={slide.id}
+              onClick={() => goToSlide(index)}
+              className="group relative flex items-center justify-center focus-visible:outline-none"
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={currentSlide === index ? "true" : undefined}
+            >
+              <span
+                className={cn(
+                  "transition-all duration-500 rounded-full",
+                  currentSlide === index
+                    ? "w-8 h-2 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]"
+                    : "w-2 h-2 bg-foreground/20 hover:bg-foreground/40"
+                )}
+              />
+            </button>
+          ))}
         </div>
+      </div>
+
+      {/* Side Navigation Arrows - Floating on sides */}
+      <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 z-20 flex justify-between pointer-events-none">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={prevSlide}
+          className="w-12 h-12 rounded-full bg-background/80 backdrop-blur-md border border-border hover:bg-background transition-all pointer-events-auto shadow-xl"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={nextSlide}
+          className="w-12 h-12 rounded-full bg-background/80 backdrop-blur-md border border-border hover:bg-background transition-all pointer-events-auto shadow-xl"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
       </div>
       <div className="absolute top-4 right-4 z-20">
         <Button
