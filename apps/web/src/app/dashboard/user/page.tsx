@@ -162,12 +162,15 @@ export default function UserDashboardPage(): ReactElement {
       "Dec",
     ] as const
     const totalsByMonth: number[] = Array.from({ length: 12 }, () => 0)
-    for (const o of orders) {
-      const d = new Date(o.createdAt)
-      const idx = Number.isFinite(d.getMonth()) ? d.getMonth() : 0
-      totalsByMonth[idx] += o.total
+    if (Array.isArray(orders)) {
+      for (const o of orders) {
+        if (!o) continue
+        const d = new Date(o.createdAt)
+        const idx = Number.isFinite(d.getMonth()) ? d.getMonth() : 0
+        totalsByMonth[idx] += (o.total ?? 0)
+      }
     }
-    return months.map((m, i) => ({ name: m, amount: Math.round(totalsByMonth[i] * 100) / 100 }))
+    return months.map((m, i) => ({ name: m, amount: Math.round((totalsByMonth[i] ?? 0) * 100) / 100 }))
   }, [orders])
 
   // Category chart not derivable without product categories → show empty
@@ -187,9 +190,9 @@ export default function UserDashboardPage(): ReactElement {
             : "Bronze"
     return {
       id: session?.user?.id ?? "me",
-      firstName: name.split(" ")[0] ?? name,
-      lastName: name.split(" ").slice(1).join(" ") ?? "",
-      name,
+      firstName: typeof name === "string" ? (name.split(" ")[0] ?? name) : "User",
+      lastName: typeof name === "string" ? (name.split(" ").slice(1).join(" ") ?? "") : "",
+      name: typeof name === "string" ? name : "Your Account",
       email: session?.user?.email ?? "",
       phone: undefined,
       avatar: undefined,
@@ -212,7 +215,8 @@ export default function UserDashboardPage(): ReactElement {
 
   // Map orders to the light shape needed by RecentOrders
   const recentUserOrders: UserOrder[] = useMemo(() => {
-    return orders.slice(0, 5).map((o) => ({
+    if (!Array.isArray(orders)) return []
+    return orders.slice(0, 5).filter(Boolean).map((o) => ({
       id: o.id,
       orderNumber: o.id,
       date: new Date(o.createdAt).toLocaleDateString(),
@@ -226,7 +230,7 @@ export default function UserDashboardPage(): ReactElement {
               : o.status === "cancelled"
                 ? "Cancelled"
                 : "Processing",
-      total: o.total,
+      total: o.total ?? 0,
       items: [],
       trackingNumber: o.paymentRef,
     }))

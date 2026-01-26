@@ -39,7 +39,7 @@ const heroSlides: readonly Slide[] = [
     subtitle: "Ship faster with best practices",
     description:
       "A comprehensive, production‑ready foundation: Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Better Auth, Drizzle, and a modular monorepo. Built to learn from and launch with.",
-    image: "/shop1.png",
+    image: "/demo/shop_1.png",
     cta: {
       primary: {
         text: "Star on GitHub",
@@ -56,7 +56,7 @@ const heroSlides: readonly Slide[] = [
     subtitle: "Performance, a11y, and DX",
     description:
       "SSR/ISR, routing, forms, state, and UI primitives that scale. Payments, auth, and an RBAC dashboard included so you can focus on your product.",
-    image: "/admin_dashboard1.png",
+    image: "/demo/admin_dashboard_1.png",
     cta: {
       primary: { text: "Explore the demo", href: "/shop" },
       secondary: {
@@ -73,7 +73,7 @@ const heroSlides: readonly Slide[] = [
     subtitle: "Educational & commercial use",
     description:
       "Built for deep learning and real shipping. Clean structure, typed clients, and pragmatic patterns across auth, RBAC, payments, and more.",
-    image: "/user_dashboard1.png",
+    image: "/demo/user_dashboard_1.png",
     cta: {
       primary: { text: "Get started", href: "/getting-started" },
       secondary: {

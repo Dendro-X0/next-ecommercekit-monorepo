@@ -73,7 +73,7 @@ export function RecentOrders({ orders }: RecentOrdersProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders.slice(0, 5).map((order) => (
+              {Array.isArray(orders) && orders.slice(0, 5).filter(Boolean).map((order) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.orderNumber}</TableCell>
                   <TableCell>{order.date}</TableCell>

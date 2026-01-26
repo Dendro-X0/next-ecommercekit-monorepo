@@ -22,7 +22,9 @@ const getCategoryColorVar = (index: number): string =>
  */
 export function SpendingCharts({ spendingData, categoryData }: SpendingChartsProps): ReactElement {
   const gradientId: string = useId()
-  const totalSpending: number = spendingData.reduce((sum, it) => sum + it.amount, 0)
+  const totalSpending: number = Array.isArray(spendingData)
+    ? spendingData.reduce((sum, it) => sum + (it?.amount ?? 0), 0)
+    : 0
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
@@ -124,7 +126,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={categoryData}
+                      data={Array.isArray(categoryData) ? categoryData : []}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -133,7 +135,7 @@ export function SpendingCharts({ spendingData, categoryData }: SpendingChartsPro
                       dataKey="amount"
                       stroke="none"
                     >
-                      {categoryData.map((entry, index) => (
+                      {Array.isArray(categoryData) && categoryData.filter(Boolean).map((entry, index) => (
                         <Cell key={`cell-${entry.name}`} fill={getCategoryColorVar(index)} />
                       ))}
                     </Pie>

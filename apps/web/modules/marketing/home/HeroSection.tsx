@@ -65,7 +65,7 @@ const StaticHero = (): JSX.Element => (
                 <div className="absolute inset-0">
                   <div className="relative w-full h-full">
                     <SafeImage
-                      src="/shop1.png"
+                      src="/demo/shop_1.png"
                       alt="Next.js Ecommerce Starterkit"
                       fill
                       sizes="100vw"

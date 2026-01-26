@@ -37,7 +37,7 @@ export function HeaderMobileMenu({
   const locale = localeProp ?? getLocaleFromPath(pathname)
   const session = useSession()
   const user = session?.user ?? null
-  const cartCount: number = useCartStore((s) => s.items.reduce((sum, it) => sum + it.quantity, 0))
+  const cartCount: number = useCartStore((s) => Array.isArray(s.items) ? s.items.reduce((sum, it) => sum + (it?.quantity ?? 0), 0) : 0)
   const roles: readonly Role[] | undefined =
     user && Array.isArray((user as Record<string, unknown>).roles)
       ? ((user as { readonly roles?: readonly Role[] }).roles as readonly Role[] | undefined)

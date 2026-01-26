@@ -35,8 +35,8 @@ export async function getServerSession({
     return {
       user: {
         id: "mock-user-123",
-        email: "dendro-x0@example.com",
-        name: "Dendro-X0",
+        email: "admin@example.com",
+        name: "Admin",
         image: "https://github.com/Dendro-X0.png",
         roles: ["user", "admin"],
         emailVerified: true,

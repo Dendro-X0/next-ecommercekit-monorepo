@@ -64,6 +64,8 @@ export function MembershipCard({ user }: MembershipCardProps) {
 
   const { nextTier, progress, needed } = getNextTierProgress()
 
+  if (!user) return null
+
   return (
     <Card className="overflow-hidden border-border/50 bg-card/30 backdrop-blur-md relative">
       <div className={`absolute inset-0 bg-linear-to-br ${getTierGradient(user.membershipTier)} pointer-events-none`} />

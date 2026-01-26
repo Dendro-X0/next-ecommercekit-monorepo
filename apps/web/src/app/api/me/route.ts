@@ -37,13 +37,13 @@ export async function GET(): Promise<Response> {
   const session = await auth.api.getSession({ headers: hdrs })
   const u = session?.user as
     | {
-        readonly id?: string
-        readonly email?: string
-        readonly name?: unknown
-        readonly image?: unknown
-        readonly roles?: unknown
-        readonly emailVerified?: unknown
-      }
+      readonly id?: string
+      readonly email?: string
+      readonly name?: unknown
+      readonly image?: unknown
+      readonly roles?: unknown
+      readonly emailVerified?: unknown
+    }
     | undefined
   if (!u) return Response.json({ user: null })
   const roles: readonly string[] | undefined = Array.isArray(u?.roles)

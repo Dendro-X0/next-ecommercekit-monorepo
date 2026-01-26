@@ -106,7 +106,7 @@ export function DashboardOverview(): React.ReactElement {
             <div className="text-sm text-red-600 mb-4 bg-red-500/10 p-2 rounded">Failed to load recent products</div>
           )}
           <div className="space-y-4">
-            {(recent?.items ?? []).map((p) => (
+            {Array.isArray(recent?.items) && recent.items.filter(Boolean).map((p) => (
               <div
                 key={p.id}
                 className="flex items-center justify-between gap-4 p-3 rounded-xl hover:bg-muted/40 transition-colors border border-transparent hover:border-border/50"
