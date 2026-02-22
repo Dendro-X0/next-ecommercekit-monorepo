@@ -1,6 +1,10 @@
 {
   "name": "web",
+<<<<<<< HEAD
   "version": "1.2.0",
+=======
+  "version": "1.2.1",
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

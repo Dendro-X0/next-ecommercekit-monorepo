@@ -9,8 +9,14 @@ pnpm install
 2) Environment (`apps/web/.env.local`)
 ```bash
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB
+<<<<<<< HEAD
 WEB_ORIGIN=http://localhost:3000
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+=======
+APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+CATALOG_PROVIDER=native
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 BETTER_AUTH_SECRET=your-long-random-secret
 # Local dev cookies (recommended)
 ENABLE_CROSS_SITE_COOKIES=false

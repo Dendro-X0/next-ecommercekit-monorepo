@@ -6,6 +6,10 @@ import type React from "react"
 import { Toaster } from "sonner"
 import { DashboardShell } from "@/app/dashboard/_components/shell"
 import { AdminSidebar } from "@/app/dashboard/admin/_components/admin-sidebar"
+<<<<<<< HEAD
+=======
+import { CatalogReadOnlyBanner } from "@/app/dashboard/admin/_components/catalog-readonly-banner"
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { DashboardHeader } from "@/app/dashboard/user/_components/dashboard-header"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { hasRole, type Role } from "@/lib/roles"
@@ -33,6 +37,10 @@ export default async function AdminLayout({
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <DashboardShell sidebar={<AdminSidebar />} topbar={<DashboardHeader title="Admin" />}>
+<<<<<<< HEAD
+=======
+        <CatalogReadOnlyBanner />
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
         {children}
       </DashboardShell>
       <Toaster position="top-center" richColors />

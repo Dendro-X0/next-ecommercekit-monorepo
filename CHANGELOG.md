@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+<<<<<<< HEAD
+=======
+## [1.2.1] - 2026-02-21
+### Added
+- Catalog providers adapter + meta plumbing for the admin UI.
+  - Admin-only endpoint: `GET /api/v1/admin/catalog-meta` returning `{ provider, supportsWrite, supportsCategoryProductCounts }`.
+
+### Changed
+- Admin UX: when the catalog provider is external (non-`native`), the admin switches to a read-only catalog mode.
+  - Added a global banner in the admin layout indicating the catalog is read-only.
+  - Disabled product create/edit/duplicate/delete UI actions and disabled product form saving to prevent failed write attempts.
+
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 ## [1.2.0] - 2026-01-25
 ### Changed
 - **Header Redesign**: Implemented a premium aesthetic for navigation tabs with a "surgical" glowing underline effect and precise vertical centering.
@@ -95,7 +108,11 @@ All notable changes to this project will be documented in this file.
 
 ### Documentation
 - Updated `docs/architecture.md` with an “Auth & Identity” section and “Payments Clients & Hooks” notes.
+<<<<<<< HEAD
 - Updated `docs/frontend-architecture.md` with guidance on the auth client helpers, button default type, and accessibility/unique IDs.
+=======
+- Updated `docs/architecture.md` with frontend guidance on the auth client helpers, button default type, and accessibility/unique IDs.
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 
 ### Fixed
 - Corrected `Number.parseInt` usages to include radix where applicable.

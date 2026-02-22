@@ -56,6 +56,22 @@ Notes:
 Add these server-side variables to `apps/web/.env.local` as well (Next.js will load them for the co-located API in `packages/api/`). Do not prefix with `NEXT_PUBLIC_` unless the variable must be exposed to the browser.
 
 ```
+<<<<<<< HEAD
+=======
+# Catalog provider (optional; defaults to native)
+CATALOG_PROVIDER=native
+
+# Shopify (required when CATALOG_PROVIDER=shopify)
+SHOPIFY_STOREFRONT_DOMAIN=
+SHOPIFY_STOREFRONT_ACCESS_TOKEN=
+# Optional
+SHOPIFY_API_VERSION=
+
+# Medusa (required when CATALOG_PROVIDER=medusa)
+MEDUSA_BACKEND_URL=
+MEDUSA_ADMIN_API_KEY=
+
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 # Admin access (comma-separated emails)
 ADMIN_EMAILS=
 
@@ -97,6 +113,14 @@ PAYPAL_MODE=sandbox # or live
 PAYPAL_WEBHOOK_ID=
 ```
 
+<<<<<<< HEAD
+=======
+Catalog notes:
+- When `CATALOG_PROVIDER` is not `native`, the catalog is read-only.
+- The admin dashboard switches to a read-only mode and product create/edit/delete is disabled.
+- See `docs/catalog-providers.md` for details.
+
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
 ## Rate Limiting (Redis via Upstash)
 
 To enable distributed rate limiting in production, set the following. When unset, the API falls back to an in-memory limiter suitable for local development only.

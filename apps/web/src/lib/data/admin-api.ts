@@ -36,7 +36,21 @@ export type RecentProduct = Readonly<{
   createdAt: string
 }>
 
+<<<<<<< HEAD
 export const adminApi = {
+=======
+export type CatalogMeta = Readonly<{
+  provider: "native" | "shopify" | "medusa"
+  supportsWrite: boolean
+  supportsCategoryProductCounts: boolean
+}>
+
+export const adminApi = {
+  catalogMeta: async (): Promise<CatalogMeta> => {
+    const res: Response = await fetch(`${API_BASE}/admin/catalog-meta`, { credentials: "include" })
+    return asJson<CatalogMeta>(res)
+  },
+>>>>>>> 6f36ebc (Updated to v 1.2.1)
   stats: async (): Promise<AdminStats> => {
     const res: Response = await fetch(`${API_BASE}/admin/stats`, { credentials: "include" })
     return asJson<AdminStats>(res)
