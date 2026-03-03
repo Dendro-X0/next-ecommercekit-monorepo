@@ -1,5 +1,11 @@
 # Release Notes
 
+## v1.2.1
+- Catalog: Added switchable catalog provider adapter (`CATALOG_PROVIDER=native | shopify | medusa`).
+- Admin: Read-only mode for external catalog providers (banner + disabled product CRUD UI).
+- API: Added `GET /api/v1/admin/catalog-meta` for UI capability gating.
+- Docs/Env: Updated environment templates and documentation for catalog providers.
+
 ## v1.1.2 (2025-09-12)
 - Storage & Media: Implemented S3-backed uploads at `POST /api/uploads` with local disk fallback in dev.
 - Admin Dashboard: Media uploader now persists real image/video URLs and previews; primary image selection works with persisted media.
