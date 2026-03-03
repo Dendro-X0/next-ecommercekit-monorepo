@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { productsRepo } from "@repo/db"
-=======
 import { getCatalogAdapter } from "../catalog"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import type { Context } from "hono"
 /**
  * Products routes for the Shop API.
@@ -78,8 +74,6 @@ type ProductListResponse = Readonly<{
   pageSize: number
 }>
 
-<<<<<<< HEAD
-=======
 function toProductDTO(p: {
   readonly id: string
   readonly slug: string
@@ -114,7 +108,6 @@ function toProductDTO(p: {
   }
 }
 
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 /**
  * Hono sub-app for products.
  */
@@ -191,12 +184,8 @@ const productsRoute = new Hono()
   .get("/", async (c: Context) => {
     const q = validate.query(c, listQuerySchema)
     try {
-<<<<<<< HEAD
-      const result = await productsRepo.list({
-=======
       const adapter = getCatalogAdapter()
       const result = await adapter.listProducts({
->>>>>>> 6f36ebc (Updated to v 1.2.1)
         query: q.query,
         category: q.category,
         sort: q.sort,
@@ -207,11 +196,7 @@ const productsRoute = new Hono()
       // Cache list responses briefly at the edge to reduce cold-start load
       c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300")
       const res: ProductListResponse = {
-<<<<<<< HEAD
-        items: result.items,
-=======
         items: result.items.map(toProductDTO),
->>>>>>> 6f36ebc (Updated to v 1.2.1)
         total: result.total,
         page: result.page,
         pageSize: result.pageSize,
@@ -229,16 +214,10 @@ const productsRoute = new Hono()
   .get("/featured", async (c: Context) => {
     const { limit } = validate.query(c, featuredQuerySchema)
     try {
-<<<<<<< HEAD
-      const items = await productsRepo.listFeatured(limit)
-      c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300")
-      return c.json({ items }, 200)
-=======
       const adapter = getCatalogAdapter()
       const items = await adapter.listFeaturedProducts(limit)
       c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300")
       return c.json({ items: items.map(toProductDTO) }, 200)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to list featured products"
       return c.json({ error: message }, 500)
@@ -251,21 +230,13 @@ const productsRoute = new Hono()
   .get("/id/:id", async (c: Context) => {
     const { id } = validate.params(c, idParamsSchema)
     try {
-<<<<<<< HEAD
-      const product = await productsRepo.byId(id)
-=======
       const adapter = getCatalogAdapter()
       const product = await adapter.getProductById(id)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       if (!product) {
         return c.json({ error: "Product not found" }, 404)
       }
       c.header("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600")
-<<<<<<< HEAD
-      return c.json(product as ProductDTO, 200)
-=======
       return c.json(toProductDTO(product), 200)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to fetch product"
       return c.json({ error: message }, 500)
@@ -278,21 +249,13 @@ const productsRoute = new Hono()
   .get("/:slug", async (c: Context) => {
     const { slug } = validate.params(c, paramsSchema)
     try {
-<<<<<<< HEAD
-      const product = await productsRepo.bySlug(slug)
-=======
       const adapter = getCatalogAdapter()
       const product = await adapter.getProductBySlug(slug)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       if (!product) {
         return c.json({ error: "Product not found" }, 404)
       }
       c.header("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600")
-<<<<<<< HEAD
-      return c.json(product as ProductDTO, 200)
-=======
       return c.json(toProductDTO(product), 200)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to fetch product"
       return c.json({ error: message }, 500)
@@ -305,17 +268,6 @@ const productsRoute = new Hono()
   .post("/", async (c: Context) => {
     const guard = AdminGuard.ensureAdmin(c)
     if (guard) return guard
-<<<<<<< HEAD
-    const data = await validate.body(c, createBodySchema)
-    try {
-      // Pre-check slug uniqueness to provide a friendly error before DB constraint.
-      const existing = await productsRepo.bySlug(data.slug)
-      if (existing) {
-        return c.json({ error: "Slug already exists. Please choose a different slug." }, 409)
-      }
-      const created = await productsRepo.create(data)
-      return c.json(created as ProductDTO, 201)
-=======
     const adapter = getCatalogAdapter()
     if (!adapter.capabilities.supportsWrite) {
       return c.json({ error: "Catalog provider is read-only" }, 400)
@@ -343,7 +295,6 @@ const productsRoute = new Hono()
         digitalVersion: data.digitalVersion,
       })
       return c.json(toProductDTO(created), 201)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     } catch (err) {
       const raw = err instanceof Error ? err.message : String(err)
       const message = raw || "Failed to create product"
@@ -361,14 +312,6 @@ const productsRoute = new Hono()
   .put("/:id", async (c: Context) => {
     const guard = AdminGuard.ensureAdmin(c)
     if (guard) return guard
-<<<<<<< HEAD
-    const { id } = validate.params(c, idParamsSchema)
-    const data = await validate.body(c, updateBodySchema)
-    try {
-      const updated = await productsRepo.update(id, data)
-      if (!updated) return c.json({ error: "Product not found" }, 404)
-      return c.json(updated as ProductDTO, 200)
-=======
     const adapter = getCatalogAdapter()
     if (!adapter.capabilities.supportsWrite) {
       return c.json({ error: "Catalog provider is read-only" }, 400)
@@ -393,7 +336,6 @@ const productsRoute = new Hono()
       })
       if (!updated) return c.json({ error: "Product not found" }, 404)
       return c.json(toProductDTO(updated), 200)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     } catch (err) {
       const raw = err instanceof Error ? err.message : String(err)
       const message = raw || "Failed to update product"
@@ -411,11 +353,6 @@ const productsRoute = new Hono()
   .delete("/:id", async (c: Context) => {
     const guard = AdminGuard.ensureAdmin(c)
     if (guard) return guard
-<<<<<<< HEAD
-    const { id } = validate.params(c, idParamsSchema)
-    try {
-      const ok = await productsRepo.remove(id)
-=======
     const adapter = getCatalogAdapter()
     if (!adapter.capabilities.supportsWrite) {
       return c.json({ error: "Catalog provider is read-only" }, 400)
@@ -423,7 +360,6 @@ const productsRoute = new Hono()
     const { id } = validate.params(c, idParamsSchema)
     try {
       const ok = await adapter.deleteProduct(id)
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       if (!ok) return c.json({ error: "Product not found" }, 404)
       return c.json({ ok: true }, 200)
     } catch (err) {

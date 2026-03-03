@@ -1,9 +1,6 @@
 import type React from "react"
-<<<<<<< HEAD
-=======
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { PageHeader } from "@/app/dashboard/_components/page-header"
 import { Section } from "@/app/dashboard/_components/section"
 import { ProductForm } from "@/app/dashboard/admin/_components/product-form"
@@ -11,8 +8,6 @@ import { Button } from "@/components/ui/button"
 import { links } from "@/lib/links"
 import { AppLink } from "../../../../../../../../modules/shared/components/app-link"
 
-<<<<<<< HEAD
-=======
 function buildBaseUrl(h: { get(name: string): string | null }): string {
   const envBase = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL
   if (envBase && typeof envBase === "string" && envBase.length > 0) return envBase
@@ -46,7 +41,6 @@ async function ensureCatalogWriteCapable(): Promise<void> {
   }
 }
 
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 /**
  * Admin → E-commerce → Products → Edit page.
  */
@@ -55,10 +49,7 @@ export default async function EditProductPage({
 }: {
   readonly params: Promise<{ productId: string }>
 }): Promise<React.ReactElement> {
-<<<<<<< HEAD
-=======
   await ensureCatalogWriteCapable()
->>>>>>> 6f36ebc (Updated to v 1.2.1)
   const { productId } = await params
   return (
     <Section>

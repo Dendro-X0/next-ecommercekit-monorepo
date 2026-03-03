@@ -31,15 +31,12 @@ export const apiEnv = (() => {
       process.env.APP_URL ||
       process.env.NEXT_PUBLIC_APP_URL ||
       "http://localhost:3000",
-<<<<<<< HEAD
-=======
     CATALOG_PROVIDER: process.env.CATALOG_PROVIDER ?? "native",
     SHOPIFY_STOREFRONT_DOMAIN: process.env.SHOPIFY_STOREFRONT_DOMAIN ?? undefined,
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ?? undefined,
     SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION ?? undefined,
     MEDUSA_BACKEND_URL: process.env.MEDUSA_BACKEND_URL ?? undefined,
     MEDUSA_ADMIN_API_KEY: process.env.MEDUSA_ADMIN_API_KEY ?? undefined,
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     ADMIN_EMAILS: process.env.ADMIN_EMAILS ?? "",
     AFFILIATE_COMMISSION_PCT: process.env.AFFILIATE_COMMISSION_PCT ?? "10",
     TAX_RATE: process.env.TAX_RATE ?? "0.08",
@@ -66,15 +63,12 @@ export const apiEnv = (() => {
       sanitizeUrlLike,
       z.string().url("WEB_ORIGIN must be a valid URL").default("http://localhost:3000"),
     ),
-<<<<<<< HEAD
-=======
     CATALOG_PROVIDER: z.enum(["native", "shopify", "medusa"]).optional().default("native"),
     SHOPIFY_STOREFRONT_DOMAIN: z.string().optional(),
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: z.string().optional(),
     SHOPIFY_API_VERSION: z.string().optional(),
     MEDUSA_BACKEND_URL: z.preprocess(sanitizeUrlLike, z.string().url().optional()),
     MEDUSA_ADMIN_API_KEY: z.string().optional(),
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     ADMIN_EMAILS: z.string().optional().default(""),
     AFFILIATE_COMMISSION_PCT: z.preprocess((v) => {
       if (typeof v !== "string") return v
@@ -194,15 +188,12 @@ export const apiEnv = (() => {
   }
   return {
     WEB_ORIGIN: parsed.data.WEB_ORIGIN,
-<<<<<<< HEAD
-=======
     CATALOG_PROVIDER: parsed.data.CATALOG_PROVIDER,
     SHOPIFY_STOREFRONT_DOMAIN: parsed.data.SHOPIFY_STOREFRONT_DOMAIN,
     SHOPIFY_STOREFRONT_ACCESS_TOKEN: parsed.data.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
     SHOPIFY_API_VERSION: parsed.data.SHOPIFY_API_VERSION,
     MEDUSA_BACKEND_URL: parsed.data.MEDUSA_BACKEND_URL,
     MEDUSA_ADMIN_API_KEY: parsed.data.MEDUSA_ADMIN_API_KEY,
->>>>>>> 6f36ebc (Updated to v 1.2.1)
     ADMIN_EMAILS_SET,
     AFFILIATE_COMMISSION_PCT,
     TAX_RATE,

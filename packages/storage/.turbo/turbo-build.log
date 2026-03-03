@@ -1,0 +1,4 @@
+
+> @repo/storage@0.1.0 build E:\Web Project\starterkit\next-ecommercekit-workspace\next-ecommercekit-monorepo-main\packages\storage
+> tsc -p tsconfig.json
+

@@ -28,10 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-<<<<<<< HEAD
-=======
 import { adminApi } from "@/lib/data/admin-api"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { productsApi } from "@/lib/data/products"
 import { links } from "@/lib/links"
 import type { Product } from "@/types"
@@ -43,8 +40,6 @@ export function ProductsTable(): React.ReactElement {
   const qc = useQueryClient()
   const [searchTerm, setSearchTerm] = useState("")
   const [pendingDelete, setPendingDelete] = useState<Product | null>(null)
-<<<<<<< HEAD
-=======
 
   const { data: catalogMeta } = useQuery({
     queryKey: ["admin", "catalog-meta"],
@@ -53,7 +48,6 @@ export function ProductsTable(): React.ReactElement {
   })
   const isReadOnly: boolean = catalogMeta ? !catalogMeta.supportsWrite : false
 
->>>>>>> 6f36ebc (Updated to v 1.2.1)
   const { data, isLoading, error } = useQuery<{
     readonly items: readonly Product[]
     readonly total: number
@@ -110,14 +104,6 @@ export function ProductsTable(): React.ReactElement {
             <CardTitle>Products</CardTitle>
             <CardDescription>Manage your product inventory and pricing.</CardDescription>
           </div>
-<<<<<<< HEAD
-          <Button asChild>
-            <AppLink href={links.getDashboardAdminEcommerceProductCreateRoute()}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Product
-            </AppLink>
-          </Button>
-=======
           {isReadOnly ? null : (
             <Button asChild>
               <AppLink href={links.getDashboardAdminEcommerceProductCreateRoute()}>
@@ -126,7 +112,6 @@ export function ProductsTable(): React.ReactElement {
               </AppLink>
             </Button>
           )}
->>>>>>> 6f36ebc (Updated to v 1.2.1)
         </div>
         <div className="flex items-center space-x-2">
           <div className="relative flex-1 max-w-sm">
@@ -187,13 +172,6 @@ export function ProductsTable(): React.ReactElement {
                   Clear search
                 </Button>
               ) : (
-<<<<<<< HEAD
-                <Button asChild>
-                  <AppLink href={links.getDashboardAdminEcommerceProductCreateRoute()}>
-                    Add Product
-                  </AppLink>
-                </Button>
-=======
                 isReadOnly ? null : (
                   <Button asChild>
                     <AppLink href={links.getDashboardAdminEcommerceProductCreateRoute()}>
@@ -201,7 +179,6 @@ export function ProductsTable(): React.ReactElement {
                     </AppLink>
                   </Button>
                 )
->>>>>>> 6f36ebc (Updated to v 1.2.1)
               )
             }
           />
@@ -255,32 +232,6 @@ export function ProductsTable(): React.ReactElement {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem>View details</DropdownMenuItem>
-<<<<<<< HEAD
-                          <DropdownMenuItem
-                            onSelect={() =>
-                              router.push(
-                                links.getDashboardAdminEcommerceProductEditRoute(product.id),
-                              )
-                            }
-                          >
-                            Edit product
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onSelect={() =>
-                              router.push(links.getDashboardAdminEcommerceProductCreateRoute())
-                            }
-                          >
-                            Duplicate
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="text-red-600"
-                            disabled={isDeleting}
-                            onSelect={() => setPendingDelete(product)}
-                          >
-                            Delete product
-                          </DropdownMenuItem>
-=======
                           {isReadOnly ? null : (
                             <>
                               <DropdownMenuItem
@@ -309,7 +260,6 @@ export function ProductsTable(): React.ReactElement {
                               </DropdownMenuItem>
                             </>
                           )}
->>>>>>> 6f36ebc (Updated to v 1.2.1)
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

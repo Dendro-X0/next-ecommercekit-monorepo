@@ -2,10 +2,7 @@ import { categoriesRepo, inventoryRepo, ordersRepo, productsRepo } from "@repo/d
 import type { Context } from "hono"
 import { Hono } from "hono"
 import { z } from "zod"
-<<<<<<< HEAD
-=======
 import { getCatalogAdapter, getCatalogProvider } from "../catalog"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { AdminGuard } from "../lib/admin-guard"
 import { transactionalEmail } from "../lib/transactional-email"
 import { validate } from "../lib/validate"
@@ -40,10 +37,6 @@ type StatsResponse = Readonly<{
   latestCreatedAt?: string
 }>
 
-<<<<<<< HEAD
-const adminRoute = new Hono()
-  /**
-=======
 type NativeRecentProductRow = Readonly<{
   id: string
   name: string
@@ -78,30 +71,12 @@ const adminRoute = new Hono()
     }
   })
   /**
->>>>>>> 6f36ebc (Updated to v 1.2.1)
    * GET /api/v1/admin/stats
    */
   .get("/stats", async (c: Context) => {
     const guard = AdminGuard.ensureAdmin(c)
     if (guard) return guard
     try {
-<<<<<<< HEAD
-      const [pc, cc, fc, dc, phc, latest] = await Promise.all([
-        productsRepo.countAll(),
-        categoriesRepo.countAll(),
-        productsRepo.countFeatured(),
-        productsRepo.countByKind("digital"),
-        productsRepo.countByKind("physical"),
-        productsRepo.latestCreatedAt(),
-      ])
-      const res: StatsResponse = {
-        productsCount: pc,
-        categoriesCount: cc,
-        featuredProductsCount: fc,
-        digitalProductsCount: dc,
-        physicalProductsCount: phc,
-        latestCreatedAt: latest ?? undefined,
-=======
       const provider = getCatalogProvider()
       if (provider === "native") {
         const [pc, cc, fc, dc, phc, latest] = await Promise.all([
@@ -135,7 +110,6 @@ const adminRoute = new Hono()
         digitalProductsCount: 0,
         physicalProductsCount: 0,
         latestCreatedAt: undefined,
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       }
       return c.json(res, 200)
     } catch (err) {
@@ -151,17 +125,6 @@ const adminRoute = new Hono()
     if (guard) return guard
     const { limit } = validate.query(c, recentQuerySchema)
     try {
-<<<<<<< HEAD
-      const rows = await productsRepo.listRecent(limit)
-      const items: readonly RecentProduct[] = rows.map((r) => ({
-        id: r.id,
-        name: r.name,
-        slug: r.slug,
-        priceCents: r.priceCents,
-        currency: r.currency,
-        imageUrl: r.imageUrl,
-        createdAt: r.createdAt,
-=======
       const provider = getCatalogProvider()
       if (provider === "native") {
         const rows = await productsRepo.listRecent(limit)
@@ -190,7 +153,6 @@ const adminRoute = new Hono()
         currency: p.currency,
         imageUrl: p.imageUrl,
         createdAt: now,
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       }))
       return c.json({ items }, 200)
     } catch (err) {

@@ -10,10 +10,7 @@ import type { Resolver } from "react-hook-form"
 import { type FieldErrors, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
-<<<<<<< HEAD
-=======
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -25,10 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-<<<<<<< HEAD
-=======
 import { adminApi } from "@/lib/data/admin-api"
->>>>>>> 6f36ebc (Updated to v 1.2.1)
 import { categoriesApi } from "@/lib/data/categories"
 import { productsApi } from "@/lib/data/products"
 import { links } from "@/lib/links"
@@ -60,8 +54,6 @@ const zodResolverUntyped: AnyResolverFn = zodResolver as unknown as AnyResolverF
 export function ProductForm({ productId }: ProductFormProps): React.ReactElement {
   const router = useRouter()
   const qc = useQueryClient()
-<<<<<<< HEAD
-=======
 
   const { data: catalogMeta } = useQuery({
     queryKey: ["admin", "catalog-meta"],
@@ -70,7 +62,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
   })
   const isReadOnly: boolean = catalogMeta ? !catalogMeta.supportsWrite : false
 
->>>>>>> 6f36ebc (Updated to v 1.2.1)
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | undefined>(undefined)
   type MediaItem = Readonly<{ url: string; kind: "image" | "video" }>
   const [gallery, setGallery] = useState<readonly MediaItem[]>([])
@@ -330,14 +321,11 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
     try {
       setDebug(`submit:start id=${productId ?? "new"} gallery=${gallery.length}`)
       console.log("[ProductForm] submit start", { values, galleryCount: gallery.length, productId })
-<<<<<<< HEAD
-=======
       if (isReadOnly) {
         toast.error("Catalog provider is read-only")
         setDebug("submit:blocked read-only")
         return
       }
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       if (productId) {
         await updateMutation.mutateAsync(values)
         toast.success("Product updated")
@@ -388,8 +376,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
       })}
       noValidate
     >
-<<<<<<< HEAD
-=======
       {isReadOnly ? (
         <Alert>
           <AlertTitle>Read-only catalog provider</AlertTitle>
@@ -398,7 +384,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
           </AlertDescription>
         </Alert>
       ) : null}
->>>>>>> 6f36ebc (Updated to v 1.2.1)
       {/** unique ids defined via useId() at top */}
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
@@ -444,18 +429,12 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
               <MediaUploader
                 label="Upload image(s) or video(s)"
                 multiple
-<<<<<<< HEAD
-                disabled={isSubmitting || createMutation.isPending || updateMutation.isPending}
-                onUploadingChange={(u: boolean) => setIsUploadingMedia(u)}
-                onUploaded={({ url, kind }) => {
-=======
                 disabled={
                   isReadOnly || isSubmitting || createMutation.isPending || updateMutation.isPending
                 }
                 onUploadingChange={(u: boolean) => setIsUploadingMedia(u)}
                 onUploaded={({ url, kind }) => {
                   if (isReadOnly) return
->>>>>>> 6f36ebc (Updated to v 1.2.1)
                   if (kind === "image")
                     setValue("imageUrl", url, { shouldDirty: true, shouldValidate: true })
                   setGallery((prev) => {
@@ -468,10 +447,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                   if (kind === "video") setVideoPreviewUrl(url)
                 }}
                 onUploadedMany={(results) => {
-<<<<<<< HEAD
-=======
                   if (isReadOnly) return
->>>>>>> 6f36ebc (Updated to v 1.2.1)
                   const firstImage = results.find((r) => r.kind === "image")
                   if (!imageUrlValue && firstImage)
                     setValue("imageUrl", firstImage.url, {
@@ -520,10 +496,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                             type="button"
                             variant="outline"
                             size="sm"
-<<<<<<< HEAD
-=======
                             disabled={isReadOnly}
->>>>>>> 6f36ebc (Updated to v 1.2.1)
                             onClick={() => setGallery((prev) => prev.filter((_, i) => i !== idx))}
                           >
                             Remove
@@ -532,10 +505,7 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
                             <Button
                               type="button"
                               size="sm"
-<<<<<<< HEAD
-=======
                               disabled={isReadOnly}
->>>>>>> 6f36ebc (Updated to v 1.2.1)
                               onClick={() =>
                                 setValue("imageUrl", m.url, {
                                   shouldDirty: true,
@@ -747,12 +717,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
         <Button
           type="submit"
           disabled={
-<<<<<<< HEAD
-            isSubmitting || createMutation.isPending || updateMutation.isPending || isUploadingMedia
-          }
-          aria-busy={
-            isSubmitting || createMutation.isPending || updateMutation.isPending || isUploadingMedia
-=======
             isReadOnly ||
             isSubmitting ||
             createMutation.isPending ||
@@ -765,7 +729,6 @@ export function ProductForm({ productId }: ProductFormProps): React.ReactElement
             createMutation.isPending ||
             updateMutation.isPending ||
             isUploadingMedia
->>>>>>> 6f36ebc (Updated to v 1.2.1)
           }
         >
           {productId
